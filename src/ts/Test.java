@@ -20,10 +20,8 @@ public class Test {
     @org.junit.Test
     public  void main() {
         //Test t = new Test();
-        Airport airport = airportDAO.get(1);
-        Airport airport1 = new Airport();
-        airport1.setName("you are very good");
-        airportDAO.save(airport1);
+        Airport airport = airportDAO.get("AAT");
+       // System.out.println(airport.toString());
      //   airportDAO.removeById(1);
     }
 }

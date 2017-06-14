@@ -2,16 +2,16 @@ package ts.model;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.sql.Time;
 
 /**
  * Created by wr on 2017/6/14.
  */
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "flight", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "flight")
-public class Flight {
+public class Flight implements Serializable{
     private String id;
     private Time startTime;
     private Time arriveTime;
@@ -20,15 +20,15 @@ public class Flight {
     private Integer businessNum;
     private Integer economyNum;
     private Integer status;
-
+    private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false, length = 25)
-    @GeneratedValue(generator="MODEL_flight")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_flight", strategy="native")
+
     public String getId() {
         return id;
     }
-
+    @GeneratedValue(generator="MODEL_flight")
+    @org.hibernate.annotations.GenericGenerator(name="MODEL_flight", strategy="native")
     public void setId(String id) {
         this.id = id;
     }

@@ -2,6 +2,7 @@ package ts.model;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
 
@@ -9,15 +10,14 @@ import java.sql.Time;
  * Created by wr on 2017/6/14.
  */
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "history")
-public class History {
+public class History implements Serializable{
     private Integer id;
     private Date departureDate;
     private Time delayTime;
     private Integer status;
-
+    private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_history")

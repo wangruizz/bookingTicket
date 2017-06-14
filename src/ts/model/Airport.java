@@ -8,22 +8,19 @@ import java.io.Serializable;
  * Created by wr on 2017/6/14.
  */
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "airport", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "airport")
 public class Airport implements Serializable{
-    private Integer id;
+    private String id;
     private String name;
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(generator="MODEL_airport")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_airport", strategy="native")
-    public Integer getId() {
+    @Column(name = "id", nullable = false, length = 4)
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -60,7 +57,7 @@ public class Airport implements Serializable{
     @Override
     public String toString() {
         return "Airport{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

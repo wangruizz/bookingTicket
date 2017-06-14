@@ -2,21 +2,21 @@ package ts.model;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.Serializable;
 
 /**
  * Created by wr on 2017/6/14.
  */
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "passenger", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "passenger")
-public class Passenger {
+public class Passenger implements Serializable{
     private Integer id;
     private String sex;
     private String name;
     private String idcard;
     private String phone;
-
+    private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_passenger")
