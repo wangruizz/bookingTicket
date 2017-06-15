@@ -17,6 +17,7 @@ public class History implements Serializable{
     private Date departureDate;
     private Time delayTime;
     private Integer status;
+    private Flight flight;
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false)
@@ -59,7 +60,15 @@ public class History implements Serializable{
     public void setStatus(Integer status) {
         this.status = status;
     }
+    @OneToOne
+    @JoinColumn(name = "flightID",referencedColumnName = "id")
+    public Flight getFlight() {
+        return flight;
+    }
 
+    public void setFlight(Flight flight) {
+        this.flight = flight;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -16,6 +16,7 @@ public class Passenger implements Serializable{
     private String name;
     private String idcard;
     private String phone;
+    private Agency agency;
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false)
@@ -67,6 +68,15 @@ public class Passenger implements Serializable{
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+    @OneToOne
+    @JoinColumn(name = "agencyID",referencedColumnName = "id")
+    public Agency getAgency() {
+        return agency;
+    }
+
+    public void setAgency(Agency agency) {
+        this.agency = agency;
     }
 
     @Override

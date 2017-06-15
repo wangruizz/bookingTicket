@@ -20,15 +20,18 @@ public class Flight implements Serializable{
     private Integer businessNum;
     private Integer economyNum;
     private Integer status;
+    private Company company;
+    private Airport startAirport;//始发机场
+    private Airport arriveAirport;//目的机场
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false, length = 25)
-
+    @GeneratedValue(generator="MODEL_flight")
+    @org.hibernate.annotations.GenericGenerator(name="MODEL_flight", strategy="native")
     public String getId() {
         return id;
     }
-    @GeneratedValue(generator="MODEL_flight")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_flight", strategy="native")
+
     public void setId(String id) {
         this.id = id;
     }
@@ -102,6 +105,35 @@ public class Flight implements Serializable{
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "companyUName",referencedColumnName = "username")
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+    @OneToOne
+    @JoinColumn(name = "startAirport",referencedColumnName = "id")
+    public Airport getStartAirport() {
+        return startAirport;
+    }
+
+    public void setStartAirport(Airport startAirport) {
+        this.startAirport = startAirport;
+    }
+    @OneToOne
+    @JoinColumn(name = "arriveAirport",referencedColumnName = "id")
+    public Airport getArriveAirport() {
+        return arriveAirport;
+    }
+
+    public void setArriveAirport(Airport arriveAirport) {
+        this.arriveAirport = arriveAirport;
+    }
+
 
     @Override
     public boolean equals(Object o) {
