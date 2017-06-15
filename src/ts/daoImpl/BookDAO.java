@@ -1,5 +1,6 @@
 package ts.daoImpl;
 
+import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
 import ts.model.Book;
 
@@ -13,10 +14,14 @@ public class BookDAO extends BaseDao<Book,Integer> {
         super(Book.class);
     }
 
+
     //打印机票
     public Book printTicket(int bookID, String idcard) {
-
-        return new Book();
+        Book book = super.get(bookID);
+//        if (null == book || book.get) {
+//            return null;
+//        }
+        return book;
     }
 
     //通过电话查询

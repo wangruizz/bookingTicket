@@ -6,6 +6,7 @@ import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -21,6 +22,7 @@ public class ShortMessage {
     private String secret = "b0c8abe213bf3d6538c324285842ba12";
     private static volatile ShortMessage instance = null;
     private String TEMPLATE_ORDER_SUCCESS = "SMS_71330113";
+    private SimpleDateFormat sdf = null;
 
 
     public static ShortMessage getInstance() {
@@ -35,7 +37,7 @@ public class ShortMessage {
     }
 
     ShortMessage() {
-
+        sdf = new SimpleDateFormat("yy/MM/dd HH:mm");
     }
 
     private boolean sendMessage(String templateCode, String content, String teleNumber) throws ApiException {
@@ -52,12 +54,14 @@ public class ShortMessage {
     }
 
     public boolean orderSuccess(String name, Date time, String flightID, String orderID, String teleNumber) {
+        String sendTime = sdf.format(time);
         String content = "{"
                 + "\"name\":\"" + name + "\","
-                + "\"time\":\"" + "2017年6月15日13:23" + "\","
+                + "\"time\":\"" + sendTime + "\","
                 + "\"flightID\":\"" + flightID + "\","
                 + "\"number\":\"" + orderID + "\""
                 + "}";
+//        System.out.println(content);
         try {
             sendMessage(TEMPLATE_ORDER_SUCCESS, content, teleNumber);
         } catch (ApiException e) {
@@ -68,7 +72,7 @@ public class ShortMessage {
 
 //    public static void main(String[] args) {
 //        ShortMessage shortMessage = ShortMessage.getInstance();
-//        shortMessage.orderSuccess("王博文", new Date(), "XG3342", "2942358238", "13069977657");
+//        shortMessage.orderSuccess("孙域元", new Date(1497598287000l), "XG3302", "2942358238", "13373939006");
 //    }
 
 }
