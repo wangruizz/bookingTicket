@@ -5,6 +5,9 @@ import com.taobao.api.DefaultTaobaoClient;
 import com.taobao.api.TaobaoClient;
 import com.taobao.api.request.AlibabaAliqinFcSmsNumSendRequest;
 import com.taobao.api.response.AlibabaAliqinFcSmsNumSendResponse;
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.eclipse.jetty.util.ajax.JSON;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,13 +18,13 @@ import java.util.Date;
 public class ShortMessage {
 
     //官网的URL, http请求就用这个链接
-    private String url = "http://gw.api.taobao.com/router/rest?format=json";
+    private final String url = "http://gw.api.taobao.com/router/rest?format=json";
 //    private String url = "http://gw.api.tbsandbox.com/router/rest";
     //成为开发者，创建应用后系统自动生成
-    private String appkey = "24292629";
-    private String secret = "b0c8abe213bf3d6538c324285842ba12";
+    private final String appkey = "24292629";
+    private final String secret = "b0c8abe213bf3d6538c324285842ba12";
     private static volatile ShortMessage instance = null;
-    private String TEMPLATE_ORDER_SUCCESS = "SMS_71330113";
+    private final String TEMPLATE_ORDER_SUCCESS = "SMS_71330113";
     private SimpleDateFormat sdf = null;
 
 
@@ -49,6 +52,21 @@ public class ShortMessage {
         req.setRecNum(teleNumber);
         req.setSmsTemplateCode(templateCode);
         AlibabaAliqinFcSmsNumSendResponse rsp = client.execute(req);
+
+        try {
+            JSONObject ans = new JSONObject(rsp.getBody());
+            JSONObject success = ans.getJSONObject("alibaba_aliqin_fc_sms_num_send_response");
+            if (success == null) {
+                JSONObject error = ans.getJSONObject("error_response");
+                if (error == null) {
+                    throw new JSONException("no error");
+                }
+                return false;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return false;
+        }
         System.out.println(rsp.getBody());
         return true;
     }
@@ -72,7 +90,7 @@ public class ShortMessage {
 
 //    public static void main(String[] args) {
 //        ShortMessage shortMessage = ShortMessage.getInstance();
-//        shortMessage.orderSuccess("孙域元", new Date(1497598287000l), "XG3302", "2942358238", "13373939006");
+//        System.out.println(shortMessage.orderSuccess("王博文", new Date(1497598287000l), "XG3302", "2942358238", "13069977657"));
 //    }
 
 }

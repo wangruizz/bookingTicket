@@ -44,9 +44,15 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
         return new ArrayList<>();
     }
 
-    //通过旅客电话号查询
+    //通过旅客电话号和旅行社ID查询
     public List<Passenger> queryByPhone(String phone, int agencyID) {
         List<Passenger> passengers = findBy("id", true, Restrictions.eq("agencyID", agencyID), Restrictions.eq("phone", phone));
+        return passengers;
+    }
+
+    //通过旅客电话号查询
+    public List<Passenger> queryByPhone(String phone) {
+        List<Passenger> passengers = findBy("id", true, Restrictions.eq("phone", phone));
         return passengers;
     }
 
