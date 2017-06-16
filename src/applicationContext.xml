@@ -58,25 +58,34 @@
     </bean>
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
-        <property name="passengerDAO" ref="passengerDAO"></property>
-        <property name="historyDao" ref="historyDao"></property>
     </bean>
     <bean id="passengerDAO" class="ts.daoImpl.PassengerDAO">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="airCompanyDAO" class="ts.daoImpl.AirCompanyDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
     <bean id="historyDao" class="ts.daoImpl.HistoryDao">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-
+    <bean id="flightDAO" class="ts.daoImpl.FlightDAO">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
     <!-- REST服务的注解例子 -->
     <jaxrs:server id="Service1" address="/REST">
         <jaxrs:serviceBeans>
-            <bean class="ts.serviceImpl.CompanyService">
-                <property name="airportDAO" ref="airportDAO"></property>
+            <bean class="ts.serviceImpl.DomainService">
+                <property name="airportDAO" ref="airportDAO"></property>	<!-- 配置MiscService中的属性dao -->
+                <!--<property name="regionDao" ref="regionDao"></property>-->
+                <!--<property name="customerInfoDao" ref="customerInfoDao"></property>-->
             </bean>
-            <bean class="ts.serviceImpl.AgencyService">
-                <property name="passengerDAO" ref="passengerDAO"></property>
-            </bean>
+            <!--<bean class="ts.serviceImpl.DomainService">-->
+                <!--&lt;!&ndash;<property name="expressSheetDao" ref="expressSheetDao"></property>	&lt;!&ndash; 配置DomainService中的属性dao &ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="transPackageDao" ref="transPackageDao"></property>&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="transHistoryDao" ref="transHistoryDao"></property>&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="transPackageContentDao" ref="transPackageContentDao"></property>&ndash;&gt;-->
+                <!--&lt;!&ndash;<property name="userInfoDao" ref="userInfoDao"></property>&ndash;&gt;-->
+            <!--</bean>-->
         </jaxrs:serviceBeans>
 
         <jaxrs:extensionMappings>
