@@ -12,7 +12,7 @@ import java.io.Serializable;
 @XmlRootElement(name = "passenger")
 public class Passenger implements Serializable{
     private Integer id;
-    private String sex;
+    private int sex;//1:男；0：女
     private String name;
     private String idcard;
     private String phone;
@@ -31,12 +31,12 @@ public class Passenger implements Serializable{
     }
 
     @Basic
-    @Column(name = "sex", nullable = true, length = 254)
-    public String getSex() {
+    @Column(name = "sex", nullable = false)
+    public int getSex() {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(int sex) {
         this.sex = sex;
     }
 
@@ -82,26 +82,27 @@ public class Passenger implements Serializable{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof Passenger)) return false;
 
-        Passenger that = (Passenger) o;
+        Passenger passenger = (Passenger) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (sex != null ? !sex.equals(that.sex) : that.sex != null) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (idcard != null ? !idcard.equals(that.idcard) : that.idcard != null) return false;
-        if (phone != null ? !phone.equals(that.phone) : that.phone != null) return false;
-
-        return true;
+        if (getSex() != passenger.getSex()) return false;
+        if (getId() != null ? !getId().equals(passenger.getId()) : passenger.getId() != null) return false;
+        if (getName() != null ? !getName().equals(passenger.getName()) : passenger.getName() != null) return false;
+        if (getIdcard() != null ? !getIdcard().equals(passenger.getIdcard()) : passenger.getIdcard() != null)
+            return false;
+        if (getPhone() != null ? !getPhone().equals(passenger.getPhone()) : passenger.getPhone() != null) return false;
+        return getAgency() != null ? getAgency().equals(passenger.getAgency()) : passenger.getAgency() == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (sex != null ? sex.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (idcard != null ? idcard.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        int result = getId() != null ? getId().hashCode() : 0;
+        result = 31 * result + getSex();
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getIdcard() != null ? getIdcard().hashCode() : 0);
+        result = 31 * result + (getPhone() != null ? getPhone().hashCode() : 0);
+        result = 31 * result + (getAgency() != null ? getAgency().hashCode() : 0);
         return result;
     }
 

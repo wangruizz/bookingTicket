@@ -21,8 +21,8 @@ public class Flight implements Serializable{
     private Integer economyNum;
     private Integer status;
     private Company company;
-    private Airport startAirport;//Ê¼·¢»ú³¡
-    private Airport arriveAirport;//Ä¿µÄ»ú³¡
+    private Airport startAirport;//å§‹å‘æœºåœº
+    private Airport arriveAirport;//ç›®çš„æœºåœº
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false, length = 25)
@@ -180,5 +180,9 @@ public class Flight implements Serializable{
                 ", economyNum=" + economyNum +
                 ", status=" + status +
                 '}';
+    }
+    public static final class STATUS{
+        public static final int FLIGHT_NORMAL = 0; //æ­£å¸¸çŠ¶æ€
+        public static final int FLIGHT_CANCEL = -1; //èˆªç­å–æ¶ˆ
     }
 }

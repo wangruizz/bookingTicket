@@ -126,4 +126,14 @@ public class Book implements Serializable{
                 ", status=" + status +
                 '}';
     }
+    public static final class BOOK_STATUS{
+        public static final int BOOK_UNPAID = 0; //等待付款
+        public static final int BOOK_SUCCESS = 1; //预订成功
+        public static final int BOOK_CANCEL = -1; //订单取消
+    }
+
+    public static final class SEAT_TYPE{
+        public static final int ECONOMY_SEAT = 0; //经济舱
+        public static final int BUSINESS_SEAT = 1; //商务舱
+    }
 }
