@@ -21,8 +21,9 @@ public class Flight implements Serializable{
     private Integer economyNum;
     private Integer status;
     private Company company;
-    private Airport startAirport;//始发机场
-    private Airport arriveAirport;//目的机场
+    private Airport startAirport;//濮嬪彂鏈哄満
+    private Airport arriveAirport;//鐩殑鏈哄満
+
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false, length = 25)
