@@ -4,10 +4,12 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.dao.DataAccessException;
 import ts.daoBase.BaseDao;
 import ts.model.Book;
+import ts.model.History;
 import ts.model.Passenger;
 import ts.util.ShortMessage;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +17,15 @@ import java.util.List;
 public class BookDAO extends BaseDao<Book,Integer> {
 
     private PassengerDAO passengerDAO;
+    private HistoryDao historyDao;
 
+    public void setHistoryDao(HistoryDao historyDao) {
+        this.historyDao = historyDao;
+    }
+
+    public HistoryDao getHistoryDao() {
+        return historyDao;
+    }
 
     public PassengerDAO getPassengerDAO() {
         return passengerDAO;
@@ -51,22 +61,61 @@ public class BookDAO extends BaseDao<Book,Integer> {
     }
 
     //通过旅行社ID，订单状态查询
-    public List<Book> query(int agencyID, int status) {
+    public List<Book> query(int agencyID, int ... status) {
         List<Passenger> passengers = passengerDAO.query(agencyID);
         List<Book> books = new ArrayList<>();
-        passengers.forEach(passenger -> {
-            List<Book> tmp = findBy("id", true,
-                    Restrictions.eq("status", status),
-                    Restrictions.eq("passID", passenger));
-            books.addAll(tmp);
-        });
+        if (status.length == 1) {
+            passengers.forEach(passenger -> {
+                List<Book> tmp = findBy("id", true,
+                        Restrictions.eq("status", status[0]),
+                        Restrictions.eq("passID", passenger));
+                books.addAll(tmp);
+            });
+        } else {
+            passengers.forEach(passenger -> {
+                List<Book> tmp = findBy("id", true,
+                        Restrictions.eq("passID", passenger));
+                books.addAll(tmp);
+            });
+        }
+
         return books.size() == 0 ? null : books;
     }
 
-    //通过航班ID查询
-    public List<Book> query(int flightID) {
+    //通过航班ID和起止日期查询
+//    public List<Book> query(String flightID, Date ... dates) {
+//        List<History> histories = new ArrayList<>();
+//        if (dates.length == 0) {
+////            histories = historyDao.queryID(flightID);
+//        } else
+//        if(dates.length == 1) {
+////            histories = historyDao.queryID(flightID, dates[0]);
+//        } else
+//        if(dates.length == 2) {
+//            long startLong = Math.min(dates[0].getTime(), dates[1].getTime());
+//            long endLong = Math.max(dates[0].getTime(), dates[1].getTime());
+//
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(new Date(startLong));
+//            while (calendar.getTime().getTime() > endLong) {
+//                List<History> tmp = historyDao.queryID(flightID, calendar.getTime());
+//                histories.addAll(tmp);
+//                calendar.add(Calendar.DATE, 1);
+//            }
+//        }
+//        List<Book> books = new ArrayList<>();
+//        histories.forEach(history -> {
+//            List<Book> tmp = findBy("historyID", history.getId(), "id", true);
+//            books.addAll(tmp);
+//        });
+//        return books;
+//    }
 
-        return new ArrayList<>();
+    //通过历史表ID查询
+    public List<Book> queryByHistoryID(int historyID) {
+        History history = historyDao.get(historyID);
+        List<Book> books = findBy("historyID", history, "id", true);
+        return books;
     }
 
     //付款
@@ -76,7 +125,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
             return false;
         }
         try{
-            book.setStatus(1);
+            book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);
             update(book);
         } catch (DataAccessException e) {
             return false;
@@ -94,7 +143,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
     //取消订单
     public Book cancel(int bookID) {
         Book book = get(bookID);
-        book.setStatus(-1);
+        book.setStatus(Book.BOOK_STATUS.BOOK_CANCEL);
         update(book);
         return book;
     }

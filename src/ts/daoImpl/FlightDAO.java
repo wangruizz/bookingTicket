@@ -22,33 +22,32 @@ public class FlightDAO extends BaseDao<Flight, String> {
      *
      * @return
      */
-    ???比较日期
-    public List<Flight> query(Date departureDate, int startPortID, int arrivePortID) {
-        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-        if (currentDate.equals(departureDate)){
-            long timestamp = System.currentTimeMillis();
-            List<Flight> flights = findBy("id", true,Restrictions.eq("startAirport", startPortID), Restrictions.eq("arriveAirport", arrivePortID), Restrictions.ge("startTime",timestamp));
-        }else {
-            List<Flight> flights = findBy("id", true, Restrictions.eq("startAirport", startPortID), Restrictions.eq("arriveAirport", arrivePortID), Restrictions.ge("startTime",timestamp));
-        }
-    }
+//    public List<Flight> query(Date departureDate, int startPortID, int arrivePortID) {
+//        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+//        if (currentDate.equals(departureDate)){
+//            long timestamp = System.currentTimeMillis();
+//            List<Flight> flights = findBy("id", true,Restrictions.eq("startAirport", startPortID), Restrictions.eq("arriveAirport", arrivePortID), Restrictions.ge("startTime",timestamp));
+//        }else {
+//            List<Flight> flights = findBy("id", true, Restrictions.eq("startAirport", startPortID), Restrictions.eq("arriveAirport", arrivePortID), Restrictions.ge("startTime",timestamp));
+//        }
+//    }
 
-    /**
-     * 航班延误，这里只在航班表里改了状态
-     *
-     * @param flightID
-     * @return
-     */
-    public Boolean delay(String flightID) {
-        Flight flight = get(flightID);
-        if (flight == null) {
-            return false;
-        } else {
-            flight.setStatus(Flight.STATUS.FLIGHT_DELAY);
-            update(flight);
-            return true;
-        }
-    }
+//    /**
+//     * 航班延误，这里只在航班表里改了状态
+//     *
+//     * @param flightID
+//     * @return
+//     */
+//    public Boolean delay(String flightID) {
+//        Flight flight = get(flightID);
+//        if (flight == null) {
+//            return false;
+//        } else {
+//            flight.setStatus(Flight.STATUS.);
+//            update(flight);
+//            return true;
+//        }
+//    }
 
     /**航班恢复，这里只在航班表里改了状态
      * @return
@@ -89,6 +88,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
      */
     public Flight add(String companyUName, Flight flight) {
 
+        return new Flight();
     }
 
     /**
