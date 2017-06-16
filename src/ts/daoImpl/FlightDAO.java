@@ -11,6 +11,11 @@ import java.util.List;
  * Created by 12556 on 2017/6/15.
  */
 public class FlightDAO extends BaseDao<Flight, String> {
+
+    public FlightDAO() {
+        super(Flight.class);
+    }
+
     /**
      * 旅行社根据当前时间（服务器获取）、出发日期、出发机场和目标机场ID，查询航班
      *

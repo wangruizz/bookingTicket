@@ -62,7 +62,15 @@
     <bean id="passengerDAO" class="ts.daoImpl.PassengerDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-
+    <bean id="airCompanyDAO" class="ts.daoImpl.AirCompanyDAO">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="historyDao" class="ts.daoImpl.HistoryDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+    <bean id="flightDAO" class="ts.daoImpl.FlightDAO">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
     <!-- REST服务的注解例子 -->
     <jaxrs:server id="Service1" address="/REST">
         <jaxrs:serviceBeans>

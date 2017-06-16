@@ -11,12 +11,10 @@ import java.util.List;
  */
 public class AirCompanyDAO extends BaseDao<Company,String> {
 
-    public AirCompanyDAO(Class<Company> type) {
-        super(type);
+    public AirCompanyDAO() {
+        super(Company.class);
     }
 
-    public AirCompanyDAO() {
-    }
 
     public Company register(Company company){
         Company companyExist = checkHasExist(company.getUsername());
@@ -30,6 +28,8 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
 
     public Company login(String userName,String pwd){
         List<Company> users = findBy("username", true, Restrictions.eq("username", userName),Restrictions.eq("pwd", pwd));
+       // List<Company> users = findBy("username", true, Restrictions.eq("username", userName));
+        System.out.println("users"+users);
         return users != null && users.size() > 0 ? users.get(0) : null;
     }
 
