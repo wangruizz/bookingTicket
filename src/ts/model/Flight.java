@@ -181,6 +181,7 @@ public class Flight implements Serializable{
                 ", status=" + status +
                 '}';
     }
+  
     public static final class STATUS{
         public static final int FLIGHT_NORMAL = 0; //正常状态
         public static final int FLIGHT_CANCEL = -1; //航班取消

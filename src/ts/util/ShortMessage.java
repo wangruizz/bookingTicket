@@ -91,6 +91,7 @@ public class ShortMessage {
 //    public static void main(String[] args) {
 //        ShortMessage shortMessage = ShortMessage.getInstance();
 //        System.out.println(shortMessage.orderSuccess("王博文", new Date(1497598287000l), "XG3302", "2942358238", "13069977657"));
+//        shortMessage.orderSuccess("孙域元", new Date(1497598287000l), "XG3302", "2942358238", "13373939006");
 //    }
 
 }

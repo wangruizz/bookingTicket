@@ -126,6 +126,7 @@ public class Book implements Serializable{
                 ", status=" + status +
                 '}';
     }
+  
     public static final class BOOK_STATUS{
         public static final int BOOK_UNPAID = 0; //等待付款
         public static final int BOOK_SUCCESS = 1; //预订成功
