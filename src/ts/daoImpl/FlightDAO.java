@@ -1,15 +1,9 @@
 package ts.daoImpl;
 
-import org.hibernate.annotations.Check;
-import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
-import ts.model.Company;
 import ts.model.Flight;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -22,33 +16,27 @@ public class FlightDAO extends BaseDao<Flight, String> {
      *
      * @return
      */
-    ?
     public List<Flight> query(Date departureDate, int startPortID, int arrivePortID) {
         java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
-        if (currentDate.equals(departureDate)){
+        List<Flight> flights;
+        if (currentDate.equals(departureDate)){//出发日期是今天
             long timestamp = System.currentTimeMillis();
-            List<Flight> flights = findBy("id", true,Restrictions.eq("startAirport", startPortID), Restrictions.eq("arriveAirport", arrivePortID), Restrictions.ge("startTime",timestamp));
+            timestamp +=30*60*1000;//当前时间加上半小时
+            flights = findBy("id", true,
+                    Restrictions.eq("startAirport", startPortID),
+                    Restrictions.eq("status",Flight.STATUS.FLIGHT_NORMAL),
+                    Restrictions.eq("arriveAirport", arrivePortID),
+                    Restrictions.ge("startTime",timestamp));
         }else {
-            List<Flight> flights = findBy("id", true, Restrictions.eq("startAirport", startPortID), Restrictions.eq("arriveAirport", arrivePortID), Restrictions.ge("startTime",timestamp));
+            flights = findBy("id", true,
+                    Restrictions.eq("status",Flight.STATUS.FLIGHT_NORMAL),
+                    Restrictions.eq("startAirport", startPortID),
+                    Restrictions.eq("arriveAirport", arrivePortID));
         }
+        return flights;
     }
 
-    /**
-     * 航班延误，这里只在航班表里改了状态
-     *
-     * @param flightID
-     * @return
-     */
-    public Boolean delay(String flightID) {
-        Flight flight = get(flightID);
-        if (flight == null) {
-            return false;
-        } else {
-            flight.setStatus(Flight.STATUS.FLIGHT_DELAY);
-            update(flight);
-            return true;
-        }
-    }
+
 
     /**航班恢复，这里只在航班表里改了状态
      * @return
@@ -81,14 +69,15 @@ public class FlightDAO extends BaseDao<Flight, String> {
     }
 
     /**
-     * 航空公司给自己增加航班?????????????????????????
-     *
+     * 航空公司给自己增加航班
+     *服务层传过来的flight里已经有了companyUName
      * @param companyUName
      * @param flight
      * @return
      */
     public Flight add(String companyUName, Flight flight) {
-
+      save(flight);
+      return flight;
     }
 
     /**
