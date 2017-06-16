@@ -17,6 +17,8 @@ public class Book implements Serializable{
     private Integer seatType;
     private Timestamp orderTime;
     private Integer status;
+    private Passenger passenger;
+    private History history;
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false)
@@ -69,6 +71,24 @@ public class Book implements Serializable{
     public void setStatus(Integer status) {
         this.status = status;
     }
+    @OneToOne
+    @JoinColumn(name = "passID",referencedColumnName = "id")
+    public Passenger getPassenger() {
+        return passenger;
+    }
+
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
+    }
+    @OneToOne
+    @JoinColumn(name = "historyID",referencedColumnName = "id")
+    public History getHistory() {
+        return history;
+    }
+
+    public void setHistory(History history) {
+        this.history = history;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -105,5 +125,17 @@ public class Book implements Serializable{
                 ", orderTime=" + orderTime +
                 ", status=" + status +
                 '}';
+    }
+
+
+    public static final class BOOK_STATUS{
+        public static final int BOOK_UNPAID = 0; //等待付款
+        public static final int BOOK_SUCCESS = 1; //预订成功
+        public static final int BOOK_CANCEL = -1; //订单取消
+    }
+
+    public static final class SEAT_TYPE{
+        public static final int ECONOMY_SEAT = 0; //经济舱
+        public static final int BUSINESS_SEAT = 1; //商务舱
     }
 }
