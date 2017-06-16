@@ -22,7 +22,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
      *
      * @return
      */
-    ???比较日期
+    ?
     public List<Flight> query(Date departureDate, int startPortID, int arrivePortID) {
         java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
         if (currentDate.equals(departureDate)){
