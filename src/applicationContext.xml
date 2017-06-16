@@ -59,6 +59,10 @@
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
+    <bean id="passengerDAO" class="ts.daoImpl.PassengerDAO">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+
     <!-- REST服务的注解例子 -->
     <jaxrs:server id="Service1" address="/REST">
         <jaxrs:serviceBeans>
