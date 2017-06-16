@@ -18,33 +18,33 @@ public class HistoryDao extends BaseDao<History,Integer> {
      * @param type
      * @return
      */
-    public int queryRemain(String flightID, Date departureDate,int type){
-        List<History> histories = findBy()
-    }
+//    public int queryRemain(String flightID, Date departureDate,int type){
+//        List<History> histories = findBy()
+//    }
 
     /**
      * 查询history ID
      * @return
      */
-    public int queryID(String flightID,Date departureDate){
-
-    }
-
-    /**
-     *
-     * @return
-     */
-    public History add(String flightID,Date departureDate){
-
-    }
+//    public int queryID(String flightID,Date departureDate){
+//
+//    }
 
     /**
      *
      * @return
      */
-    public History modify(History history){
+//    public History add(String flightID,Date departureDate){
+//
+//    }
 
-    }
+    /**
+     *
+     * @return
+             */
+//    public History modify(History history){
+//
+//    }
 
 
 

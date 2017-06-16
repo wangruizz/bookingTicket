@@ -62,7 +62,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
 
     //通过旅行社ID，订单状态查询
     public List<Book> query(int agencyID, int ... status) {
-        List<Passenger> passengers = passengerDAO.query(agencyID);
+        List<Passenger> passengers = passengerDAO.queryByID(agencyID);
         List<Book> books = new ArrayList<>();
         if (status.length == 1) {
             passengers.forEach(passenger -> {
@@ -153,4 +153,17 @@ public class BookDAO extends BaseDao<Book,Integer> {
 
         return new Book();
     }
+
+//    public static int test(int ... sum) {
+//        if (sum == null) {
+//            return 1;
+//        } else if (sum.length == 0) {
+//            return 2;
+//        }
+//        return 3;
+//    }
+//
+//    public static void main(String[] args) {
+//        System.out.println(test());
+//    }
 }

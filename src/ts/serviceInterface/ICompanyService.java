@@ -4,11 +4,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ts.model.*;
-/**
- * Created by wr on 2017/6/13.
- */
-@Path("/Domain")
-public interface IDomainService {
+
+
+@Path("/Company")
+public interface ICompanyService {
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/getAirport/{id}")
