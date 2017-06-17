@@ -2,7 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/util
@@ -11,7 +11,7 @@
      http://www.springframework.org/schema/context/spring-context-4.0.xsd
      http://www.springframework.org/schema/tx
      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
@@ -49,15 +49,38 @@
     </bean>
     <tx:annotation-driven transaction-manager="transactionManager"
                           proxy-target-class="true" />
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="*" propagation="REQUIRED" />
+            <!--
+            Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：
+            PROPAGATION_REQUIRED-支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。
+            PROPAGATION_SUPPORTS-支持当前事务，如果当前没有事务，就以非事务方式执行。
+            PROPAGATION_MANDATORY-支持当前事务，如果当前没有事务，就抛出异常。
+            PROPAGATION_REQUIRES_NEW-新建事务，如果当前存在事务，把当前事务挂起。
+            PROPAGATION_NOT_SUPPORTED-以非事务方式执行操作，如果当前存在事务，就把当前事务挂起。
+            PROPAGATION_NEVER-以非事务方式执行，如果当前存在事务，则抛出异常。
+            -->
+        </tx:attributes>
+    </tx:advice>
+
+    <aop:config>
+        <aop:pointcut id="interceptorPointCuts"  expression="execution(* ts.serviceImpl.*.*(..)) execution(* ts.daoImpl.*.*(..))" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+    </aop:config>
+
     <bean id="airportDAO" class="ts.daoImpl.AirportDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
-        <property name="airportDAO" ref="airportDAO"></property>
     </bean>
     <bean id="agencyDAO" class="ts.daoImpl.AgencyDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="historyDao" ref="historyDao"></property>
+        <property name="flightDAO" ref="flightDAO"></property>
+        <property name="passengerDAO" ref="passengerDAO"></property>
     </bean>
     <bean id="passengerDAO" class="ts.daoImpl.PassengerDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
@@ -74,18 +97,12 @@
     <!-- REST服务的注解例子 -->
     <jaxrs:server id="Service1" address="/REST">
         <jaxrs:serviceBeans>
-            <bean class="ts.serviceImpl.DomainService">
-                <property name="airportDAO" ref="airportDAO"></property>	<!-- 配置MiscService中的属性dao -->
-                <!--<property name="regionDao" ref="regionDao"></property>-->
-                <!--<property name="customerInfoDao" ref="customerInfoDao"></property>-->
+            <bean class="ts.serviceImpl.CompanyService">
+                <property name="airportDAO" ref="airportDAO"></property>
             </bean>
-            <!--<bean class="ts.serviceImpl.DomainService">-->
-                <!--&lt;!&ndash;<property name="expressSheetDao" ref="expressSheetDao"></property>	&lt;!&ndash; 配置DomainService中的属性dao &ndash;&gt;&ndash;&gt;-->
-                <!--&lt;!&ndash;<property name="transPackageDao" ref="transPackageDao"></property>&ndash;&gt;-->
-                <!--&lt;!&ndash;<property name="transHistoryDao" ref="transHistoryDao"></property>&ndash;&gt;-->
-                <!--&lt;!&ndash;<property name="transPackageContentDao" ref="transPackageContentDao"></property>&ndash;&gt;-->
-                <!--&lt;!&ndash;<property name="userInfoDao" ref="userInfoDao"></property>&ndash;&gt;-->
-            <!--</bean>-->
+            <bean class="ts.serviceImpl.AgencyService">
+                <property name="passengerDAO" ref="passengerDAO"></property>
+            </bean>
         </jaxrs:serviceBeans>
 
         <jaxrs:extensionMappings>

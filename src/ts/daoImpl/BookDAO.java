@@ -18,6 +18,15 @@ public class BookDAO extends BaseDao<Book,Integer> {
 
     private PassengerDAO passengerDAO;
     private HistoryDao historyDao;
+    private FlightDAO flightDAO;
+
+    public FlightDAO getFlightDAO() {
+        return flightDAO;
+    }
+
+    public void setFlightDAO(FlightDAO flightDAO) {
+        this.flightDAO = flightDAO;
+    }
 
     public void setHistoryDao(HistoryDao historyDao) {
         this.historyDao = historyDao;
@@ -82,34 +91,38 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return books.size() == 0 ? null : books;
     }
 
-    //通过航班ID和起止日期查询
-//    public List<Book> query(String flightID, Date ... dates) {
-//        List<History> histories = new ArrayList<>();
-//        if (dates.length == 0) {
-////            histories = historyDao.queryID(flightID);
-//        } else
-//        if(dates.length == 1) {
-////            histories = historyDao.queryID(flightID, dates[0]);
-//        } else
-//        if(dates.length == 2) {
-//            long startLong = Math.min(dates[0].getTime(), dates[1].getTime());
-//            long endLong = Math.max(dates[0].getTime(), dates[1].getTime());
-//
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(new Date(startLong));
-//            while (calendar.getTime().getTime() > endLong) {
-//                List<History> tmp = historyDao.queryID(flightID, calendar.getTime());
-//                histories.addAll(tmp);
-//                calendar.add(Calendar.DATE, 1);
-//            }
-//        }
-//        List<Book> books = new ArrayList<>();
-//        histories.forEach(history -> {
-//            List<Book> tmp = findBy("historyID", history.getId(), "id", true);
-//            books.addAll(tmp);
-//        });
-//        return books;
-//    }
+    /**
+     * 通过航班ID和起止日期查询
+     * dates数量如果为0则表示仅仅用flightID查询，为1表示单次记录查询，为2表示一段时间内查询
+     */
+    public List<Book> query(String flightID, Date ... dates) {
+        List<History> histories = new ArrayList<>();
+        if (dates.length == 0) {
+            histories = historyDao.queryHistory(flightID);
+        } else
+        if(dates.length == 1) {
+            History history = historyDao.queryHistory(flightID, dates[0]);
+            histories.add(history);
+        } else
+        if(dates.length == 2) {
+            long startLong = Math.min(dates[0].getTime(), dates[1].getTime());
+            long endLong = Math.max(dates[0].getTime(), dates[1].getTime());
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(new Date(startLong));
+            while (calendar.getTime().getTime() > endLong) {
+                History tmp = historyDao.queryHistory(flightID, calendar.getTime());
+                histories.add(tmp);
+                calendar.add(Calendar.DATE, 1);
+            }
+        }
+        List<Book> books = new ArrayList<>();
+        histories.forEach(history -> {
+            List<Book> tmp = findBy("historyID", history.getId(), "id", true);
+            books.addAll(tmp);
+        });
+        return books;
+    }
 
     //通过历史表ID查询
     public List<Book> queryByHistoryID(int historyID) {
@@ -133,7 +146,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
         //由于免费条数有限，仅仅在必要测试时才取消注释代码
 //        ShortMessage shortMessage = ShortMessage.getInstance();
 //        String name = book.getPassenger().getName();
-//        Date date = new Date();     //由于flightDAO还未获取，暂不实现此段代码
+//        Date date = historyDao.get(book.getId()).getDepartureDate();     //由于flightDAO还未获取，暂不实现此段代码
 //        String flightID = book.getHistory().getFlight().getId();
 //        String phone = book.getPassenger().getPhone();
 //        shortMessage.orderSuccess(name, date, flightID, bookID+"", phone);
@@ -148,11 +161,12 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return book;
     }
 
-    //创建订单
-    public Book create(int passengerID, int seatType, int flightID, Date date) {
-
-        return new Book();
-    }
+//    save
+//    //创建订单
+//    public Book create(int passengerID, int seatType, int flightID, Date date) {
+//
+//        return new Book();
+//    }
 
 //    public static int test(int ... sum) {
 //        if (sum == null) {
