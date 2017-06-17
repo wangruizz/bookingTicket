@@ -33,7 +33,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
 //    }
 
     //通过旅行社ID查询
-    public List<Passenger> query(int agencyID) {
+    public List<Passenger> queryByID(int agencyID) {
         List<Passenger> passengers = findBy("id", true, Restrictions.eq("agencyID", agencyID));
         return passengers;
     }

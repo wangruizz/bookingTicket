@@ -103,7 +103,7 @@ public class History implements Serializable{
                 ", status=" + status +
                 '}';
     }
-
+  
     public static final class STATUS{
         public static final int HISTORY_FLIGHT_NOMAL = 0; //正常状态
         public static final int HISTORY_FLIGHT_DELAY = 1; //航班延误

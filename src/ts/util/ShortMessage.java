@@ -40,7 +40,7 @@ public class ShortMessage {
     }
 
     ShortMessage() {
-        sdf = new SimpleDateFormat("yy/MM/dd HH:mm");
+        sdf = new SimpleDateFormat("yy/MM/dd");
     }
 
     private boolean sendMessage(String templateCode, String content, String teleNumber) throws ApiException {
