@@ -10,6 +10,7 @@ import java.sql.Time;
  * Created by wr on 2017/6/14.
  */
 @Entity
+@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "history")
 public class History implements Serializable{

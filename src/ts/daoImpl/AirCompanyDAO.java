@@ -17,12 +17,11 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
 
 
     public Company register(Company company){
-        Company companyExist = checkHasExist(company.getUsername());
-        if (companyExist == null){
+        if (!checkHasExist(company.getUsername())){
             save(company);
             return  company;
         }else {
-            return companyExist;
+            return get(company.getUsername());
         }
     }
 
@@ -43,12 +42,8 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
      * @param companyUserName
      * @return
      */
-    public Company checkHasExist(String companyUserName){
+    public boolean checkHasExist(String companyUserName){
         Company company1 = get(companyUserName);
-        if (company1 != null){//已经存在
-            return company1;
-        }else{
-            return null;
-        }
+        return company1 != null;
     }
 }

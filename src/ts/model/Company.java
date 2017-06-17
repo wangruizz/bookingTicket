@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Created by wr on 2017/6/14.
  */
 @Entity
+@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "company", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "company")
 public class Company implements Serializable{

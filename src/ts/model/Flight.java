@@ -9,6 +9,7 @@ import java.sql.Time;
  * Created by wr on 2017/6/14.
  */
 @Entity
+@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "flight", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "flight")
 public class Flight implements Serializable{
@@ -23,7 +24,11 @@ public class Flight implements Serializable{
     private Company company;
     private Airport startAirport;//始发机场
     private Airport arriveAirport;//目的机场
+
     private static final long serialVersionUID = -3267943602377867497L;
+
+
+
     @Id
     @Column(name = "id", nullable = false, length = 25)
     @GeneratedValue(generator="MODEL_flight")
@@ -179,9 +184,12 @@ public class Flight implements Serializable{
                 ", businessNum=" + businessNum +
                 ", economyNum=" + economyNum +
                 ", status=" + status +
+                ", startAirport=" + startAirport +
+                ", arriveAirport=" + arriveAirport +
+                ", company=" + company +
                 '}';
     }
-  
+
     public static final class STATUS{
         public static final int FLIGHT_NORMAL = 0; //正常状态
         public static final int FLIGHT_CANCEL = -1; //航班取消
