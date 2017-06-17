@@ -51,7 +51,6 @@
                           proxy-target-class="true" />
     <bean id="airportDAO" class="ts.daoImpl.AirportDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
-        <property name="airportDAO" ref="airportDAO"></property>
     </bean>
     <bean id="agencyDAO" class="ts.daoImpl.AgencyDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
