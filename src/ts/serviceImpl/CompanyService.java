@@ -1,15 +1,12 @@
 package ts.serviceImpl;
 
 import ts.daoImpl.AirportDAO;
-import ts.serviceInterface.IDomainService;
+import ts.serviceInterface.ICompanyService;
 
 import javax.ws.rs.core.Response;
 
-/**
- * Created by wr on 2017/6/13.
- */
 
-public class DomainService implements IDomainService {
+public class CompanyService implements ICompanyService {
     private AirportDAO airportDAO;
 
     public AirportDAO getAirportDAO() {
