@@ -2,10 +2,12 @@ package ts.daoImpl;
 
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
+import ts.model.Book;
 import ts.model.Company;
 import ts.model.Flight;
 import ts.model.History;
 
+import javax.annotation.Resource;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
@@ -14,6 +16,17 @@ import java.util.List;
  * Created by 12556 on 2017/6/15.
  */
 public class HistoryDao extends BaseDao<History,Integer> {
+    private BookDAO bookDao;
+    private BookDAO bookDAO;
+
+    public BookDAO getBookDao() {
+        return bookDao;
+    }
+
+    public void setBookDao(BookDAO bookDao) {
+        this.bookDao = bookDao;
+    }
+
     public HistoryDao() {
         super(History.class);
     }
@@ -24,14 +37,14 @@ public class HistoryDao extends BaseDao<History,Integer> {
      * @param type
      * @return
      */
-//    public int queryRemain(String flightID, Date departureDate,int type){
-//        FlightDAO flightDAO = new FlightDAO();
-//        Flight flight = flightDAO.get(flightID);//获取对应的航班
-//
-//        int sumSeat = flight.getBusinessNum()+flight.getEconomyNum();
-//        int bookedSeat = this.queryBookedBusiness(flightID,departureDate)+this.queryBookedEconomy(flightID,departureDate);
-//        return sumSeat-bookedSeat;
-//    }
+    public int queryRemain(String flightID, Date departureDate,int type){
+        FlightDAO flightDAO = new FlightDAO();
+        Flight flight = flightDAO.get(flightID);//获取对应的航班
+
+        int sumSeat = flight.getBusinessNum()+flight.getEconomyNum();
+        int bookedSeat = this.queryBookedBusiness(flightID,departureDate)+this.queryBookedEconomy(flightID,departureDate);
+        return sumSeat-bookedSeat;
+    }
 
     /**
      * 查询某天某个航班预订成功的的经济舱座位
@@ -39,25 +52,23 @@ public class HistoryDao extends BaseDao<History,Integer> {
      * @param departureDate
      * @return
      */
-//    private int queryBookedEconomy(String flightID, Date departureDate){
-//
-//        List<History> histories = findBy("id",true,
-//                Restrictions.eq("flightID",flightID),
-//                Restrictions.eq("departureDate",departureDate));
-//        if (histories != null && histories.size() > 0){
-//            BookDAO bookDao = new  BookDAO();
-//
-//            List<Book> books = bookDao.getBooksByHistory();
-//            int sum = 0;//经济舱总数
-//            for(Book book: books) {
-//                if (book.getSeatType() == Book.SEAT_TYPE.ECONOMY_SEAT){
-//                    sum++;
-//                }
-//            }
-//            return sum;
-//        }
-//        return 0;
-//    }
+    private int queryBookedEconomy(String flightID, Date departureDate){
+
+        List<History> histories = findBy("id",true,
+                Restrictions.eq("flightID",flightID),
+                Restrictions.eq("departureDate",departureDate));
+        if (histories != null && histories.size() > 0){
+            List<Book> books = bookDao.query(histories.get(0).getId());
+            int sum = 0;//经济舱总数
+            for(Book book: books) {
+                if (book.getSeatType() == Book.SEAT_TYPE.ECONOMY_SEAT){
+                    sum++;
+                }
+            }
+            return sum;
+        }
+        return 0;
+    }
 
     /**
      * 查询剩余的商务舱座位
@@ -65,24 +76,22 @@ public class HistoryDao extends BaseDao<History,Integer> {
      * @param departureDate
      * @return
      */
-//    private int queryBookedBusiness(String flightID, Date departureDate){
-//        List<History> histories = findBy("id",true,
-//                Restrictions.eq("flightID",flightID),
-//                Restrictions.eq("departureDate",departureDate));
-//        if (histories != null && histories.size() > 0){
-//            BookDAO bookDao = new  BookDAO();
-//
-//            List<Book> books = bookDao.getBooksByHistory();
-//            int sum = 0;//商务舱总数
-//            for(Book book: books) {
-//                if (book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT){
-//                    sum++;
-//                }
-//            }
-//            return sum;
-//        }
-//        return 0;
-//    }
+    private int queryBookedBusiness(String flightID, Date departureDate){
+        List<History> histories = findBy("id",true,
+                Restrictions.eq("flightID",flightID),
+                Restrictions.eq("departureDate",departureDate));
+        if (histories != null && histories.size() > 0){
+            List<Book> books = bookDao.query(histories.get(0).getId());
+            int sum = 0;//商务舱总数
+            for(Book book: books) {
+                if (book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT){
+                    sum++;
+                }
+            }
+            return sum;
+        }
+        return 0;
+    }
     /**
      * 查询history ID
      * @return
@@ -102,7 +111,7 @@ public class HistoryDao extends BaseDao<History,Integer> {
 
     public History queryHistory(String flightID,Date departureDates){
         List<History> histories;
-            Date date = departureDates;
+        Date date = departureDates;
         histories = findBy("flightID",true, Restrictions.eq("flightID",flightID),Restrictions.eq("departureDate",date));
 
         if (histories.size() < 1){
@@ -157,4 +166,11 @@ public class HistoryDao extends BaseDao<History,Integer> {
         return  false;
     }
 
+    public void setBookDAO(BookDAO bookDAO) {
+        this.bookDAO = bookDAO;
+    }
+
+    public BookDAO getBookDAO() {
+        return bookDAO;
+    }
 }

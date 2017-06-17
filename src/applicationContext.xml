@@ -55,6 +55,10 @@
     <bean id="agencyDAO" class="ts.daoImpl.AgencyDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
+    <bean id="historyDao" class="ts.daoImpl.HistoryDao">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="bookDAO" ref="bookDAO"/>
+    </bean>
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
@@ -64,9 +68,7 @@
     <bean id="airCompanyDAO" class="ts.daoImpl.AirCompanyDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
-    <bean id="historyDao" class="ts.daoImpl.HistoryDao">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean>
+
     <bean id="flightDAO" class="ts.daoImpl.FlightDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
