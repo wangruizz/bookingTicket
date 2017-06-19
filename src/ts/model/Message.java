@@ -91,14 +91,20 @@ public class Message {
 
 
         //和旅行社有关 6000-6999
-        public static final int  PASSENGER_INCOMPLICT = 6000;
+        public static final int AGENCY_LOGIN_FAILED = 6000;
+        public static final int AGENCY_REGISTER_FAILED = 6001;//注册失败
+        public static final int AGENCY_MOTIFY_FAILED = 6002;//注册失败
         //和旅客相关 7000-7999
-        public static final int PASSENGER_NOT_EXIST = 7000;
+        public static final int  PASSENGER_INCOMPLICT = 7000;
+        public static final int PASSENGER_NOT_EXIST = 7001;
     }
 
     static {
         map.put(CODE.COMPANT_HAS_EXIST,"该用户名已经存在");
         map.put(CODE.PASSENGER_INCOMPLICT,"乘客信息不完整，无法正常添加");
-        map.put(CODE.PASSENGER_NOT_EXIST,"passenger not exist");
+        map.put(CODE.AGENCY_LOGIN_FAILED,"登录信息有误，无法登录，请重试");
+        map.put(CODE.PASSENGER_NOT_EXIST,"乘客不存在,操作失败");//passenger not exist
+        map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");//passenger not exist
+        map.put(CODE.AGENCY_MOTIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
     }
 }

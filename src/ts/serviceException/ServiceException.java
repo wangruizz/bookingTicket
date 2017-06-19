@@ -12,6 +12,6 @@ public class ServiceException extends Exception {
         message1 = new Message(Message.CODE.UNKNOWN_ERROR, message);
     }
     public ServiceException(){
-        this("not know why is error");
+        this("未知错误");
     }
 }
