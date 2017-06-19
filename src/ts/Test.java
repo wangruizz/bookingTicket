@@ -9,6 +9,7 @@ import ts.daoImpl.AirportDAO;
 import ts.model.Airport;
 import ts.model.Company;
 import ts.model.History;
+import ts.serviceException.PassengerNotExistException;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -28,17 +29,18 @@ public class Test {
     AirCompanyDAO airCompanyDAO;
 
     @org.junit.Test
-    public void main() {
+    public void main() throws PassengerNotExistException {
         // Test t = new Test();
-//        List<Airport> list = airportDAO.getAll();
+
+        List<Airport> list = airportDAO.getAll();
 //        System.out.println(list);
 
 //        Company company = airCompanyDAO.login("王思懿", "12");
-        System.out.println(airCompanyDAO.checkHasExist("name").toString());
-        System.out.println(airCompanyDAO.checkHasExist("ne").toString());
+//        System.out.println(airCompanyDAO.checkHasExist("name").toString());
+//        System.out.println(airCompanyDAO.checkHasExist("ne").toString());
 
 //        System.out.println(airCompanyDAO.register());
-
+    // throw new PassengerNotExistException();
 
     }
 }

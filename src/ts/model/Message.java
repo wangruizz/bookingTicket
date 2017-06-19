@@ -88,10 +88,17 @@ public class Message {
 
         //与Company有关的信息 5000 - 5999
         public static  final int COMPANT_HAS_EXIST = 5000;
+
+
+        //和旅行社有关 6000-6999
+        public static final int  PASSENGER_INCOMPLICT = 6000;
+        //和旅客相关 7000-7999
+        public static final int PASSENGER_NOT_EXIST = 7000;
     }
 
     static {
         map.put(CODE.COMPANT_HAS_EXIST,"该用户名已经存在");
-
+        map.put(CODE.PASSENGER_INCOMPLICT,"乘客信息不完整，无法正常添加");
+        map.put(CODE.PASSENGER_NOT_EXIST,"passenger not exist");
     }
 }

@@ -61,4 +61,12 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
         List<Passenger> passengers = findBy("idcard", true, Restrictions.eq("agencyID", agencyID), Restrictions.eq("idcard", idCard));
         return (passengers != null && passengers.size() > 0) ? passengers.get(0) : null;
     }
+    //乘客信息是否完整(性别有默认？为男？)
+    public Boolean complete(Passenger passenger){
+        if(passenger.getAgency()==null||passenger.getId()==null||passenger.getIdcard()==null||passenger.getName()==null||passenger.getPhone()==null){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }
