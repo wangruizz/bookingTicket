@@ -3,7 +3,6 @@ package ts.serviceImpl;
 import ts.daoImpl.*;
 import ts.model.Company;
 import ts.model.Flight;
-import ts.model.History;
 import ts.model.Message;
 import ts.serviceInterface.ICompanyService;
 import ts.util.JwtUtils;
@@ -21,6 +20,38 @@ public class CompanyService implements ICompanyService {
     private FlightDAO flightDAO;
     private HistoryDao historyDao;
 
+    public AirCompanyDAO getAirCompanyDAO() {
+        return airCompanyDAO;
+    }
+
+    public void setAirCompanyDAO(AirCompanyDAO airCompanyDAO) {
+        this.airCompanyDAO = airCompanyDAO;
+    }
+
+    public BookDAO getBookDAO() {
+        return bookDAO;
+    }
+
+    public void setBookDAO(BookDAO bookDAO) {
+        this.bookDAO = bookDAO;
+    }
+
+    public FlightDAO getFlightDAO() {
+        return flightDAO;
+    }
+
+    public void setFlightDAO(FlightDAO flightDAO) {
+        this.flightDAO = flightDAO;
+    }
+
+    public HistoryDao getHistoryDao() {
+        return historyDao;
+    }
+
+    public void setHistoryDao(HistoryDao historyDao) {
+        this.historyDao = historyDao;
+    }
+
     public AirportDAO getAirportDAO() {
         return airportDAO;
     }
@@ -29,18 +60,17 @@ public class CompanyService implements ICompanyService {
         this.airportDAO = airportDAO;
     }
 
-    @Override
-    public Response getAirport(int id) {
-        //   Airport airport = airportDAO.getByID(id).get(0);
-        return Response.ok().header("EntityClass", "ExpressSheet").build();
-    }
 
     @Override
     public Response doLogin(String username, String pwd){
         Company company = airCompanyDAO.login(username, pwd);
-        if (company != null) {
-            company.setToken(JwtUtils.createJWT(company.getName(), company.getUsername(), ""));
-            return Response.ok(company).header("EntityClass", "CompanyInfo").build();
+        try {
+            if (company != null) {
+                company.setToken(JwtUtils.createJWT(company.getName(), company.getUsername(), ""));
+                return Response.ok(company).header("EntityClass", "CompanyInfo").build();
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
         return Response.ok(new Message(Message.CODE.LOGIN_FAILED)).header("EntityClass", "Message").build();
     }
@@ -49,7 +79,12 @@ public class CompanyService implements ICompanyService {
     public Company register(Company company) {
         try {
             if (!airCompanyDAO.checkHasExist(company.getUsername())) {
-                airCompanyDAO.register(company);
+                Company company1 = new Company();
+                company1.setUsername(company.getUsername());
+                company1.setPwd(company.getPwd());
+                company1.setPhone(company.getPhone());
+                company1.setName(company.getName());
+                airCompanyDAO.register(company1);
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -59,7 +94,7 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Response checkUName(String companyUName) {
-        return airCompanyDAO.checkHasExist(companyUName) ? Response.ok().build() : Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass", "Message").build();
+        return !airCompanyDAO.checkHasExist(companyUName) ? Response.ok().build() : Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass", "Message").build();
     }
 
     @Override
@@ -82,22 +117,34 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Response flightCancel(String flightID) {
-        return flightDAO.cancelFlight(flightID) ? Response.ok().build() : Response.serverError().build();
+        if (flightDAO.get(flightID) == null){
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        return flightDAO.cancelFlight(flightID) ? Response.ok().build() : Response.ok(new Message(Message.CODE.FLIGHT_HAS_CANCELLED)).header("EntityClass","Message").build();
     }
 
     @Override
     public Response flightResume(String flightID) {
-        return flightDAO.resumeFlight(flightID) ? Response.ok().build() : Response.serverError().build();
+        if (flightDAO.get(flightID) == null){
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        return flightDAO.resumeFlight(flightID) ? Response.ok().build() : Response.ok(new Message(Message.CODE.FLIGHT_IS_NORMOL)).header("EntityClass","Message").build();
     }
 
 
     @Override
     public Response cancelCompany(String companyUName) {
+        if (airCompanyDAO.get(companyUName) == null){
+            return Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass","Message").build();
+        }
         return flightDAO.cancelCompany(companyUName) ? Response.ok().build() : Response.serverError().build();
     }
 
     @Override
     public Response resumeCompany(String companyUName) {
+        if (airCompanyDAO.get(companyUName) == null){
+            return Response.ok(new Message(Message.CODE.COMPANY_NOT_EXIST)).header("EntityClass","Message").build();
+        }
         return flightDAO.resumeCompany(companyUName) ? Response.ok().build() : Response.serverError().build();
     }
 

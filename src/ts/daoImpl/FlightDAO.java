@@ -60,12 +60,12 @@ public class FlightDAO extends BaseDao<Flight, String> {
      */
     public boolean resumeFlight(String flightID) {
         Flight flight = get(flightID);
-        if (flight == null) {
-            return false;
-        } else {
+        if (flight.getStatus() != Flight.STATUS.FLIGHT_NORMAL) {
             flight.setStatus(Flight.STATUS.FLIGHT_NORMAL);
             update(flight);
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -76,12 +76,12 @@ public class FlightDAO extends BaseDao<Flight, String> {
      */
     public boolean cancelFlight(String flightID) {
         Flight flight = get(flightID);
-        if (flight == null) {
-            return false;
-        } else {
+        if (flight.getStatus() != Flight.STATUS.FLIGHT_CANCEL) {//只有没被取消的航班才行
             flight.setStatus(Flight.STATUS.FLIGHT_CANCEL);
             update(flight);
             return true;
+        } else {
+            return false;
         }
     }
 
@@ -115,14 +115,14 @@ public class FlightDAO extends BaseDao<Flight, String> {
      * @param companyUName
      * @return
      */
-    public boolean changeCompany(String companyUName,int toStatus) {
+    public boolean changeCompany(String companyUName, int toStatus) {
         Company company = companyDAO.get(companyUName);
         List<Flight> flights = query(companyUName);
         if (flights != null && flights.size() > 0) {
             for (Flight i : flights) {
-                if (toStatus == Flight.STATUS.FLIGHT_CANCEL){
+                if (toStatus == Flight.STATUS.FLIGHT_CANCEL) {
                     i.setStatus(Flight.STATUS.FLIGHT_CANCEL);
-                }else if (toStatus == Flight.STATUS.FLIGHT_NORMAL){
+                } else if (toStatus == Flight.STATUS.FLIGHT_NORMAL) {
                     i.setStatus(Flight.STATUS.FLIGHT_NORMAL);
                 }
                 update(i);
@@ -178,10 +178,11 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 修改航班信息（后添加的方法，未经测试）
+     *
      * @param flight
      * @return
      */
-    public Flight modify(Flight flight){
+    public Flight modify(Flight flight) {
         save(flight);
         return flight;
     }

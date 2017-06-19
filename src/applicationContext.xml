@@ -103,7 +103,11 @@
     <jaxrs:server id="Service1" address="/REST">
         <jaxrs:serviceBeans>
             <bean class="ts.serviceImpl.CompanyService">
-                <property name="airportDAO" ref="airportDAO"></property>
+                <property name="airportDAO" ref="airportDAO"/>
+                <property name="airCompanyDAO" ref="airCompanyDAO"/>
+                <property name="bookDAO" ref="bookDAO"/>
+                <property name="flightDAO" ref="flightDAO"/>
+                <property name="historyDao" ref="historyDao"/>
             </bean>
             <bean class="ts.serviceImpl.AgencyService">
                 <property name="passengerDAO" ref="passengerDAO"></property>

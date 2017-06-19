@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * 返回信息的类
  */
-@XmlRootElement(name="Message")
+@XmlRootElement(name = "Message")
 public class Message {
     private static Map<Integer, String> map = new HashMap<>();
     private int code;
@@ -77,7 +77,7 @@ public class Message {
         return result;
     }
 
-    public static final class CODE{
+    public static final class CODE {
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
         public static final int SUCCESS = 1;
@@ -89,16 +89,21 @@ public class Message {
         //登录失败
         public static final int LOGIN_FAILED = 2000;
 
+        //与航班有关的信息3000
+        public static final int FLIGHT_NOT_EXIST = 3000;
+        public static final int FLIGHT_HAS_CANCELLED = 3001;
+        public static final int FLIGHT_IS_NORMOL = 3002;
+
+
         //与Company有关的信息 5000 - 5999
-        public static  final int COMPANY_HAS_EXIST = 5000;
-
-
-
+        public static final int COMPANY_HAS_EXIST = 5000;
+        public static final int COMPANY_NOT_EXIST = 5001;
     }
 
     static {
-        map.put(CODE.COMPANY_HAS_EXIST,"该公司用户名已经存在");
-        map.put(CODE.LOGIN_FAILED,"登录失败");
+        map.put(CODE.COMPANY_HAS_EXIST, "该公司用户名已经存在");
+        map.put(CODE.COMPANY_NOT_EXIST, "该公司用户名不存在");
+        map.put(CODE.LOGIN_FAILED, "登录失败");
         map.put(CODE.SUCCESS, "操作成功");
         map.put(CODE.UNKNOWN_ERROR, "未知错误");
         map.put(CODE.URL_NOT_FOUND, "URL错误");
@@ -108,5 +113,9 @@ public class Message {
 
         map.put(CODE.LOGIN_FAILED, "登录失败");
         map.put(CODE.LOGIN_FAILED, "登录失败");
+        map.put(CODE.FLIGHT_NOT_EXIST, "该航班号不存在");
+        map.put(CODE.FLIGHT_HAS_CANCELLED, "该航班已被取消");
+        map.put(CODE.FLIGHT_IS_NORMOL, "航班为正常状态");
+
     }
 }

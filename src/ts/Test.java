@@ -66,12 +66,7 @@ public class Test {
 //        System.out.println(airCompanyDAO.checkHasExist("d"));
 //
 //        System.out.println("*************register success****************");
-//        Company company = new Company();
-//        company.setName("公司3");
-//        company.setPhone("15632825785");
-//        company.setPwd("123");
-//        company.setUsername("ww");
-//        System.out.println(airCompanyDAO.register(company).toString());
+//
 //        System.out.println("************airCompanyDAO*************");
 //        System.out.println("************airCompanyDAO getall*************");
 //        System.out.println(flightDAO.getAll().toString());
