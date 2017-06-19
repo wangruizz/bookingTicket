@@ -74,7 +74,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
      *
      * @return
      */
-    public boolean cancel(String flightID) {
+    public boolean cancelFlight(String flightID) {
         Flight flight = get(flightID);
         if (flight == null) {
             return false;
@@ -110,13 +110,36 @@ public class FlightDAO extends BaseDao<Flight, String> {
     }
 
     /**
+     * 取消或恢复一个航空公司的全部航班（未经测试）
+     *
+     * @param companyUName
+     * @return
+     */
+    public boolean changeCompany(String companyUName,int toStatus) {
+        Company company = companyDAO.get(companyUName);
+        List<Flight> flights = query(companyUName);
+        if (flights != null && flights.size() > 0) {
+            for (Flight i : flights) {
+                if (toStatus == Flight.STATUS.FLIGHT_CANCEL){
+                    i.setStatus(Flight.STATUS.FLIGHT_CANCEL);
+                }else if (toStatus == Flight.STATUS.FLIGHT_NORMAL){
+                    i.setStatus(Flight.STATUS.FLIGHT_NORMAL);
+                }
+                update(i);
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * 取消一个航空公司的全部航班
      *
      * @param companyUName
      * @return
      */
     public boolean cancelCompany(String companyUName) {
-        Company company = companyDAO.get(companyUName);
         List<Flight> flights = query(companyUName);
         if (flights != null && flights.size() > 0) {
             for (Flight i : flights) {
@@ -130,7 +153,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
     }
 
     /**
-     * 取消一个航空公司的全部航班
+     * 恢复一个航空公司的全部航班
      *
      * @param companyUName
      * @return
@@ -149,7 +172,17 @@ public class FlightDAO extends BaseDao<Flight, String> {
         }
     }
 
-    public boolean CheckHasExist(String flightID) {
+    public boolean checkHasExist(String flightID) {
         return get(flightID) != null;
+    }
+
+    /**
+     * 修改航班信息（后添加的方法，未经测试）
+     * @param flight
+     * @return
+     */
+    public Flight modify(Flight flight){
+        save(flight);
+        return flight;
     }
 }

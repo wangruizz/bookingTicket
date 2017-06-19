@@ -81,13 +81,20 @@ public class Message {
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
         public static final int SUCCESS = 1;
+        public static final  int PARAM_UNCOMPLTED = -3;//参数不完整
 
         //与token有关的信息 1000 - 1999
         public static final int NO_TOKEN = 1000;
         public static final int TOKEN_ERROR = 1001;
 
+        //登录失败
+        public static final int LOGIN_FAILED = 2000;
+
         //与Company有关的信息 5000 - 5999
         public static  final int COMPANT_HAS_EXIST = 5000;
+
+
+
     }
 
     static {

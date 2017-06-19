@@ -16,6 +16,18 @@ public class Company implements Serializable{
     private String username;
     private String pwd;
     private String phone;
+
+    @Transient
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     private static final long serialVersionUID = -3267943602377867497L;
     @Basic
     @Column(name = "name", nullable = false, length = 254)
