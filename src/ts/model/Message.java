@@ -81,7 +81,6 @@ public class Message {
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
         public static final int SUCCESS = 1;
-        public static final  int PARAM_UNCOMPLTED = -3;//参数不完整
 
         //与token有关的信息 1000 - 1999
         public static final int NO_TOKEN = 1000;
@@ -91,14 +90,23 @@ public class Message {
         public static final int LOGIN_FAILED = 2000;
 
         //与Company有关的信息 5000 - 5999
-        public static  final int COMPANT_HAS_EXIST = 5000;
+        public static  final int COMPANY_HAS_EXIST = 5000;
 
 
 
     }
 
     static {
-        map.put(CODE.COMPANT_HAS_EXIST,"该用户名已经存在");
+        map.put(CODE.COMPANY_HAS_EXIST,"该公司用户名已经存在");
+        map.put(CODE.LOGIN_FAILED,"登录失败");
+        map.put(CODE.SUCCESS, "操作成功");
+        map.put(CODE.UNKNOWN_ERROR, "未知错误");
+        map.put(CODE.URL_NOT_FOUND, "URL错误");
 
+        map.put(CODE.NO_TOKEN, "没有Token");
+        map.put(CODE.TOKEN_ERROR, "Token错误");
+
+        map.put(CODE.LOGIN_FAILED, "登录失败");
+        map.put(CODE.LOGIN_FAILED, "登录失败");
     }
 }

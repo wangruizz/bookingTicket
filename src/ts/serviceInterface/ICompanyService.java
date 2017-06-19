@@ -80,11 +80,6 @@ public interface ICompanyService {
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/queryFlight/{companyUName}")
     List<Flight> queryFlight(@PathParam("companyUName") String companyUName);
-    //======================================检查航班ID========================================
-    @GET
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/checkFlightID/{flightID}")
-    boolean checkFlightID(@PathParam("flightID") String flightID);
 
 
 }

@@ -32,10 +32,10 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
         return users != null && users.size() > 0 ? users.get(0) : null;
     }
 
-//    public Company modify(Company company){
-//        update(company);
-//        return company;
-//    }
+    public Company modify(Company company){
+        update(company);
+        return company;
+    }
 
     /**
      * 检查该userName的公司是否存在

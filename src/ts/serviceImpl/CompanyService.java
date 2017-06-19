@@ -36,11 +36,11 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Response doLogin(String username, String pwd) {
+    public Response doLogin(String username, String pwd){
         Company company = airCompanyDAO.login(username, pwd);
         if (company != null) {
             company.setToken(JwtUtils.createJWT(company.getName(), company.getUsername(), ""));
-            return Response.ok(company).header("EntityClass", "UserInfo").build();
+            return Response.ok(company).header("EntityClass", "CompanyInfo").build();
         }
         return Response.ok(new Message(Message.CODE.LOGIN_FAILED)).header("EntityClass", "Message").build();
     }
@@ -59,12 +59,12 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Response checkUName(String companyUName) {
-        return airCompanyDAO.checkHasExist(companyUName) ? Response.ok().build() : Response.serverError().build();
+        return airCompanyDAO.checkHasExist(companyUName) ? Response.ok().build() : Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass", "Message").build();
     }
 
     @Override
     public Company modifyCompany(Company company) {
-        airCompanyDAO.save(company);
+        airCompanyDAO.modify(company);
         return company;
     }
 
@@ -103,19 +103,18 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Response addFlight(String companyUName, Flight flight) {
-        if (companyUName == null || flight == null) {
-            return Response.ok(new Message(Message.CODE.PARAM_UNCOMPLTED)).header("ParamUncompleted", "ErrorInfo").build();
-        } else {
-            try {
-                flightDAO.add(companyUName, flight);
-                return Response.ok(flight).header("ParamUncompleted", "ErrorInfo").build();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return Response.serverError().build();
-            }
-        }
 
+        try {
+            Company company = airCompanyDAO.get(companyUName);
+            flight.setCompany(company);
+            flightDAO.add(companyUName, flight);
+            return Response.ok(flight).header("EntityClass", "EntityClass").build();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Response.serverError().build();
+        }
     }
+
 
     @Override
     public Flight modifyFlight(Flight flight) {
@@ -124,13 +123,8 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public List<Flight> queryFlight(String companyUName) {
-        List<Flight> flights =  flightDAO.query(companyUName);
+        List<Flight> flights = flightDAO.query(companyUName);
         return flights;
-    }
-
-    @Override
-    public boolean checkFlightID(String flightID) {
-        return flightDAO.checkHasExist(flightID);
     }
 
 
