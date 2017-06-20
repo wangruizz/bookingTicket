@@ -44,4 +44,17 @@ public class AgencyDAO extends BaseDao<Agency,Integer>{
         }
 
     }
+
+    /**
+     * 注册时验证手机号是否存在
+     * @param phone
+     * @return
+     */
+    public Boolean checkPhone(String phone){
+        if(findBy("phone",phone,"id",true)!=null){
+            return false;
+        }else{
+            return true;
+        }
+    }
 }

@@ -165,7 +165,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public Agency AgencyRegister(Agency agency) throws RegisterException, PhoneWrongException {
         String phone = agency.getPhone();
-        if(agencyDAO.findBy("phone",phone,"id",true)!=null){
+        if(!agencyDAO.checkPhone(phone)){
             throw new RegisterException();//因为手机号已经注册过，所以显示注册失败
         }else{
             if(!passengerDAO.match(phone)){
@@ -300,6 +300,20 @@ public class AgencyService implements IAgencyService {
             return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
         }else{
             return Response.ok(list).header("EntityClass","Book").build();
+        }
+    }
+
+    /**
+     * 检验手机号注册时是否存在
+     * @param phone
+     * @return
+     */
+    @Override
+    public Response checkPhone(String phone) {
+        if(!agencyDAO.checkPhone(phone)){
+           return Response.ok(new Message(Message.CODE.AGENCY_REGISTER_FAILED)).header("EntityClass","Message").build();//因为手机号已经注册过，所以显示注册失败
+        }else{
+            return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
         }
     }
 

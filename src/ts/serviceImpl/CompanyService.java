@@ -200,5 +200,14 @@ public class CompanyService implements ICompanyService {
         return flights;
     }
 
+    @Override
+    public Response checkUserName(String name) {
+        if(airCompanyDAO.checkHasExist(name)){
+            return Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass","Message").build();
+        }else{
+            return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
+        }
+    }
+
 
 }

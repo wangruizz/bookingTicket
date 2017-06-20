@@ -96,4 +96,9 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByHID/{id}")
     Response queryBookByFID(@PathParam("id") int historyID);
+    //验证电话号码是否存在
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/checkPhone/{phone}")
+    Response checkPhone(@PathParam("phone") String phone);
 }

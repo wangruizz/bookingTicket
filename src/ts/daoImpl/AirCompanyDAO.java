@@ -42,7 +42,10 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
      * @return
      */
     public boolean checkHasExist(String companyUserName){
-        Company company1 = get(companyUserName);
-        return company1 != null;
+        if(findBy("username",companyUserName,"username",true)!=null){
+            return true;
+        }else{
+            return false;
+        }
     }
 }
