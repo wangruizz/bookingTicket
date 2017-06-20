@@ -175,4 +175,24 @@ public class CompanyService implements ICompanyService {
     }
 
 
+    public Flight FlightConst(Flight flight) {
+//        Flight flight1 = new Flight();
+//        try {
+//            flight1.setCompany(flight.getCompany());
+//        }
+//
+//        flight1.setId(flight.getId());
+//        flight1.setEconomyNum(flight.getEconomyNum());
+//        flight1.setBusinessNum(flight.getBusinessNum());
+//        flight1.setStatus(flight.getStatus());
+//        flight1.setBusinessPrice(flight.getBusinessPrice());
+//        flight1.setEconomyPrice(flight.getEconomyPrice());
+//        flight1.setArriveTime(flight.getArriveTime());
+//        flight1.setArriveAirport(flight.getArriveAirport());
+//        flight1.setStartAirport(flight.getStartAirport());
+//        flight1.setStartTime(flight.getStartTime());
+//        return flight1;
+        return null;
+    }
+
 }
