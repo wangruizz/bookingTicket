@@ -23,8 +23,8 @@ public interface IAgencyService {
     //修改乘客信息
     @POST
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/motifyPassenger")
-    Response motifyPassenger(Passenger passenger);
+    @Path("/modifyPassenger")
+    Response modifyPassenger(Passenger passenger);
     //增加乘客信息
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
@@ -38,7 +38,7 @@ public interface IAgencyService {
     //旅行社登录
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/AgencyLogin/{phone}/{pwd}")
+    @Path("/doLogin/{phone}/{pwd}")
     Response AgencyLogin(@PathParam("phone") String phone,@PathParam("pwd") String pwd);
     //旅行社注册
     @POST
@@ -48,8 +48,8 @@ public interface IAgencyService {
     //旅行社信息修改
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/motifyAgency")
-    Response motifyAgency(Agency agency);
+    @Path("/modifyAgency")
+    Response modifyAgency(Agency agency);
     //预订车票
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})

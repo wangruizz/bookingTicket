@@ -1,6 +1,6 @@
 package ts.serviceException;
 
-import java.util.Locale;
+import ts.model.Message;
 
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.core.Response;
@@ -21,6 +21,10 @@ public class InvokeFaultExceptionMapper implements ExceptionMapper {
         System.err.println("\n\n-----------Error Message Start---------------\n\n");
         ex.printStackTrace();
         System.err.println("\n\n-----------Error Message End---------------\n\n");
+
+        if (ex instanceof ClientErrorException){
+            rb.entity(new Message(Message.CODE.URL_NOT_FOUND));
+        }
         return rb.build();
     }
 }  

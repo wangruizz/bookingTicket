@@ -86,7 +86,7 @@ public class AgencyService implements IAgencyService {
     * 1、信息不完整
     * */
     @Override
-    public Response motifyPassenger(Passenger passenger) {
+    public Response modifyPassenger(Passenger passenger) {
         if(passengerDAO.complete(passenger)==false){
             return Response.ok(new Message(Message.CODE.PASSENGER_INCOMPLICT)).header("EntityClass","Message").build();
         }else{
@@ -149,7 +149,7 @@ public class AgencyService implements IAgencyService {
     * 修改失败情况是电话号码为空或者是姓名为空
     * */
     @Override
-    public Response motifyAgency(Agency agency) {
+    public Response modifyAgency(Agency agency) {
         if(agencyDAO.complete(agency)==false){
             return Response.ok(new Message(Message.CODE.AGENCY_MOTIFY_FAILED)).header("EntityClass","Message").build();
         }else{
