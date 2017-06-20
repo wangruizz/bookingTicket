@@ -12,6 +12,7 @@ import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AgencyService implements IAgencyService {
@@ -159,26 +160,30 @@ public class AgencyService implements IAgencyService {
     //预订车票
     @Override
     public Response BookingTicket(Book book) {
-       synchronized (bookDAO){
-           History history = book.getHistory();
-           if(book.getSeatType()==Book.SEAT_TYPE.BUSINESS_SEAT&&history.getBusinessNum()>0){
-               history.setBusinessNum(history.getBusinessNum()-1);
-               book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
-               historyDao.save(history);
-               bookDAO.save(book);
-               return Response.ok(history).header("EntityClass","History").build();
-           }else{
-               if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
-                   history.setBusinessNum(history.getEconomyNum()-1);
-                   book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
-                   historyDao.save(history);
-                   bookDAO.save(book);
-                   return Response.ok(history).header("EntityClass","History").build();
-               }else{
-                   return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
-               }
-           }
-       }
+        if(bookDAO.complete(book)==false){
+            return Response.ok(new Message(Message.CODE.BOOK_NOT_ALL)).header("EntityClass","Message").build();
+        }else{
+            synchronized (bookDAO){
+                History history = book.getHistory();
+                if(book.getSeatType()==Book.SEAT_TYPE.BUSINESS_SEAT&&history.getBusinessNum()>0){
+                    history.setBusinessNum(history.getBusinessNum()-1);
+                    book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
+                    historyDao.save(history);
+                    bookDAO.save(book);
+                    return Response.ok(history).header("EntityClass","History").build();
+                }else{
+                    if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
+                        history.setBusinessNum(history.getEconomyNum()-1);
+                        book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
+                        historyDao.save(history);
+                        bookDAO.save(book);
+                        return Response.ok(history).header("EntityClass","History").build();
+                    }else{
+                        return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
+                    }
+                }
+            }
+        }
     }
     //取消订单
     @Override
@@ -208,6 +213,47 @@ public class AgencyService implements IAgencyService {
             return Response.ok(new Message(Message.CODE.BOOK_PRINT_FAILED)).header("EntityClass","Message").build();
         }else{
             return Response.ok(book).header("EntityClass","Book").build();
+        }
+    }
+
+    @Override
+    public Response queryBookByPhone(String phone) {
+        if(bookDAO.query(phone)==null){
+            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            List<Book> list = bookDAO.query(phone);
+            return Response.ok(list).header("EntityClass","Book").build();
+        }
+
+    }
+
+    @Override
+    public Response queryBookByAID(int agencyID, int... status) {
+        if(bookDAO.query(agencyID,status)==null){
+            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            List<Book> list = bookDAO.query(agencyID,status);
+            return Response.ok(list).header("EntityClass","Book").build();
+        }
+    }
+
+    @Override
+    public Response queryBookByFID(String flightID, Date... dates) {
+        if(bookDAO.query(flightID,dates)==null){
+            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            List<Book> list = bookDAO.query(flightID,dates);
+            return Response.ok(list).header("EntityClass","Book").build();
+        }
+    }
+
+    @Override
+    public Response queryBookByFID(int historyID) {
+        if(bookDAO.query(historyID)==null){
+            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            List<Book> list = bookDAO.query(historyID);
+            return Response.ok(list).header("EntityClass","Book").build();
         }
     }
 

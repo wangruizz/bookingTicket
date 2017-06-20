@@ -102,6 +102,8 @@ public class Message {
         public static final int BOOK_CANCEL_FAILED = 8001;//取消订单失败
         public static final int BOOK_PAY_FAILED = 8002;//付款失败
         public static final int BOOK_PRINT_FAILED = 8003;//打印机票失败
+        public static final int BOOK_NOT_ALL = 8004;//订单信息不完整，预订失败
+        public static final int BOOK_QUERY_FAILED = 8005;//订单查询失败
     }
 
     static {
@@ -115,5 +117,7 @@ public class Message {
         map.put(CODE.BOOK_CANCEL_FAILED,"取消订单失败");
         map.put(CODE.BOOK_PAY_FAILED,"付款失败");
         map.put(CODE.BOOK_PRINT_FAILED,"打印机票失败");
+        map.put(CODE.BOOK_NOT_ALL,"订单信息不完整，预订失败");
+        map.put(CODE.BOOK_QUERY_FAILED,"订单查询失败");
     }
 }

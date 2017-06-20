@@ -9,6 +9,7 @@ import ts.serviceException.RegisterException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 
@@ -69,5 +70,24 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/printTicket")
     Response printTicket(int id,String IDCard);
-
+    //通过电话号码查询订单
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("queryBookByPhone")
+    Response queryBookByPhone(String phone);
+    //通过旅行社ID，订单状态查询
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("queryBookByAID")
+    Response queryBookByAID(int agencyID,int ... status);
+    //通过航班ID和起止日期查询
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("queryBookByFID")
+    Response queryBookByFID(String flightID,Date... dates);
+    //通过历史表ID查询
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("queryBookByHID")
+    Response queryBookByFID(int historyID);
 }

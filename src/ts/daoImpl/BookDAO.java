@@ -159,7 +159,15 @@ public class BookDAO extends BaseDao<Book,Integer> {
         update(book);
         return book;
     }
-
+    //预订车票是否完整
+    public Boolean complete(Book book){
+        if(book.getHistory()==null||book.getSeatNum()==null||book.getSeatType()==null||book.getId()==null
+                ||book.getOrderTime()==null||book.getPassenger()==null||book.getStatus()==null){
+            return false;
+        }else{
+            return true;
+        }
+    }
 //    save
 //    //创建订单
 //    public Book create(int passengerID, int seatType, int flightID, Date date) {
