@@ -114,6 +114,7 @@
                 <property name="passengerDAO" ref="passengerDAO"/>
                 <property name="bookDAO" ref="bookDAO"/>
                 <property name="agencyDAO" ref="agencyDAO"/>
+                <property name="historyDao" ref="historyDao"/>
             </bean>
         </jaxrs:serviceBeans>
 
@@ -125,9 +126,6 @@
         <jaxrs:providers>
             <ref bean="jsonProvider" />
             <bean class="ts.serviceException.InvokeFaultExceptionMapper" />
-            <bean class="ts.serviceException.PassengerNotExistException"/>
-            <bean class="ts.serviceException.RegisterException"/>
-            <bean class="ts.serviceException.ServiceException"/>
         </jaxrs:providers>
         <jaxrs:languageMappings>
             <entry key="en" value="en-gb" />
