@@ -34,19 +34,19 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
 
     //通过旅行社ID查询
     public List<Passenger> queryByID(int agencyID) {
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agencyID", agencyID));
+        List<Passenger> passengers = findBy("id", true, Restrictions.eq("id", agencyID));
         return passengers;
     }
 
     //通过旅客姓名查询
     public List<Passenger> queryByName(String name, int agencyID) {
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agencyID", agencyID), Restrictions.like("name", name, MatchMode.ANYWHERE));
+        List<Passenger> passengers = findBy("id", true, Restrictions.eq("id", agencyID), Restrictions.like("name", name, MatchMode.ANYWHERE));
         return new ArrayList<>();
     }
 
     //通过旅客电话号和旅行社ID查询
     public List<Passenger> queryByPhone(String phone, int agencyID) {
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agencyID", agencyID), Restrictions.eq("phone", phone));
+        List<Passenger> passengers = findBy("id", true, Restrictions.eq("id", agencyID), Restrictions.eq("phone", phone));
         return passengers;
     }
 
@@ -58,7 +58,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
 
     //通过旅客身份证号查询
     public Passenger queryByIDCard(String idCard, int agencyID) {
-        List<Passenger> passengers = findBy("idcard", true, Restrictions.eq("agencyID", agencyID), Restrictions.eq("idcard", idCard));
+        List<Passenger> passengers = findBy("idcard", true, Restrictions.eq("id", agencyID), Restrictions.eq("idcard", idCard));
         return (passengers != null && passengers.size() > 0) ? passengers.get(0) : null;
     }
     //乘客信息是否完整(性别有默认？为男？)

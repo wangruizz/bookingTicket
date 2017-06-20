@@ -1,5 +1,6 @@
 package ts.serviceInterface;
 
+import org.springframework.web.bind.annotation.RequestParam;
 import ts.model.Agency;
 import ts.model.Book;
 import ts.model.Passenger;
@@ -31,10 +32,10 @@ public interface IAgencyService {
     @Path("/addPassenger")
     Response addPassenger(Passenger passenger);
     //删除乘客信息
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    @Path("/deletePassenger")
-    Response deletePassenger(int id);
+    @Path("/deletePassenger/{id}")
+    Response deletePassenger(@PathParam("id") int id);
     //旅行社登录
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
@@ -56,38 +57,42 @@ public interface IAgencyService {
     @Path("/bookingTicket")
     Response BookingTicket(Book book);
     //取消预约
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/cancelBook")
-    Response cancelBook(int id);
+    @Path("/cancelBook/{id}")
+    Response cancelBook(@PathParam("id") int id);
     //付款
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/payTicket")
-    Response payTicket(int id);
+    Response payTicket(@RequestParam("id") int id);
+
     //打印机票
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/printTicket")
-    Response printTicket(int id,String IDCard);
+    @Path("/printTicket/{id}/{IDCard}")
+    Response printTicket(@PathParam("id") int id, @PathParam("IDCard") String IDCard);
+
     //通过电话号码查询订单
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("queryBookByPhone")
-    Response queryBookByPhone(String phone);
+    @Path("/queryBookByPhone/{phone}")
+    Response queryBookByPhone(@PathParam("phone") String phone);
+
     //通过旅行社ID，订单状态查询
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("queryBookByAID")
-    Response queryBookByAID(int agencyID,int ... status);
+    @Path("/queryBookByAID/{id}/{status}")
+    Response queryBookByAID(@PathParam("id") int agencyID, @PathParam("status") int status);
+
     //通过航班ID和起止日期查询
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("queryBookByFID")
-    Response queryBookByFID(String flightID,Date... dates);
+    @Path("/queryBookByFID/{id}/{start}/{end}")
+    Response queryBookByFID(@PathParam("id") String flightID, @PathParam("start") int start, @PathParam("end") int end);
     //通过历史表ID查询
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("queryBookByHID")
-    Response queryBookByFID(int historyID);
+    @Path("/queryBookByHID/{id}")
+    Response queryBookByFID(@PathParam("id") int historyID);
 }

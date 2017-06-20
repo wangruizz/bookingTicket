@@ -78,6 +78,7 @@ public class Message {
     }
 
     public static final class CODE{
+        public static final int BAD_REQUEST = -3;
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
         public static final int SUCCESS = 1;
@@ -138,5 +139,6 @@ public class Message {
         map.put(CODE.URL_NOT_FOUND, "URL错误");
         map.put(CODE.NO_TOKEN, "没有Token");
         map.put(CODE.TOKEN_ERROR, "Token错误");
+        map.put(CODE.BAD_REQUEST, "请求错误");
     }
 }

@@ -27,7 +27,7 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
         HttpServletRequest request = (HttpServletRequest) message.get("HTTP.REQUEST");
         HttpServletResponse response = (HttpServletResponse) message.get("HTTP.RESPONSE");
         String uri = (String) message.get(Message.REQUEST_URI);
-        if (!uri.matches("^/CXF/REST/((Agency)|(Company))/doLogin/\\S*$")) { //不是登录
+        if (!uri.matches("^/CXF/REST/((Agency)|(Company))/doLogin/\\S*$") && !uri.matches("^/CXF/REST/Agency/deletePassenger\\S*$")) { //不是登录
             String token = request.getHeader("token");
             try {
                 if (token == null || token.length()== 0) { //没有token

@@ -86,8 +86,6 @@ public class BaseDao<T,PK extends Serializable> extends HibernateDaoSupport impl
     @Override
     @SuppressWarnings("unchecked")
     public List<T> findBy(String orderBy, boolean isAsc, Criterion... criterions) {
-//        System.out.println("zhixing");
-//        System.out.println(criterions);
         DetachedCriteria criteria = DetachedCriteria.forClass(getEntityClass());
         for (Criterion c : criterions) {
             criteria.add(c);
