@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class Book implements Serializable{
     private Integer id;
     private Integer seatNum;
-    private Integer seatType;
+    private Integer seatType;//0:经济舱；1:商务舱
     private Timestamp orderTime;
     private Integer status;
     private Passenger passenger;

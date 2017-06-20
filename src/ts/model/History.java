@@ -1,23 +1,31 @@
 package ts.model;
 
+import org.hibernate.annotations.OptimisticLockType;
+import org.hibernate.annotations.OptimisticLocking;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
- * Created by wr on 2017/6/14.
+ * Created by wr on 2017/6/19.
  */
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 @XmlRootElement(name = "history")
 public class History implements Serializable{
     private Integer id;
+    private Timestamp version;
     private Date departureDate;
     private Time delayTime;
     private Integer status;
+    private Integer businessNum;//剩余经济舱座位个数
+    private Integer economyNum;//剩余商务舱座位个数
     private Flight flight;
     private static final long serialVersionUID = -3267943602377867497L;
     @Id
@@ -30,6 +38,15 @@ public class History implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Version
+    public Timestamp getVersion() {
+        return version;
+    }
+
+    private void setVersion(Timestamp version) {
+        this.version = version;
     }
 
     @Basic
@@ -61,6 +78,26 @@ public class History implements Serializable{
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @Basic
+    @Column(name = "businessNum", nullable = false)
+    public Integer getBusinessNum() {
+        return businessNum;
+    }
+
+    public void setBusinessNum(Integer businessNum) {
+        this.businessNum = businessNum;
+    }
+
+    @Basic
+    @Column(name = "economyNum", nullable = false)
+    public Integer getEconomyNum() {
+        return economyNum;
+    }
+
+    public void setEconomyNum(Integer economyNum) {
+        this.economyNum = economyNum;
+    }
     @OneToOne
     @JoinColumn(name = "flightID",referencedColumnName = "id")
     public Flight getFlight() {
@@ -82,6 +119,8 @@ public class History implements Serializable{
             return false;
         if (delayTime != null ? !delayTime.equals(that.delayTime) : that.delayTime != null) return false;
         if (status != null ? !status.equals(that.status) : that.status != null) return false;
+        if (businessNum != null ? !businessNum.equals(that.businessNum) : that.businessNum != null) return false;
+        if (economyNum != null ? !economyNum.equals(that.economyNum) : that.economyNum != null) return false;
 
         return true;
     }
@@ -92,19 +131,10 @@ public class History implements Serializable{
         result = 31 * result + (departureDate != null ? departureDate.hashCode() : 0);
         result = 31 * result + (delayTime != null ? delayTime.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
+        result = 31 * result + (businessNum != null ? businessNum.hashCode() : 0);
+        result = 31 * result + (economyNum != null ? economyNum.hashCode() : 0);
         return result;
     }
-
-    @Override
-    public String toString() {
-        return "History{" +
-                "id=" + id +
-                ", departureDate=" + departureDate +
-                ", delayTime=" + delayTime +
-                ", status=" + status +
-                '}';
-    }
-  
     public static final class STATUS{
         public static final int HISTORY_FLIGHT_NOMAL = 0; //正常状态
         public static final int HISTORY_FLIGHT_DELAY = 1; //航班延误
