@@ -17,9 +17,9 @@ public class Company implements Serializable{
     private String pwd;
     private String phone;
 
-    @Transient
     private String token;
 
+    @Transient
     public String getToken() {
         return token;
     }
