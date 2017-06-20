@@ -6,7 +6,6 @@ import ts.daoBase.BaseDao;
 import ts.model.Book;
 import ts.model.History;
 import ts.model.Passenger;
-import ts.util.ShortMessage;
 
 import java.util.ArrayList;
 import java.util.Calendar;

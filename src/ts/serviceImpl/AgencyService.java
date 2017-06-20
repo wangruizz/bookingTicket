@@ -2,10 +2,9 @@ package ts.serviceImpl;
 
 import ts.daoImpl.AgencyDAO;
 import ts.daoImpl.BookDAO;
+import ts.daoImpl.HistoryDao;
 import ts.daoImpl.PassengerDAO;
-import ts.model.Agency;
-import ts.model.Message;
-import ts.model.Passenger;
+import ts.model.*;
 import ts.serviceException.PassengerNotExistException;
 import ts.serviceException.RegisterException;
 import ts.serviceInterface.IAgencyService;
@@ -20,6 +19,7 @@ public class AgencyService implements IAgencyService {
     private PassengerDAO passengerDAO;
     private AgencyDAO agencyDAO;
     private BookDAO bookDAO;
+    private HistoryDao historyDao;
 
     public PassengerDAO getPassengerDAO() {
         return passengerDAO;
@@ -43,6 +43,14 @@ public class AgencyService implements IAgencyService {
 
     public void setBookDAO(BookDAO bookDAO) {
         this.bookDAO = bookDAO;
+    }
+
+    public HistoryDao getHistoryDao() {
+        return historyDao;
+    }
+
+    public void setHistoryDao(HistoryDao historyDao) {
+        this.historyDao = historyDao;
     }
 
     //查找乘客
@@ -147,6 +155,30 @@ public class AgencyService implements IAgencyService {
             agencyDAO.save(agency);
             return Response.ok(agency).header("EntityClass","Agency").build();
         }
+    }
+
+    @Override
+    public Response BookingTicket(Book book) {
+       synchronized (bookDAO){
+           History history = book.getHistory();
+           if(book.getSeatType()==Book.SEAT_TYPE.BUSINESS_SEAT&&history.getBusinessNum()>0){
+               history.setBusinessNum(history.getBusinessNum()-1);
+               book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);//预订成功
+               historyDao.save(history);
+               bookDAO.save(book);
+               return Response.ok(history).header("EntityClass","History").build();
+           }else{
+               if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
+                   history.setBusinessNum(history.getEconomyNum()-1);
+                   book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);//预订成功
+                   historyDao.save(history);
+                   bookDAO.save(book);
+                   return Response.ok(history).header("EntityClass","History").build();
+               }else{
+                   return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
+               }
+           }
+       }
     }
 
 

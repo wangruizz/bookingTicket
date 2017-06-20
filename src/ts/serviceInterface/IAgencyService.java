@@ -1,6 +1,7 @@
 package ts.serviceInterface;
 
 import ts.model.Agency;
+import ts.model.Book;
 import ts.model.Passenger;
 import ts.serviceException.PassengerNotExistException;
 import ts.serviceException.RegisterException;
@@ -48,4 +49,9 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/motifyAgency")
     Response motifyAgency(Agency agency);
+    //预订车票
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/bookingTicket")
+    Response BookingTicket(Book book);
 }

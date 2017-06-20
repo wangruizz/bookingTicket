@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ts.daoImpl.AirCompanyDAO;
 import ts.daoImpl.AirportDAO;
+import ts.daoImpl.HistoryDao;
 import ts.daoImpl.PassengerDAO;
 import ts.model.*;
 import ts.serviceException.PassengerNotExistException;
@@ -14,6 +15,7 @@ import ts.serviceException.RegisterException;
 
 import javax.annotation.Resource;
 import java.io.UnsupportedEncodingException;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -26,7 +28,8 @@ public class Test {
     AirportDAO airportDAO;
     @Resource
     PassengerDAO passengerDAO;
-
+    @Resource
+    HistoryDao historyDao;
     @Resource
     AirCompanyDAO airCompanyDAO;
 
@@ -42,6 +45,12 @@ public class Test {
      company.setUsername("哈哈哈");
      airCompanyDAO.save(company);
      System.out.println(new Message(Message.CODE.AGENCY_MOTIFY_FAILED));
-     throw new RegisterException();
+     History history = new History();
+     List<History> list1 = historyDao.findBy("id",1,"id",true);
+     history = list1.get(0);
+     history.setEconomyNum(1000);
+     history.setBusinessNum(1000);
+        System.out.println(history.getBusinessNum()+"   "+history.getEconomyNum());
+        historyDao.save(history);
     }
 }
