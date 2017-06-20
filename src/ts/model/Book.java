@@ -9,6 +9,7 @@ import java.sql.Timestamp;
  * Created by wr on 2017/6/14.
  */
 @Entity
+@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "book", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "book")
 public class Book implements Serializable{

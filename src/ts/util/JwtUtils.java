@@ -33,7 +33,7 @@ public class JwtUtils {
                 .parseClaimsJws(jsonWebToken).getBody();
     }
 
-    public static String createJWT(String name, String phone, String audience) {
+    public static String createJWT(String name, String userId, String audience) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         long newMillis = System.currentTimeMillis();
         Date now = new Date(newMillis);
@@ -42,7 +42,7 @@ public class JwtUtils {
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("name", name);
-        jsonObject.put("phone", phone);
+        jsonObject.put("userId", userId);
         //添加构成JWT的参数
         JwtBuilder builder = Jwts.builder().setHeaderParam("typ", "JWT").setHeaderParam("alg", "HS256") //header
                 .setIssuedAt(now)//创建时间
@@ -61,8 +61,9 @@ public class JwtUtils {
         return builder.compact();
     }
 
+
     public static void main(String[] args) {
-        String s= createJWT("王芮", "1234", "1");
+        String s= createJWT("name", "userid", "Hello World");
         System.out.println(s);
         System.out.println(parseJWT(s));
     }

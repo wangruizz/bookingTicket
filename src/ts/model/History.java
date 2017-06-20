@@ -14,6 +14,7 @@ import java.sql.Timestamp;
  * Created by wr on 2017/6/19.
  */
 @Entity
+@org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
 @OptimisticLocking(type = OptimisticLockType.VERSION)
 @XmlRootElement(name = "history")

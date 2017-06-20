@@ -16,19 +16,17 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
     }
 
 
-    public Company register(Company company){
-        Company companyExist = checkHasExist(company.getUsername());
-        if (companyExist == null){
-            save(company);
-            return  company;
-        }else {
-            return companyExist;
-        }
-    }
+//    public Company register(Company company){
+//        if (!checkHasExist(company.getUsername())){
+//            save(company);
+//            return  company;
+//        }else {
+//            return get(company.getUsername());
+//        }
+//    }
 
     public Company login(String userName,String pwd){
         List<Company> users = findBy("username", true, Restrictions.eq("username", userName),Restrictions.eq("pwd", pwd));
-       // List<Company> users = findBy("username", true, Restrictions.eq("username", userName));
         System.out.println("users"+users);
         return users != null && users.size() > 0 ? users.get(0) : null;
     }
@@ -43,12 +41,8 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
      * @param companyUserName
      * @return
      */
-    public Company checkHasExist(String companyUserName){
+    public boolean checkHasExist(String companyUserName){
         Company company1 = get(companyUserName);
-        if (company1 != null){//已经存在
-            return company1;
-        }else{
-            return null;
-        }
+        return company1 != null;
     }
 }

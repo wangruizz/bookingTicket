@@ -79,6 +79,7 @@
     <bean id="historyDao" class="ts.daoImpl.HistoryDao">
         <property name="sessionFactory" ref="sessionFactory"></property>
         <property name="bookDAO" ref="bookDAO"/>
+        <property name="flightDAO" ref="flightDAO"/>
     </bean>
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
@@ -95,12 +96,18 @@
 
     <bean id="flightDAO" class="ts.daoImpl.FlightDAO">
         <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="companyDAO" ref="airCompanyDAO"></property>
+
     </bean>
     <!-- REST服务的注解例子 -->
     <jaxrs:server id="Service1" address="/REST">
         <jaxrs:serviceBeans>
             <bean class="ts.serviceImpl.CompanyService">
-                <property name="airportDAO" ref="airportDAO"></property>
+                <property name="airportDAO" ref="airportDAO"/>
+                <property name="airCompanyDAO" ref="airCompanyDAO"/>
+                <property name="bookDAO" ref="bookDAO"/>
+                <property name="flightDAO" ref="flightDAO"/>
+                <property name="historyDao" ref="historyDao"/>
             </bean>
             <bean class="ts.serviceImpl.AgencyService">
                 <property name="passengerDAO" ref="passengerDAO"></property>
