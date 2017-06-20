@@ -104,6 +104,8 @@
             </bean>
             <bean class="ts.serviceImpl.AgencyService">
                 <property name="passengerDAO" ref="passengerDAO"></property>
+                <property name="bookDAO" ref="bookDAO"></property>
+                <property name="agencyDAO" ref="agencyDAO"></property>
             </bean>
         </jaxrs:serviceBeans>
 
