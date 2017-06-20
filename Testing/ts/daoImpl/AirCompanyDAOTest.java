@@ -39,16 +39,16 @@ public class AirCompanyDAOTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void register() throws Exception {
-        Company company = new Company();
-        company.setName("公司5");
-        company.setPhone("15632825785");
-        company.setPwd("20");
-        company.setUsername("120");
-        System.out.println(company.toString());
-        System.out.println(airCompanyDAO.register(company).toString());
-    }
+//    @Test
+//    public void register() throws Exception {
+//        Company company = new Company();
+//        company.setName("公司5");
+//        company.setPhone("15632825785");
+//        company.setPwd("20");
+//        company.setUsername("120");
+//        System.out.println(company.toString());
+//        System.out.println(airCompanyDAO.register(company).toString());
+//    }
 
     @Test
     public void login() throws Exception {

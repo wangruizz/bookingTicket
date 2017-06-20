@@ -38,13 +38,13 @@ public class FlightDAO extends BaseDao<Flight, String> {
         if (currentDate.equals(departureDate)) {//出发日期是今天
             long timestamp = System.currentTimeMillis();
             timestamp += 30 * 60 * 1000;//当前时间加上半小时
-            flights = findBy("id", true,
+            flights = findBy("startTime", true,
                     Restrictions.eq("startAirport", startPortID),
                     Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL),
                     Restrictions.eq("arriveAirport", arrivePortID),
                     Restrictions.ge("startTime", timestamp));
         } else {
-            flights = findBy("id", true,
+            flights = findBy("startTime", true,
                     Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL),
                     Restrictions.eq("startAirport", startPortID),
                     Restrictions.eq("arriveAirport", arrivePortID));
@@ -176,14 +176,4 @@ public class FlightDAO extends BaseDao<Flight, String> {
         return get(flightID) != null;
     }
 
-    /**
-     * 修改航班信息（后添加的方法，未经测试）
-     *
-     * @param flight
-     * @return
-     */
-    public Flight modify(Flight flight) {
-        save(flight);
-        return flight;
-    }
 }

@@ -16,26 +16,25 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
     }
 
 
-    public Company register(Company company){
-        if (!checkHasExist(company.getUsername())){
-            save(company);
-            return  company;
-        }else {
-            return get(company.getUsername());
-        }
-    }
+//    public Company register(Company company){
+//        if (!checkHasExist(company.getUsername())){
+//            save(company);
+//            return  company;
+//        }else {
+//            return get(company.getUsername());
+//        }
+//    }
 
     public Company login(String userName,String pwd){
         List<Company> users = findBy("username", true, Restrictions.eq("username", userName),Restrictions.eq("pwd", pwd));
-       // List<Company> users = findBy("username", true, Restrictions.eq("username", userName));
         System.out.println("users"+users);
         return users != null && users.size() > 0 ? users.get(0) : null;
     }
 
-    public Company modify(Company company){
-        update(company);
-        return company;
-    }
+//    public Company modify(Company company){
+//        update(company);
+//        return company;
+//    }
 
     /**
      * 检查该userName的公司是否存在

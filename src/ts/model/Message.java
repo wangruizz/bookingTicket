@@ -10,7 +10,7 @@ import java.util.Map;
 /**
  * 返回信息的类
  */
-@XmlRootElement(name = "Message")
+@XmlRootElement(name="Message")
 public class Message {
     private static Map<Integer, String> map = new HashMap<>();
     private int code;
@@ -77,7 +77,7 @@ public class Message {
         return result;
     }
 
-    public static final class CODE {
+    public static final class CODE{
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
         public static final int SUCCESS = 1;
@@ -98,9 +98,27 @@ public class Message {
         //与Company有关的信息 5000 - 5999
         public static final int COMPANY_HAS_EXIST = 5000;
         public static final int COMPANY_NOT_EXIST = 5001;
+
+
+
+        //和旅行社有关 6000-6999
+        public static final int AGENCY_LOGIN_FAILED = 6000;
+        public static final int AGENCY_REGISTER_FAILED = 6001;//注册失败
+        public static final int AGENCY_MOTIFY_FAILED = 6002;//注册失败
+        //和旅客相关 7000-7999
+        public static final int  PASSENGER_INCOMPLICT = 7000;
+        public static final int PASSENGER_NOT_EXIST = 7001;
+        //订单有关  8000-8999
+        public static final int BOOK_FAILED = 8000;
     }
 
     static {
+        map.put(CODE.PASSENGER_INCOMPLICT,"乘客信息不完整，无法正常添加");
+        map.put(CODE.AGENCY_LOGIN_FAILED,"登录信息有误，无法登录，请重试");
+        map.put(CODE.PASSENGER_NOT_EXIST,"乘客不存在,操作失败");//passenger not exist
+        map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");//passenger not exist
+        map.put(CODE.AGENCY_MOTIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
+        map.put(CODE.BOOK_FAILED,"预订失败");
         map.put(CODE.COMPANY_HAS_EXIST, "该公司用户名已经存在");
         map.put(CODE.COMPANY_NOT_EXIST, "该公司用户名不存在");
         map.put(CODE.LOGIN_FAILED, "登录失败");
