@@ -76,7 +76,7 @@ public interface ICompanyService {
     @Path("/queryFlight/{companyUName}")
     List<Flight> queryFlight(@PathParam("companyUName") String companyUName);
 
-    @POST
+    @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/checkUserName/{name}")
     Response checkUserName(@PathParam("name") String name);
