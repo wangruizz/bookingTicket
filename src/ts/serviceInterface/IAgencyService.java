@@ -5,6 +5,7 @@ import ts.model.Agency;
 import ts.model.Book;
 import ts.model.Passenger;
 import ts.serviceException.PassengerNotExistException;
+import ts.serviceException.PhoneWrongException;
 import ts.serviceException.RegisterException;
 
 import javax.ws.rs.*;
@@ -45,12 +46,12 @@ public interface IAgencyService {
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/AgencyRegister")
-    Agency AgencyRegister(Agency agency) throws RegisterException;
+    Agency AgencyRegister(Agency agency) throws RegisterException, PhoneWrongException;
     //旅行社信息修改
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/modifyAgency")
-    Response modifyAgency(Agency agency);
+    Response modifyAgency(Agency agency) throws PhoneWrongException;
     //预订车票
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})

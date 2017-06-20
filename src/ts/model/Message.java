@@ -110,6 +110,7 @@ public class Message {
         //和旅客相关 7000-7999
         public static final int  PASSENGER_INCOMPLICT = 7000;
         public static final int PASSENGER_NOT_EXIST = 7001;
+        public static final int PHONE_IS_WRONG = 7002;
         //订单有关  8000-8999
         public static final int BOOK_FAILED = 8000;//预定失败
         public static final int BOOK_CANCEL_FAILED = 8001;//取消订单失败
@@ -140,5 +141,6 @@ public class Message {
         map.put(CODE.NO_TOKEN, "没有Token");
         map.put(CODE.TOKEN_ERROR, "Token错误");
         map.put(CODE.BAD_REQUEST, "请求错误");
+        map.put(CODE.PHONE_IS_WRONG, "手机号格式不对");
     }
 }

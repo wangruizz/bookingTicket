@@ -69,4 +69,12 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
             return true;
         }
     }
+    public Boolean match(String phone){
+        if(phone.matches("^((13[0-9])|(15[^4])|(18[0,2,3,5-9])|(17[0-8])|(147))\\\\d{8}$") ||
+                phone.matches("^(5|6|8|9)\\\\d{7}$")){
+            return true;
+        }else{
+            return false;
+        }
+    }
 }
