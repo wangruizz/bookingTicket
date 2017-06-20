@@ -51,10 +51,7 @@ public class AgencyDAO extends BaseDao<Agency,Integer>{
      * @return
      */
     public Boolean checkPhone(String phone){
-        if(findBy("phone",phone,"id",true)!=null){
-            return false;
-        }else{
-            return true;
-        }
+        List<Agency> list = findBy("phone", phone, "id", true);
+        return list.size() == 0 ;
     }
 }

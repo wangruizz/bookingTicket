@@ -1,6 +1,5 @@
 package ts.serviceInterface;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import ts.model.Agency;
 import ts.model.Book;
 import ts.model.Passenger;
@@ -11,7 +10,6 @@ import ts.serviceException.RegisterException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.Date;
 import java.util.List;
 
 
