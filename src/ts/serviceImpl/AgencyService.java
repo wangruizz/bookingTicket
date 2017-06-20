@@ -156,21 +156,21 @@ public class AgencyService implements IAgencyService {
             return Response.ok(agency).header("EntityClass","Agency").build();
         }
     }
-
+    //预订车票
     @Override
     public Response BookingTicket(Book book) {
        synchronized (bookDAO){
            History history = book.getHistory();
            if(book.getSeatType()==Book.SEAT_TYPE.BUSINESS_SEAT&&history.getBusinessNum()>0){
                history.setBusinessNum(history.getBusinessNum()-1);
-               book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);//预订成功
+               book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
                historyDao.save(history);
                bookDAO.save(book);
                return Response.ok(history).header("EntityClass","History").build();
            }else{
                if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
                    history.setBusinessNum(history.getEconomyNum()-1);
-                   book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);//预订成功
+                   book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
                    historyDao.save(history);
                    bookDAO.save(book);
                    return Response.ok(history).header("EntityClass","History").build();
@@ -179,6 +179,36 @@ public class AgencyService implements IAgencyService {
                }
            }
        }
+    }
+    //取消订单
+    @Override
+    public Response cancelBook(int id) {
+        Book book = bookDAO.cancel(id);
+        if(book==null){
+            return Response.ok(new Message(Message.CODE.BOOK_CANCEL_FAILED)).header("EntityClass","Message").build();//取消订单失败
+        }else{
+            return Response.ok(book).header("EntityClass","Book").build();
+        }
+    }
+    //付款
+    @Override
+    public Response payTicket(int id) {
+        Book book = bookDAO.pay(id);
+        if(book==null){
+            return Response.ok(new Message(Message.CODE.BOOK_PAY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            return Response.ok(book).header("EntityClass","Book").build();
+        }
+    }
+   //打印机票
+    @Override
+    public Response printTicket(int id,String IDCard) {
+        Book book = bookDAO.printTicket(id,IDCard);
+        if(book==null){
+            return Response.ok(new Message(Message.CODE.BOOK_PRINT_FAILED)).header("EntityClass","Message").build();
+        }else{
+            return Response.ok(book).header("EntityClass","Book").build();
+        }
     }
 
 

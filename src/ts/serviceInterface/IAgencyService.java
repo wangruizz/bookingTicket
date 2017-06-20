@@ -54,4 +54,20 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/bookingTicket")
     Response BookingTicket(Book book);
+    //取消预约
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/cancelBook")
+    Response cancelBook(int id);
+    //付款
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/payTicket")
+    Response payTicket(int id);
+    //打印机票
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/printTicket")
+    Response printTicket(int id,String IDCard);
+
 }

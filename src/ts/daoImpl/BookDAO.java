@@ -131,16 +131,16 @@ public class BookDAO extends BaseDao<Book,Integer> {
     }
 
     //付款
-    public Boolean pay(int bookID) {
+    public Book pay(int bookID) {
         Book book = get(bookID);
         if (book == null) {
-            return false;
+            return null;
         }
         try{
             book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);
             update(book);
         } catch (DataAccessException e) {
-            return false;
+            return null;
         }
         //由于免费条数有限，仅仅在必要测试时才取消注释代码
 //        ShortMessage shortMessage = ShortMessage.getInstance();
@@ -149,7 +149,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
 //        String flightID = book.getHistory().getFlight().getId();
 //        String phone = book.getPassenger().getPhone();
 //        shortMessage.orderSuccess(name, date, flightID, bookID+"", phone);
-        return true;
+        return book;
     }
 
     //取消订单

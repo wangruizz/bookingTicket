@@ -98,7 +98,10 @@ public class Message {
         public static final int  PASSENGER_INCOMPLICT = 7000;
         public static final int PASSENGER_NOT_EXIST = 7001;
         //订单有关  8000-8999
-        public static final int BOOK_FAILED = 8000;
+        public static final int BOOK_FAILED = 8000;//预定失败
+        public static final int BOOK_CANCEL_FAILED = 8001;//取消订单失败
+        public static final int BOOK_PAY_FAILED = 8002;//付款失败
+        public static final int BOOK_PRINT_FAILED = 8003;//打印机票失败
     }
 
     static {
@@ -109,5 +112,8 @@ public class Message {
         map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");//passenger not exist
         map.put(CODE.AGENCY_MOTIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
         map.put(CODE.BOOK_FAILED,"预订失败");
+        map.put(CODE.BOOK_CANCEL_FAILED,"取消订单失败");
+        map.put(CODE.BOOK_PAY_FAILED,"付款失败");
+        map.put(CODE.BOOK_PRINT_FAILED,"打印机票失败");
     }
 }
