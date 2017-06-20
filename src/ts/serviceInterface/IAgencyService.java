@@ -10,6 +10,7 @@ import ts.serviceException.RegisterException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Date;
 import java.util.List;
 
 
@@ -102,6 +103,6 @@ public interface IAgencyService {
     //机票查询
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/queryBook/{id}")
-    Response queryBook(@PathParam("id")int id);
+    @Path("/queryTicket/{start}/{end}/{date}")
+    Response queryBook(@PathParam("start")String startAirport,@PathParam("end")String endAirport,@PathParam("date")Date date);
 }

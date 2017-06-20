@@ -7,6 +7,7 @@ import ts.model.Flight;
 import ts.model.History;
 
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -183,9 +184,19 @@ public class HistoryDao extends BaseDao<History,Integer> {
     /**
      * 查询剩余机票数量
      */
-    public History TicketQuery(int id){
-        List<History> list = findBy("id",id,"id",true);
-        return list.size()>0?list.get(0):null;
+    public List<History> TicketQuery(String startAirport, String endAirport, Date date){
+        List<Flight> list = flightDAO.findBy("id",true,Restrictions.eq("startAirport",startAirport),Restrictions.eq("endAirport",endAirport));
+        List<History> list1 = new ArrayList<>();
+        for (Flight i:list
+             ) {
+            List<History> list2 = findBy("id",true,Restrictions.eq("departureDate",date),Restrictions.eq("flightID",i.getId()));
+            if(list2.size()==0){
+                continue;
+            }else{
+                list1.add(list2.get(0));
+            }
+        }
+        return list1.size()>0?list1:null;
     }
 
 }

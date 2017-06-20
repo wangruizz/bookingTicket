@@ -12,6 +12,8 @@ import ts.serviceInterface.IAgencyService;
 import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -316,19 +318,28 @@ public class AgencyService implements IAgencyService {
             return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
         }
     }
-
-
     /**
      * 剩余机票查询
      */
     @Override
-    public Response queryBook(int id) {
-        History history = historyDao.TicketQuery(id);
-        if(history==null){
-            return Response.ok(new Message(Message.CODE.TICKET_QUERY_FAILED)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(history).header("EntityClass","History").build();
+    public Response queryBook(String startAirport, String endAirport, Date date) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date time = new Date();
+        try {
+            time = sdf.parse(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
+        List<History> list = historyDao.TicketQuery(startAirport,endAirport,time);
+       if(list==null){
+           return Response.ok(new Message(Message.CODE.TICKET_QUERY_FAILED)).header("EntityClass","Message").build();
+       }else{
+           return  Response.ok(list).header("EntityClass","History").build();
+       }
     }
+
+
+
+
 
 }
