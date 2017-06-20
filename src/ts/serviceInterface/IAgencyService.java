@@ -1,7 +1,10 @@
 package ts.serviceInterface;
 
+import ts.model.Agency;
+import ts.model.Book;
 import ts.model.Passenger;
 import ts.serviceException.PassengerNotExistException;
+import ts.serviceException.RegisterException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -26,6 +29,29 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/addPassenger")
     Response addPassenger(Passenger passenger);
-
-
+    //删除乘客信息
+    @POST
+    @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
+    @Path("/deletePassenger")
+    Response deletePassenger(int id);
+    //旅行社登录
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/AgencyLogin/{phone}/{pwd}")
+    Response AgencyLogin(@PathParam("phone") String phone,@PathParam("pwd") String pwd);
+    //旅行社注册
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/AgencyRegister")
+    Agency AgencyRegister(Agency agency) throws RegisterException;
+    //旅行社信息修改
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/motifyAgency")
+    Response motifyAgency(Agency agency);
+    //预订车票
+    @POST
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/bookingTicket")
+    Response BookingTicket(Book book);
 }

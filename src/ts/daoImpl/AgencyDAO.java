@@ -36,5 +36,12 @@ public class AgencyDAO extends BaseDao<Agency,Integer>{
         update(agency);
         return new Agency();
     }
+    public Boolean complete(Agency agency){
+        if(agency.getName()==null||agency.getPhone()==null){
+            return false;
+        }else{
+            return true;
+        }
 
+    }
 }

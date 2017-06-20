@@ -3,11 +3,9 @@ package ts.daoImpl;
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
 import ts.model.Book;
-import ts.model.Company;
 import ts.model.Flight;
 import ts.model.History;
 
-import javax.annotation.Resource;
 import java.sql.Time;
 import java.util.Date;
 import java.util.List;
