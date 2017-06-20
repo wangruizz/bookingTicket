@@ -78,6 +78,7 @@ public class Message {
     }
 
     public static final class CODE{
+        public static final int BAD_REQUEST = -3;
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
         public static final int SUCCESS = 1;
@@ -109,6 +110,7 @@ public class Message {
         //和旅客相关 7000-7999
         public static final int  PASSENGER_INCOMPLICT = 7000;
         public static final int PASSENGER_NOT_EXIST = 7001;
+        public static final int PHONE_IS_WRONG = 7002;
         //订单有关  8000-8999
         public static final int BOOK_FAILED = 8000;//预定失败
         public static final int BOOK_CANCEL_FAILED = 8001;//取消订单失败
@@ -138,5 +140,7 @@ public class Message {
         map.put(CODE.URL_NOT_FOUND, "URL错误");
         map.put(CODE.NO_TOKEN, "没有Token");
         map.put(CODE.TOKEN_ERROR, "Token错误");
+        map.put(CODE.BAD_REQUEST, "请求错误");
+        map.put(CODE.PHONE_IS_WRONG, "手机号格式不对");
     }
 }

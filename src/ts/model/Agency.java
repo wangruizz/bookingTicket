@@ -18,9 +18,9 @@ public class Agency implements Serializable {
     private String address;
     private String contacts;
     private String phone;
-    @Transient
     private String token; //token 信息
 
+    @Transient
     public String getToken() {
         return token;
     }
