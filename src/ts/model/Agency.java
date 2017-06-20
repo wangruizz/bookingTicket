@@ -18,7 +18,6 @@ public class Agency implements Serializable {
     private String address;
     private String contacts;
     private String phone;
-    private static final long serialVersionUID = -3267943602377867497L;
     @Transient
     private String token; //token 信息
 
@@ -29,6 +28,7 @@ public class Agency implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+    private static final long serialVersionUID = -3267943602377867497L;
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_agency")
