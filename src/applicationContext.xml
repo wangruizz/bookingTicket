@@ -71,32 +71,32 @@
     </aop:config>
 
     <bean id="airportDAO" class="ts.daoImpl.AirportDAO">
-        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="agencyDAO" class="ts.daoImpl.AgencyDAO">
-        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="historyDao" class="ts.daoImpl.HistoryDao">
-        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
         <property name="bookDAO" ref="bookDAO"/>
         <property name="flightDAO" ref="flightDAO"/>
     </bean>
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-        <property name="historyDao" ref="historyDao"></property>
-        <property name="flightDAO" ref="flightDAO"></property>
-        <property name="passengerDAO" ref="passengerDAO"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="historyDao" ref="historyDao"/>
+        <property name="flightDAO" ref="flightDAO"/>
+        <property name="passengerDAO" ref="passengerDAO"/>
     </bean>
     <bean id="passengerDAO" class="ts.daoImpl.PassengerDAO">
-        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
     <bean id="airCompanyDAO" class="ts.daoImpl.AirCompanyDAO">
-        <property name="sessionFactory" ref="sessionFactory"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <bean id="flightDAO" class="ts.daoImpl.FlightDAO">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-        <property name="companyDAO" ref="airCompanyDAO"></property>
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="companyDAO" ref="airCompanyDAO"/>
 
     </bean>
     <!-- REST服务的注解例子 -->
@@ -110,9 +110,10 @@
                 <property name="historyDao" ref="historyDao"/>
             </bean>
             <bean class="ts.serviceImpl.AgencyService">
-                <property name="passengerDAO" ref="passengerDAO"></property>
-                <property name="bookDAO" ref="bookDAO"></property>
-                <property name="agencyDAO" ref="agencyDAO"></property>
+                <property name="passengerDAO" ref="passengerDAO"/>
+                <property name="bookDAO" ref="bookDAO"/>
+                <property name="agencyDAO" ref="agencyDAO"/>
+                <property name="historyDao" ref="historyDao"/>
             </bean>
         </jaxrs:serviceBeans>
 
@@ -124,9 +125,6 @@
         <jaxrs:providers>
             <ref bean="jsonProvider" />
             <bean class="ts.serviceException.InvokeFaultExceptionMapper" />
-            <bean class="ts.serviceException.PassengerNotExistException"/>
-            <bean class="ts.serviceException.RegisterException"/>
-            <bean class="ts.serviceException.ServiceException"/>
         </jaxrs:providers>
         <jaxrs:languageMappings>
             <entry key="en" value="en-gb" />
