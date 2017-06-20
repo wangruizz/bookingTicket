@@ -86,8 +86,20 @@ public class Message {
         public static final int NO_TOKEN = 1000;
         public static final int TOKEN_ERROR = 1001;
 
+
+        //登录失败
+        public static final int LOGIN_FAILED = 2000;
+
+        //与航班有关的信息3000
+        public static final int FLIGHT_NOT_EXIST = 3000;
+        public static final int FLIGHT_HAS_CANCELLED = 3001;
+        public static final int FLIGHT_IS_NORMOL = 3002;
+
+
         //与Company有关的信息 5000 - 5999
-        public static  final int COMPANT_HAS_EXIST = 5000;
+        public static final int COMPANY_HAS_EXIST = 5000;
+        public static final int COMPANY_NOT_EXIST = 5001;
+
 
 
         //和旅行社有关 6000-6999
@@ -98,16 +110,33 @@ public class Message {
         public static final int  PASSENGER_INCOMPLICT = 7000;
         public static final int PASSENGER_NOT_EXIST = 7001;
         //订单有关  8000-8999
-        public static final int BOOK_FAILED = 8000;
+        public static final int BOOK_FAILED = 8000;//预定失败
+        public static final int BOOK_CANCEL_FAILED = 8001;//取消订单失败
+        public static final int BOOK_PAY_FAILED = 8002;//付款失败
+        public static final int BOOK_PRINT_FAILED = 8003;//打印机票失败
+        public static final int BOOK_NOT_ALL = 8004;//订单信息不完整，预订失败
+        public static final int BOOK_QUERY_FAILED = 8005;//订单查询失败
     }
 
     static {
-        map.put(CODE.COMPANT_HAS_EXIST,"该用户名已经存在");
         map.put(CODE.PASSENGER_INCOMPLICT,"乘客信息不完整，无法正常添加");
         map.put(CODE.AGENCY_LOGIN_FAILED,"登录信息有误，无法登录，请重试");
         map.put(CODE.PASSENGER_NOT_EXIST,"乘客不存在,操作失败");//passenger not exist
         map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");//passenger not exist
         map.put(CODE.AGENCY_MOTIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
         map.put(CODE.BOOK_FAILED,"预订失败");
+        map.put(CODE.BOOK_CANCEL_FAILED,"取消订单失败");
+        map.put(CODE.BOOK_PAY_FAILED,"付款失败");
+        map.put(CODE.BOOK_PRINT_FAILED,"打印机票失败");
+        map.put(CODE.BOOK_NOT_ALL,"订单信息不完整，预订失败");
+        map.put(CODE.BOOK_QUERY_FAILED,"订单查询失败");
+        map.put(CODE.COMPANY_HAS_EXIST, "该公司用户名已经存在");
+        map.put(CODE.COMPANY_NOT_EXIST, "该公司用户名不存在");
+        map.put(CODE.LOGIN_FAILED, "登录失败");
+        map.put(CODE.SUCCESS, "操作成功");
+        map.put(CODE.UNKNOWN_ERROR, "未知错误");
+        map.put(CODE.URL_NOT_FOUND, "URL错误");
+        map.put(CODE.NO_TOKEN, "没有Token");
+        map.put(CODE.TOKEN_ERROR, "Token错误");
     }
 }
