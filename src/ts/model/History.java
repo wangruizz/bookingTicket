@@ -8,16 +8,18 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  * Created by wr on 2017/6/19.
  */
 @Entity
 @Table(name = "history", schema = "ticketorder", catalog = "")
-//@OptimisticLocking(type = OptimisticLockType.ALL)
+@OptimisticLocking(type = OptimisticLockType.VERSION)
 @XmlRootElement(name = "history")
 public class History implements Serializable{
     private Integer id;
+    private Timestamp version;
     private Date departureDate;
     private Time delayTime;
     private Integer status;
@@ -35,6 +37,15 @@ public class History implements Serializable{
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    @Version
+    public Timestamp getVersion() {
+        return version;
+    }
+
+    private void setVersion(Timestamp version) {
+        this.version = version;
     }
 
     @Basic
