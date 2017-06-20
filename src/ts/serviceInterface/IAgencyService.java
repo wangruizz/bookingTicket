@@ -99,4 +99,9 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/checkPhone/{phone}")
     Response checkPhone(@PathParam("phone") String phone);
+    //机票查询
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/queryBook/{id}")
+    Response queryBook(@PathParam("id")int id);
 }

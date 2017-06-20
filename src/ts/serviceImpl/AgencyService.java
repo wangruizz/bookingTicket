@@ -318,4 +318,17 @@ public class AgencyService implements IAgencyService {
     }
 
 
+    /**
+     * 剩余机票查询
+     */
+    @Override
+    public Response queryBook(int id) {
+        History history = historyDao.TicketQuery(id);
+        if(history==null){
+            return Response.ok(new Message(Message.CODE.TICKET_QUERY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            return Response.ok(history).header("EntityClass","History").build();
+        }
+    }
+
 }

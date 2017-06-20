@@ -180,7 +180,12 @@ public class HistoryDao extends BaseDao<History,Integer> {
         }
         return  false;
     }
-
-
+    /**
+     * 查询剩余机票数量
+     */
+    public History TicketQuery(int id){
+        List<History> list = findBy("id",id,"id",true);
+        return list.size()>0?list.get(0):null;
+    }
 
 }

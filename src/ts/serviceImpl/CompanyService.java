@@ -200,6 +200,11 @@ public class CompanyService implements ICompanyService {
         return flights;
     }
 
+    /**
+     * 检测用户名在注册的时候是否存在
+     * @param name
+     * @return
+     */
     @Override
     public Response checkUserName(String name) {
         if(airCompanyDAO.checkHasExist(name)){
