@@ -11,6 +11,8 @@ import ts.util.DateProcess;
 
 import javax.annotation.Resource;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -36,30 +38,20 @@ public class Test {
     AgencyDAO agencyDAO;
     @Resource
     AirportDAO airportDAO;
+    @Resource
+    HistoryDao historyDao;
 
     @org.junit.Test
     public void main() throws TicketPayException {
-       // Passenger list2 = passengerDAO.queryByIDCard("1234",13);
-    //    Passenger passenger = list2.get(0);
-      //  System.out.println("22222"+agencyDAO.login("1234","11"));
-       // Book list = bookDAO.pay(1);
-//        System.out.println("111111111111"+flightDAO.cancelFlight("1"));
-      //     List<Flight> agency = flightDAO.query(new Date(),"AAT","AKA");
-      //  System.out.println(agency.toString());
-//        Agency agency1 = agency.get(0);
-//        agency1.setName("王芮");
-//        agencyDAO.modify(agency1);
-//        bookDAO.printTicket(1,"1234");
-        Flight flight = new Flight();
-        flight.setStartTime(Time.valueOf("09:00:00"));
-        flight.setArriveTime(Time.valueOf("22:00:00"));
-        flight.setStartAirport(airportDAO.get("AAT"));
-        flight.setArriveAirport(airportDAO.get("AKA"));
-        flight.setBusinessNum(1200);
-        flight.setEconomyNum(200);
-        flight.setBusinessPrice(120000.00);
-        flight.setEconomyPrice(122222.00);
-        flight.setStatus(0);
-        flightDAO.add("王芮",flight);
+        List<Flight> list = flightDAO.query("王芮");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date time = sdf.parse("2017-06-21");
+         //   History history = historyDao.add("2",new java.sql.Date(time.getTime()));
+            System.out.println("19999"+historyDao.delay("2",new java.sql.Date(time.getTime()),Time.valueOf("00:10:00")));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 }

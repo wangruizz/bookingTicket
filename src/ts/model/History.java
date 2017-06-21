@@ -33,6 +33,20 @@ public class History implements Serializable{
     private Flight flight;
     private static final long serialVersionUID = -3267943602377867497L;
 
+    @Override
+    public String toString() {
+        return "History{" +
+                "id=" + id +
+                ", version=" + version +
+                ", departureDate=" + departureDate +
+                ", delayTime=" + delayTime +
+                ", status=" + status +
+                ", businessNum=" + businessNum +
+                ", economyNum=" + economyNum +
+                ", flight=" + flight +
+                '}';
+    }
+
     @XmlElement
     @Id
     @Column(name = "id", nullable = false)
