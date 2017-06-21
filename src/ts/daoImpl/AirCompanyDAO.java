@@ -15,26 +15,27 @@ public class AirCompanyDAO extends BaseDao<Company,String> {
         super(Company.class);
     }
 
-
-//    public Company register(Company company){
-//        if (!checkHasExist(company.getUsername())){
-//            save(company);
-//            return  company;
-//        }else {
-//            return get(company.getUsername());
-//        }
-//    }
-
+    /**
+     * 登录验证
+     * @param userName
+     * @param pwd
+     * @return
+     */
     public Company login(String userName,String pwd){
         List<Company> users = findBy("username", true, Restrictions.eq("username", userName),Restrictions.eq("pwd", pwd));
         System.out.println("users"+users);
         return users != null && users.size() > 0 ? users.get(0) : null;
     }
 
-//    public Company modify(Company company){
-//        update(company);
-//        return company;
-//    }
+    /**
+     * 修改公司信息
+     * @param company
+     * @return
+     */
+    public Company modify(Company company){
+        update(company);
+        return company;
+    }
 
     /**
      * 检查该userName的公司是否存在

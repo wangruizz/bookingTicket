@@ -91,10 +91,10 @@ public interface IAgencyService {
     @Path("/queryBookByFID/{id}/{start}/{end}")
     Response queryBookByFID(@PathParam("id") String flightID, @PathParam("start") int start, @PathParam("end") int end);
     //通过历史表ID查询
-    @GET
-    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/queryBookByHID/{id}")
-    Response queryBookByFID(@PathParam("id") int historyID);
+//    @GET
+//    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+//    @Path("/queryBookByHID/{id}")
+//    Response queryBookByHID(@PathParam("id") int historyID);
     //验证电话号码是否存在
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})

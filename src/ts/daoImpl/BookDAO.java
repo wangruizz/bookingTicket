@@ -48,7 +48,13 @@ public class BookDAO extends BaseDao<Book,Integer> {
     }
 
 
-    //打印机票
+    /**
+     * 打印机票
+     * 已经测试
+     * @param bookID
+     * @param idcard
+     * @return
+     */
     public Book printTicket(int bookID, String idcard) {
         Book book = super.get(bookID);
         if (null == book || book.getPassenger().getIdcard() != idcard) {
@@ -57,7 +63,11 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return book;
     }
 
-    //通过电话查询
+    /**
+     * 通过电话号码查询，已经验证
+     * @param phone
+     * @return
+     */
     public List<Book> query(String phone) {
         List<Passenger> passengers = passengerDAO.queryByPhone(phone);
         List<Book> books = new ArrayList<>();
@@ -68,7 +78,13 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return books.size() == 0 ? null : books;
     }
 
-    //通过旅行社ID，订单状态查询
+    /**
+     * 通过旅行社ID，订单状态查询
+     * 已经验证
+     * @param agencyID
+     * @param status
+     * @return
+     */
     public List<Book> query(int agencyID, int status) {
         List<Passenger> passengers = passengerDAO.queryByID(agencyID);
         System.out.println("passengers"+passengers.size());
