@@ -95,8 +95,10 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="companyDAO" ref="airCompanyDAO"/>
         <property name="airportDAO" ref="airportDAO"/>
-
     </bean>
+
+    <bean id="simpleConverter" class="org.codehaus.jettison.mapped.SimpleConverter"/>
+
     <!-- REST服务的注解例子 -->
     <jaxrs:server id="Service" address="/REST">
         <jaxrs:serviceBeans>
@@ -159,6 +161,7 @@
         <property name="ignoreMixedContent" value="true" />
         <property name="supportUnwrapped" value="true" />
         <property name="attributesToElements" value="true" />
+        <property name="typeConverter" ref="simpleConverter"/>
     </bean>
 
 </beans>

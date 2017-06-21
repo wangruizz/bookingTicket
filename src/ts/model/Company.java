@@ -1,7 +1,6 @@
 package ts.model;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -66,7 +65,7 @@ public class Company implements Serializable{
         this.pwd = pwd;
     }
 
-    @XmlAttribute
+    @XmlElement
     @Basic
     @Column(name = "phone", nullable = true, length = 254)
     public String getPhone() {
