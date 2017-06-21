@@ -31,7 +31,7 @@ public class Flight implements Serializable{
 
     private static final long serialVersionUID = -3267943602377867497L;
 
-    @XmlElement
+    @XmlElement()
     @Id
     @Column(name = "id", nullable = false, length = 25)
     public String getId() {

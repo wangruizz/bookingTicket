@@ -89,11 +89,6 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Response checkUName(String companyUName) {
-        return !airCompanyDAO.checkHasExist(companyUName) ? Response.ok(new Message(Message.CODE.COMPANY_NOT_EXIST)).header("EntityClass", "Message").build() : Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass", "Message").build();
-    }
-
-    @Override
     public Company modifyCompany(Company company) {
         airCompanyDAO.update(company);
         return company;
@@ -128,7 +123,6 @@ public class CompanyService implements ICompanyService {
 
     /**
      * 取消公司的航班
-     *
      * @param companyUName
      * @return
      */
@@ -143,7 +137,6 @@ public class CompanyService implements ICompanyService {
 
     /**
      * 恢复整个公司的航班
-     *
      * @param companyUName
      * @return
      */
@@ -165,15 +158,14 @@ public class CompanyService implements ICompanyService {
      */
     @Override
     public Response addFlight(String companyUName, Flight flight) {
-
         try {
             Company company = airCompanyDAO.get(companyUName);
             flight.setCompany(company);
+            flight.setStatus(Flight.STATUS.FLIGHT_NORMAL);
             flightDAO.add(companyUName, flight);
-            return Response.ok(flight).header("EntityClass", "EntityClass").build();
+            return Response.ok(flight).header("EntityClass", "Flight").build();
         } catch (Exception e) {
-            e.printStackTrace();
-            return Response.serverError().build();
+            return Response.ok().entity(new Message(Message.CODE.UNKNOWN_ERROR)).header("EntityClass", "Message").build();
         }
     }
 
@@ -184,9 +176,17 @@ public class CompanyService implements ICompanyService {
      * @return
      */
     @Override
-    public Flight modifyFlight(Flight flight) {
+    public Response modifyFlight(String companyUName, Flight flight) {
+        Flight flight1 = flightDAO.get(flight.getId());
+        if (flight1 == null) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        if (!flight1.getCompany().getUsername().equals(companyUName)) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        flight.setCompany(flight1.getCompany());
         flightDAO.update(flight);
-        return flight;
+        return Response.ok(flight).header("EntityClass", "Flight").build();
     }
 
     /**
@@ -199,6 +199,18 @@ public class CompanyService implements ICompanyService {
     public List<Flight> queryFlight(String companyUName) {
         List<Flight> flights = flightDAO.query(companyUName);
         return flights;
+    }
+
+    @Override
+    public Response queryFlight(String companyUName, String flightId) {
+        Flight flight = flightDAO.get(flightId);
+        if (flight == null) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        if (!flight.getCompany().getUsername().equals(companyUName)) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        return Response.ok(flight).header("EntityClass","Flight").build();
     }
 
     /**
@@ -221,7 +233,7 @@ public class CompanyService implements ICompanyService {
         Company company = list.get(0);
         if(company.getPwd().equals(pwd1)){
             company.setPwd(pwd2);
-            airCompanyDAO.save(company);
+            airCompanyDAO.update(company);
             return Response.ok(company).header("EntityClass","Company").build();
         }else{
             return Response.ok(new Message(Message.CODE.PWD_IS_WRONG)).header("EntityClass","Message").build();

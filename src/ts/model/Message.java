@@ -95,7 +95,7 @@ public class Message {
         //与航班有关的信息3000
         public static final int FLIGHT_NOT_EXIST = 3000;
         public static final int FLIGHT_HAS_CANCELLED = 3001;
-        public static final int FLIGHT_IS_NORMOL = 3002;
+        public static final int FLIGHT_IS_NORMAL = 3002;
 
 
         //与Company有关的信息 5000 - 5999
@@ -153,5 +153,8 @@ public class Message {
         map.put(CODE.TICKET_HAS_PAYED, "机票已付款");
         map.put(CODE.AGENCY_NOT_EXISTED, "旅行社不存在");
         map.put(CODE.PWD_IS_WRONG, "密码输入错误");
+        map.put(CODE.FLIGHT_NOT_EXIST, "航班不存在");
+        map.put(CODE.FLIGHT_HAS_CANCELLED, "航班已取消");
+        map.put(CODE.FLIGHT_IS_NORMAL, "航班正常");
     }
 }

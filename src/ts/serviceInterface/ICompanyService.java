@@ -23,11 +23,6 @@ public interface ICompanyService {
     @Path("/register")
     Company register(Company company);
 
-    @GET
-    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/checkUName/{companyUName}")
-    Response checkUName(@PathParam("companyUName") String companyUName);
-
     @POST
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/modifyCompany")
@@ -60,7 +55,6 @@ public interface ICompanyService {
     Response resumeCompany(@PathParam("companyUName") String companyUName);
 
     //======================================航班增删改查========================================
-//这个不太会
     @POST
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/addFlight/{companyUName}")
@@ -68,13 +62,18 @@ public interface ICompanyService {
 
     @POST
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/modifyFlight")
-    Flight modifyFlight(Flight flight);
+    @Path("/modifyFlight/{companyUName}")
+    Response modifyFlight(@PathParam("companyUName") String companyUName, Flight flight);
 
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/queryFlight/{companyUName}")
     List<Flight> queryFlight(@PathParam("companyUName") String companyUName);
+
+    @GET
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Path("/queryFlight/{companyUName}/{flightId}")
+    Response queryFlight(@PathParam("companyUName") String companyUName, @PathParam("flightId") String flightId);
 
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

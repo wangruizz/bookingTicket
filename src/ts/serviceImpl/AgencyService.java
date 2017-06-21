@@ -163,11 +163,10 @@ public class AgencyService implements IAgencyService {
      */
     @Override
     public Response deletePassenger(int agencyId, int id){
-        List<Passenger> passengers = passengerDAO.queryByID(id);
-        if (passengers.size() < 1) {
+        Passenger passenger = passengerDAO.get(id);
+        if (passenger == null) {
             return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass","Message").build();
         }
-        Passenger passenger = passengers.get(0);
         if (passenger.getAgency().getId() != agencyId) {
             return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass","Message").build();
         }
@@ -383,7 +382,7 @@ public class AgencyService implements IAgencyService {
         Agency agency = list.get(0);
         if(agency.getPwd().equals(pwd1)){
             agency.setPwd(pwd2);
-            agencyDAO.save(agency);
+            agencyDAO.update(agency);
             return Response.ok(agency).header("EntityClass","Agency").build();
         }else{
             return Response.ok(new Message(Message.CODE.PWD_IS_WRONG)).header("EntityClass","Message").build();
