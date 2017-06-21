@@ -59,6 +59,28 @@ public class AgencyService implements IAgencyService {
         this.historyDao = historyDao;
     }
 
+    @Override
+    public Response searchPassenger(int agencyID, int passenger) throws PassengerNotExistException {
+        Passenger passenger1 = passengerDAO.get(passenger);
+        if (passenger1 != null) {
+            if (passenger1.getAgency().getId() == agencyID) {
+                return Response.ok(passenger1).header("EntityClass","Passenger").build();
+            }
+            throw new PassengerNotExistException();
+        }
+        throw new PassengerNotExistException();
+    }
+
+    @Override
+    public List<Passenger> searchPassenger(int agencyID) {
+        Agency agency = agencyDAO.get(agencyID);
+        if (agency == null) {
+            return new ArrayList<>();
+        }
+        List<Passenger> ans = passengerDAO.queryByID(agencyID);
+        return ans;
+    }
+
     /**
      * 查找乘客
      * @param agencyID
@@ -191,7 +213,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public Response modifyAgency(Agency agency) throws PhoneWrongException {
         if(!agencyDAO.complete(agency)){
-            return Response.ok(new Message(Message.CODE.AGENCY_MOTIFY_FAILED)).header("EntityClass","Message").build();
+            return Response.ok(new Message(Message.CODE.AGENCY_MODIFY_FAILED)).header("EntityClass","Message").build();
         }else{
             if(!passengerDAO.match(agency.getPhone())){
                 throw new PhoneWrongException();//电话号码格式不对

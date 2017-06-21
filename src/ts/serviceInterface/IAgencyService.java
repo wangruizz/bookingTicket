@@ -19,6 +19,16 @@ import java.util.List;
 
 @Path("/Agency")
 public interface IAgencyService {
+    //查询单个乘客
+    @GET
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Path("/searchPassenger/{agencyID}/{passenger}")
+    Response searchPassenger(@PathParam("agencyID") int agencyID, @PathParam("passenger") int passenger) throws PassengerNotExistException;
+    //查询旅行社的乘客
+    @GET
+    @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
+    @Path("/searchPassenger/{agencyID}")
+    List<Passenger> searchPassenger(@PathParam("agencyID") int agencyID);
     //查询乘客
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })

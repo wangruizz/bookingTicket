@@ -31,8 +31,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
      */
     public List<Passenger> queryByID(int agencyID) {
         List<Agency> agency = agencyDAO.findBy("id",agencyID,"id",true);
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agency", agency.get(0)));
-        return passengers;
+        return findBy("id", true, Restrictions.eq("agency", agency.get(0)));
     }
 
     /**
