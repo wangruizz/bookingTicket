@@ -7,6 +7,7 @@ import ts.model.Passenger;
 import ts.serviceException.PassengerNotExistException;
 import ts.serviceException.PhoneWrongException;
 import ts.serviceException.RegisterException;
+import ts.serviceException.TicketPayException;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -67,7 +68,7 @@ public interface IAgencyService {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/payTicket/{id}")
-    Response payTicket(@PathParam("id") int id);
+    Response payTicket(@PathParam("id") int id) throws TicketPayException;
 
     //打印机票
     @GET

@@ -2,6 +2,7 @@ package ts.daoImpl;
 
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
+import ts.model.Airport;
 import ts.model.Company;
 import ts.model.Flight;
 
@@ -14,6 +15,15 @@ import java.util.List;
 public class FlightDAO extends BaseDao<Flight, String> {
 
     AirCompanyDAO companyDAO;
+    AirportDAO airportDAO;
+
+    public AirportDAO getAirportDAO() {
+        return airportDAO;
+    }
+
+    public void setAirportDAO(AirportDAO airportDAO) {
+        this.airportDAO = airportDAO;
+    }
 
     public AirCompanyDAO getCompanyDAO() {
         return companyDAO;
@@ -34,20 +44,22 @@ public class FlightDAO extends BaseDao<Flight, String> {
      */
     public List<Flight> query(Date departureDate, int startPortID, int arrivePortID) {
         java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+        Airport airport = airportDAO.get(startPortID);
+        Airport airport1 = airportDAO.get(arrivePortID);
         List<Flight> flights;
         if (currentDate.equals(departureDate)) {//出发日期是今天
             long timestamp = System.currentTimeMillis();
             timestamp += 30 * 60 * 1000;//当前时间加上半小时
             flights = findBy("startTime", true,
-                    Restrictions.eq("startAirport", startPortID),
+                    Restrictions.eq("startAirport", airport),
                     Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL),
-                    Restrictions.eq("arriveAirport", arrivePortID),
+                    Restrictions.eq("arriveAirport", airport1),
                     Restrictions.ge("startTime", timestamp));
         } else {
             flights = findBy("startTime", true,
                     Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL),
-                    Restrictions.eq("startAirport", startPortID),
-                    Restrictions.eq("arriveAirport", arrivePortID));
+                    Restrictions.eq("startAirport", airport),
+                    Restrictions.eq("arriveAirport", airport1));
         }
         return flights;
     }

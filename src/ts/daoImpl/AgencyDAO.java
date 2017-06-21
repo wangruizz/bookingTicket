@@ -13,13 +13,13 @@ public class AgencyDAO extends BaseDao<Agency,Integer>{
         super(Agency.class);
     }
 
-    //检测旅行社是否存在
-    public boolean checkExisted(String phone) {
-        List<Agency> agencies = findBy("phone", true, Restrictions.eq("phone", phone));
-        return (agencies == null || agencies.size() == 0) ? true : false;
-    }
-
-    //登陆
+    /**
+     * 登录
+     * 已经测试
+     * @param phone
+     * @param pwd
+     * @return
+     */
     public Agency login(String phone, String pwd) {
         List<Agency> agencies = findBy("phone", true, Restrictions.eq("phone", phone));
         return (agencies != null && agencies.size() > 0) ? agencies.get(0) : null;

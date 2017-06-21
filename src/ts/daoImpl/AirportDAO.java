@@ -6,7 +6,7 @@ import ts.model.Airport;
 /**
  * Created by wr on 2017/6/13.
  */
-public class AirportDAO extends BaseDao<Airport,String>{
+public class AirportDAO extends BaseDao<Airport,Integer>{
     public AirportDAO(){
         super(Airport.class);
     }

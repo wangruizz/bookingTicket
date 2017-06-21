@@ -120,6 +120,7 @@ public class Message {
         public static final int BOOK_NOT_ALL = 8004;//订单信息不完整，预订失败
         public static final int BOOK_QUERY_FAILED = 8005;//订单查询失败
         public static final int TICKET_QUERY_FAILED = 8005;//机票查询失败
+        public static final int TICKET_HAS_PAYED = 8006;//机票已付款
     }
 
     static {
@@ -146,5 +147,6 @@ public class Message {
         map.put(CODE.PHONE_IS_WRONG, "手机号格式不对");
         map.put(CODE.TICKET_QUERY_FAILED, "机票查询失败");
         map.put(CODE.DATE_FORMAT_ERROR, "日期格式错误");
+        map.put(CODE.TICKET_HAS_PAYED, "机票已付款");
     }
 }

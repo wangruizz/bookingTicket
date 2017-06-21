@@ -94,6 +94,7 @@
     <bean id="flightDAO" class="ts.daoImpl.FlightDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="companyDAO" ref="airCompanyDAO"/>
+        <property name="airportDAO" ref="airportDAO"/>
 
     </bean>
     <!-- REST服务的注解例子 -->

@@ -6,6 +6,8 @@ import ts.daoBase.BaseDao;
 import ts.model.Book;
 import ts.model.History;
 import ts.model.Passenger;
+import ts.serviceException.TicketPayException;
+import ts.util.ShortMessage;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -101,6 +103,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
     /**
      * 通过航班ID和起止日期查询
      * dates数量如果为0则表示仅仅用flightID查询，为1表示单次记录查询，为2表示一段时间内查询
+     *
      */
     public List<Book> query(String flightID, Date ... dates) {
         List<History> histories = new ArrayList<>();
@@ -131,26 +134,37 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return books;
     }
 
-    //通过历史表ID查询
+    /**
+     * 通过历史表ID查询
+     * 已经测试
+     * @param historyID
+     * @return
+     */
     public List<Book> queryByHistoryID(int historyID) {
         History history = historyDao.get(historyID);
-        List<Book> books = findBy("historyID", history, "id", true);
+        List<Book> books = findBy("history", history, "id", true);
         return books;
     }
 
-    //付款
-    public Book pay(int bookID) {
+    /**
+     * 付款
+     * 如果状态是已付款就抛出异常
+     * @param bookID
+     * @return
+     */
+
+    public Book pay(int bookID) throws TicketPayException {
         Book book = get(bookID);
         if (book == null) {
             return null;
         }
-        try{
-            book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);
-            update(book);
-        } catch (DataAccessException e) {
-            return null;
+        if(book.getStatus()==Book.BOOK_STATUS.BOOK_SUCCESS){
+                throw new TicketPayException();
+            }else{
+                book.setStatus(Book.BOOK_STATUS.BOOK_SUCCESS);
+                update(book);
         }
-        //由于免费条数有限，仅仅在必要测试时才取消注释代码
+//        由于免费条数有限，仅仅在必要测试时才取消注释代码
 //        ShortMessage shortMessage = ShortMessage.getInstance();
 //        String name = book.getPassenger().getName();
 //        Date date = historyDao.get(book.getId()).getDepartureDate();     //由于flightDAO还未获取，暂不实现此段代码
@@ -160,14 +174,24 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return book;
     }
 
-    //取消订单
+    /**
+     * 取消订单
+     * @param bookID
+     * @return
+     */
     public Book cancel(int bookID) {
         Book book = get(bookID);
         book.setStatus(Book.BOOK_STATUS.BOOK_CANCEL);
         update(book);
         return book;
     }
-    //预订车票是否完整
+
+    /**
+     * 预订信息是否完整
+     * 已经测试
+     * @param book
+     * @return
+     */
     public Boolean complete(Book book){
         if(book.getHistory()==null||book.getSeatNum()==null||book.getSeatType()==null||book.getId()==null
                 ||book.getOrderTime()==null||book.getPassenger()==null||book.getStatus()==null){
@@ -176,23 +200,4 @@ public class BookDAO extends BaseDao<Book,Integer> {
             return true;
         }
     }
-//    save
-//    //创建订单
-//    public Book create(int passengerID, int seatType, int flightID, Date date) {
-//
-//        return new Book();
-//    }
-
-//    public static int test(int ... sum) {
-//        if (sum == null) {
-//            return 1;
-//        } else if (sum.length == 0) {
-//            return 2;
-//        }
-//        return 3;
-//    }
-//
-//    public static void main(String[] args) {
-//        System.out.println(test());
-//    }
 }

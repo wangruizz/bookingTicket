@@ -8,6 +8,7 @@ import ts.model.*;
 import ts.serviceException.PassengerNotExistException;
 import ts.serviceException.PhoneWrongException;
 import ts.serviceException.RegisterException;
+import ts.serviceException.TicketPayException;
 import ts.serviceInterface.IAgencyService;
 import ts.util.JwtUtils;
 
@@ -243,7 +244,7 @@ public class AgencyService implements IAgencyService {
     }
     //付款
     @Override
-    public Response payTicket(int id) {
+    public Response payTicket(int id) throws TicketPayException {
         Book book = bookDAO.pay(id);
         if(book==null){
             return Response.ok(new Message(Message.CODE.BOOK_PAY_FAILED)).header("EntityClass","Message").build();

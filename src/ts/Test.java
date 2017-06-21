@@ -9,6 +9,7 @@ import ts.model.Agency;
 import ts.model.Book;
 import ts.model.History;
 import ts.model.Passenger;
+import ts.serviceException.TicketPayException;
 import ts.util.DateProcess;
 
 import javax.annotation.Resource;
@@ -36,12 +37,12 @@ public class Test {
     AgencyDAO agencyDAO;
 
     @org.junit.Test
-    public void main() {
-        Passenger list2 = passengerDAO.queryByIDCard("1234",13);
+    public void main() throws TicketPayException {
+       // Passenger list2 = passengerDAO.queryByIDCard("1234",13);
     //    Passenger passenger = list2.get(0);
-        System.out.println("22222"+passengerDAO.complete(list2));
- //       List<Book> list = bookDAO.query(13,1);
-        System.out.println("111111111111"+list2);
+      //  System.out.println("22222"+agencyDAO.login("1234","11"));
+        Book list = bookDAO.pay(1);
+        System.out.println("111111111111"+bookDAO.complete(list));
 //           List<Agency> agency = agencyDAO.findBy("id",13,"id",true);
 //        Agency agency1 = agency.get(0);
 //        agency1.setName("王芮");
