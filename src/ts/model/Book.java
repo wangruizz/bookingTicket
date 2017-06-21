@@ -1,8 +1,11 @@
 package ts.model;
 
+import ts.adapter.TimestampAdapter;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
@@ -58,6 +61,7 @@ public class Book implements Serializable{
         this.seatType = seatType;
     }
 
+    @XmlJavaTypeAdapter(TimestampAdapter.class)
     @XmlElement
     @Basic
     @Column(name = "orderTime", nullable = false)

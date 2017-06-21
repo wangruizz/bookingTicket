@@ -1,8 +1,11 @@
 package ts.model;
 
+import ts.adapter.TimeAdapter;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.sql.Time;
 
@@ -41,6 +44,7 @@ public class Flight implements Serializable{
         this.id = id;
     }
 
+    @XmlJavaTypeAdapter(TimeAdapter.class)
     @XmlElement
     @Basic
     @Column(name = "startTime", nullable = false)
@@ -52,6 +56,7 @@ public class Flight implements Serializable{
         this.startTime = startTime;
     }
 
+    @XmlJavaTypeAdapter(TimeAdapter.class)
     @XmlElement
     @Basic
     @Column(name = "arriveTime", nullable = false)
