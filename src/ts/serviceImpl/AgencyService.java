@@ -344,15 +344,15 @@ public class AgencyService implements IAgencyService {
         }
     }
 
-//    @Override
-//    public Response queryBookByFID(int historyID) {
-//        List<Book> list = bookDAO.query(historyID);
-//        if(list==null){
-//            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
-//        }else{
-//            return Response.ok(list).header("EntityClass","Book").build();
-//        }
-//    }
+    @Override
+    public Response queryBookByHID(int historyID) {
+        List<Book> list = bookDAO.queryByHistoryID(historyID);
+        if(list==null){
+            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
+        }else{
+            return Response.ok(list).header("EntityClass","Book").build();
+        }
+    }
 
     /**
      * 检验手机号注册时是否存在
@@ -375,5 +375,18 @@ public class AgencyService implements IAgencyService {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
         Date time = sdf.parse(date);
         return historyDao.TicketQuery(startAirport,endAirport,time);
+    }
+
+    @Override
+    public Response modifyPwd(String phone, String pwd1, String pwd2) {
+        List<Agency> list = agencyDAO.findBy("phone",phone,"id",true);
+        Agency agency = list.get(0);
+        if(agency.getPwd().equals(pwd1)){
+            agency.setPwd(pwd2);
+            agencyDAO.save(agency);
+            return Response.ok(agency).header("EntityClass","Agency").build();
+        }else{
+            return Response.ok(new Message(Message.CODE.PWD_IS_WRONG)).header("EntityClass","Message").build();
+        }
     }
 }

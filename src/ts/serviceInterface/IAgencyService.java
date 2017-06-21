@@ -103,11 +103,11 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByFID/{id}/{start}/{end}")
     Response queryBookByFID(@PathParam("id") String flightID, @PathParam("start") int start, @PathParam("end") int end);
-    //通过历史表ID查询
-//    @GET
-//    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-//    @Path("/queryBookByHID/{id}")
-//    Response queryBookByHID(@PathParam("id") int historyID);
+   // 通过历史表ID查询
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/queryBookByHID/{id}")
+    Response queryBookByHID(@PathParam("id") int historyID);
     //验证电话号码是否存在
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
@@ -118,4 +118,9 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryTicket/{start}/{end}/{date}")
     List<History> queryBook(@PathParam("start")String startAirport, @PathParam("end")String endAirport, @PathParam("date")String date) throws ParseException;
+    //修改密码
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/modifyPwd/{phone}/{pwd1}/{pwd2}")
+    Response modifyPwd(@PathParam("phone")String phone,@PathParam("pwd1")String pwd1,@PathParam("pwd2")String pwd2);
 }
