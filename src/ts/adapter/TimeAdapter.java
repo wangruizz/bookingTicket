@@ -10,8 +10,7 @@ public class TimeAdapter extends XmlAdapter<String, Time>{
         String[] s = v.split(":");
         int hour = Integer.valueOf(s[0]);
         int minute = Integer.valueOf(s[1]);
-        int second = Integer.valueOf(s[2]);
-        return new Time(hour, minute, second);
+        return new Time(hour, minute, 0);
     }
 
     @Override

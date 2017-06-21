@@ -59,6 +59,28 @@ public class AgencyService implements IAgencyService {
         this.historyDao = historyDao;
     }
 
+    @Override
+    public Response searchPassenger(int agencyID, int passenger) throws PassengerNotExistException {
+        Passenger passenger1 = passengerDAO.get(passenger);
+        if (passenger1 != null) {
+            if (passenger1.getAgency().getId() == agencyID) {
+                return Response.ok(passenger1).header("EntityClass","Passenger").build();
+            }
+            throw new PassengerNotExistException();
+        }
+        throw new PassengerNotExistException();
+    }
+
+    @Override
+    public List<Passenger> searchPassenger(int agencyID) {
+        Agency agency = agencyDAO.get(agencyID);
+        if (agency == null) {
+            return new ArrayList<>();
+        }
+        List<Passenger> ans = passengerDAO.queryByID(agencyID);
+        return ans;
+    }
+
     /**
      * 查找乘客
      * @param agencyID
@@ -100,7 +122,12 @@ public class AgencyService implements IAgencyService {
      * @return
      */
     @Override
-    public Response modifyPassenger(Passenger passenger) {
+    public Response modifyPassenger(int agencyId, Passenger passenger) {
+        Agency agency = agencyDAO.get(agencyId);
+        if (agency == null) {
+            return Response.ok(new Message(Message.CODE.AGENCY_NOT_EXISTED)).header("EntityClass","Message").build();
+        }
+        passenger.setAgency(agency);
         if(!passengerDAO.complete(passenger)){
             return Response.ok(new Message(Message.CODE.PASSENGER_INCOMPLICT)).header("EntityClass","Message").build();
         }else{
@@ -115,7 +142,12 @@ public class AgencyService implements IAgencyService {
      * @return
      */
     @Override
-    public Response addPassenger(Passenger passenger) {
+    public Response addPassenger(int agencyId, Passenger passenger) {
+        Agency agency = agencyDAO.get(agencyId);
+        if (agency == null) {
+            return Response.ok(new Message(Message.CODE.AGENCY_NOT_EXISTED)).header("EntityClass","Message").build();
+        }
+        passenger.setAgency(agency);
         if(!passengerDAO.complete(passenger)){//如果乘客信息不完整
             return Response.ok(new Message(Message.CODE.PASSENGER_INCOMPLICT)).header("EntityClass","Message").build();
         }else{
@@ -130,15 +162,17 @@ public class AgencyService implements IAgencyService {
      * @return
      */
     @Override
-    public Response deletePassenger(int id){
-        Passenger passenger;
-        if(passengerDAO.queryByID(id).get(0)!=null){
-            passenger = passengerDAO.queryByID(id).get(0);
-            passengerDAO.remove(passenger);
-            return Response.ok(passenger).header("EntityClass","Passenger").build();
-        }else{
+    public Response deletePassenger(int agencyId, int id){
+        List<Passenger> passengers = passengerDAO.queryByID(id);
+        if (passengers.size() < 1) {
             return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass","Message").build();
         }
+        Passenger passenger = passengers.get(0);
+        if (passenger.getAgency().getId() != agencyId) {
+            return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        passengerDAO.remove(passenger);
+        return Response.ok(passenger).header("EntityClass","Passenger").build();
     }
     /**
      * 旅行社登录
@@ -191,7 +225,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public Response modifyAgency(Agency agency) throws PhoneWrongException {
         if(!agencyDAO.complete(agency)){
-            return Response.ok(new Message(Message.CODE.AGENCY_MOTIFY_FAILED)).header("EntityClass","Message").build();
+            return Response.ok(new Message(Message.CODE.AGENCY_MODIFY_FAILED)).header("EntityClass","Message").build();
         }else{
             if(!passengerDAO.match(agency.getPhone())){
                 throw new PhoneWrongException();//电话号码格式不对

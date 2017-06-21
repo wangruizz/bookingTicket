@@ -30,9 +30,8 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
      * @return
      */
     public List<Passenger> queryByID(int agencyID) {
-        List<Agency> agency = agencyDAO.findBy("id",agencyID,"id",true);
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agency", agency.get(0)));
-        return passengers;
+        Agency agency = agencyDAO.get(agencyID);
+        return findBy("id", true, Restrictions.eq("agency", agency));
     }
 
     /**
@@ -90,7 +89,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
      * 已经测试
      */
     public Boolean complete(Passenger passenger){
-        if(passenger.getAgency()==null||passenger.getId()==null||passenger.getIdcard()==null||passenger.getName()==null||passenger.getPhone()==null){
+        if(passenger.getAgency()==null||passenger.getIdcard()==null||passenger.getName()==null||passenger.getPhone()==null){
             return false;
         }else{
             return true;

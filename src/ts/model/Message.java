@@ -103,15 +103,17 @@ public class Message {
         public static final int COMPANY_NOT_EXIST = 5001;
 
 
-
         //和旅行社有关 6000-6999
         public static final int AGENCY_LOGIN_FAILED = 6000;
         public static final int AGENCY_REGISTER_FAILED = 6001;//注册失败
-        public static final int AGENCY_MOTIFY_FAILED = 6002;//注册失败
+        public static final int AGENCY_MODIFY_FAILED = 6002;//注册失败
+        public static final int AGENCY_NOT_EXISTED = 6002;//注册失败
+
         //和旅客相关 7000-7999
         public static final int  PASSENGER_INCOMPLICT = 7000;
         public static final int PASSENGER_NOT_EXIST = 7001;
         public static final int PHONE_IS_WRONG = 7002;
+
         //订单有关  8000-8999
         public static final int BOOK_FAILED = 8000;//预定失败
         public static final int BOOK_CANCEL_FAILED = 8001;//取消订单失败
@@ -128,7 +130,7 @@ public class Message {
         map.put(CODE.AGENCY_LOGIN_FAILED,"登录信息有误，无法登录，请重试");
         map.put(CODE.PASSENGER_NOT_EXIST,"乘客不存在,操作失败");//passenger not exist
         map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");//passenger not exist
-        map.put(CODE.AGENCY_MOTIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
+        map.put(CODE.AGENCY_MODIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
         map.put(CODE.BOOK_FAILED,"预订失败");
         map.put(CODE.BOOK_CANCEL_FAILED,"取消订单失败");
         map.put(CODE.BOOK_PAY_FAILED,"付款失败");
@@ -148,5 +150,6 @@ public class Message {
         map.put(CODE.TICKET_QUERY_FAILED, "机票查询失败");
         map.put(CODE.DATE_FORMAT_ERROR, "日期格式错误");
         map.put(CODE.TICKET_HAS_PAYED, "机票已付款");
+        map.put(CODE.AGENCY_NOT_EXISTED, "旅行社不存在");
     }
 }
