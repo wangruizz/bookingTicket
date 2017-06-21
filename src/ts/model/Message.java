@@ -118,6 +118,7 @@ public class Message {
         public static final int BOOK_PRINT_FAILED = 8003;//打印机票失败
         public static final int BOOK_NOT_ALL = 8004;//订单信息不完整，预订失败
         public static final int BOOK_QUERY_FAILED = 8005;//订单查询失败
+        public static final int TICKET_QUERY_FAILED = 8005;//机票查询失败
     }
 
     static {
@@ -142,5 +143,6 @@ public class Message {
         map.put(CODE.TOKEN_ERROR, "Token错误");
         map.put(CODE.BAD_REQUEST, "请求错误");
         map.put(CODE.PHONE_IS_WRONG, "手机号格式不对");
+        map.put(CODE.TICKET_QUERY_FAILED, "机票查询失败");
     }
 }

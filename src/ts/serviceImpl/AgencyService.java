@@ -12,6 +12,8 @@ import ts.serviceInterface.IAgencyService;
 import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -165,7 +167,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public Agency AgencyRegister(Agency agency) throws RegisterException, PhoneWrongException {
         String phone = agency.getPhone();
-        if(agencyDAO.findBy("phone",phone,"id",true)!=null){
+        if(!agencyDAO.checkPhone(phone)){
             throw new RegisterException();//因为手机号已经注册过，所以显示注册失败
         }else{
             if(!passengerDAO.match(phone)){
@@ -302,6 +304,42 @@ public class AgencyService implements IAgencyService {
 //            return Response.ok(list).header("EntityClass","Book").build();
 //        }
 //    }
+
+    /**
+     * 检验手机号注册时是否存在
+     * @param phone
+     * @return
+     */
+    @Override
+    public Response checkPhone(String phone) {
+        if(!agencyDAO.checkPhone(phone)){
+           return Response.ok(new Message(Message.CODE.AGENCY_REGISTER_FAILED)).header("EntityClass","Message").build();//因为手机号已经注册过，所以显示注册失败
+        }else{
+            return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
+        }
+    }
+    /**
+     * 剩余机票查询
+     */
+    @Override
+    public Response queryBook(String startAirport, String endAirport, Date date) {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date time = new Date();
+        try {
+            time = sdf.parse(sdf.format(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<History> list = historyDao.TicketQuery(startAirport,endAirport,time);
+       if(list==null){
+           return Response.ok(new Message(Message.CODE.TICKET_QUERY_FAILED)).header("EntityClass","Message").build();
+       }else{
+           return  Response.ok(list).header("EntityClass","History").build();
+       }
+    }
+
+
+
 
 
 }
