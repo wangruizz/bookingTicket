@@ -41,12 +41,7 @@ public class BaseDao<T,PK extends Serializable> extends HibernateDaoSupport impl
      */
     @Override
     public T get(PK id) {
-        //这里处理一下，不知道老师为什么不用get，而用load
-        try{
-            return getHibernateTemplate().load(getEntityClass(), id);
-        }catch (Exception e) {
-            return null;
-        }
+        return getHibernateTemplate().get(getEntityClass(), id);
     }
 
     /**
@@ -134,7 +129,7 @@ public class BaseDao<T,PK extends Serializable> extends HibernateDaoSupport impl
      */
     @Override
     public void save(T entity) {
-        getHibernateTemplate().saveOrUpdate(entity);
+        getHibernateTemplate().save(entity);
     }
 
     /**
