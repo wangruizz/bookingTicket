@@ -5,7 +5,10 @@ import ts.daoBase.BaseDao;
 import ts.model.Airport;
 import ts.model.Company;
 import ts.model.Flight;
+import ts.model.History;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -39,22 +42,23 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 旅行社根据当前时间（服务器获取）、出发日期、出发机场和目标机场ID，查询航班
-     *
+     * 已经测试
      * @return
      */
-    public List<Flight> query(Date departureDate, int startPortID, int arrivePortID) {
-        java.sql.Date currentDate = new java.sql.Date(System.currentTimeMillis());
+    public List<Flight> query(Date departureDate, String startPortID, String arrivePortID) {
+        Date currentDate = new Date(System.currentTimeMillis());
         Airport airport = airportDAO.get(startPortID);
         Airport airport1 = airportDAO.get(arrivePortID);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         List<Flight> flights;
-        if (currentDate.equals(departureDate)) {//出发日期是今天
+        if (sdf.format(currentDate).equals(sdf.format(departureDate))) {//出发日期是今天
             long timestamp = System.currentTimeMillis();
             timestamp += 30 * 60 * 1000;//当前时间加上半小时
             flights = findBy("startTime", true,
                     Restrictions.eq("startAirport", airport),
                     Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL),
                     Restrictions.eq("arriveAirport", airport1),
-                    Restrictions.ge("startTime", timestamp));
+                    Restrictions.ge("startTime", new Time(timestamp)));
         } else {
             flights = findBy("startTime", true,
                     Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL),
@@ -67,7 +71,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 航班恢复，这里只在航班表里改了状态
-     *
+     * 已经测试
      * @return
      */
     public boolean resumeFlight(String flightID) {
@@ -83,7 +87,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 航班取消，这里只在航班表里改了状态
-     *
+     * 已经测试
      * @return
      */
     public boolean cancelFlight(String flightID) {
@@ -106,6 +110,8 @@ public class FlightDAO extends BaseDao<Flight, String> {
      * @return
      */
     public Flight add(String companyUName, Flight flight) {
+        Company company = companyDAO.get(companyUName);
+        flight.setCompany(company);
         save(flight);
         return flight;
     }
