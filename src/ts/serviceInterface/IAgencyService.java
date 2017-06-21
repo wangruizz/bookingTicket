@@ -91,9 +91,9 @@ public interface IAgencyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByFID/{id}/{start}/{end}")
     Response queryBookByFID(@PathParam("id") String flightID, @PathParam("start") int start, @PathParam("end") int end);
-    //通过历史表ID查询
-    @POST
-    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/queryBookByHID/{id}")
-    Response queryBookByFID(@PathParam("id") int historyID);
+//    //通过历史表ID查询
+//    @POST
+//    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+//    @Path("/queryBookByHID/{id}")
+//    Response queryBookByFID(@PathParam("id") int historyID);
 }

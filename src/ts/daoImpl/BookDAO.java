@@ -62,31 +62,23 @@ public class BookDAO extends BaseDao<Book,Integer> {
         List<Passenger> passengers = passengerDAO.queryByPhone(phone);
         List<Book> books = new ArrayList<>();
         passengers.forEach(passenger -> {
-            List<Book> tmp = findBy("passID", passenger, "id", true);
+            List<Book> tmp = findBy("passenger", passenger, "id", true);
             books.addAll(tmp);
         });
         return books.size() == 0 ? null : books;
     }
 
     //通过旅行社ID，订单状态查询
-    public List<Book> query(int agencyID, int ... status) {
+    public List<Book> query(int agencyID, int status) {
         List<Passenger> passengers = passengerDAO.queryByID(agencyID);
+        System.out.println("passengers"+passengers.size());
         List<Book> books = new ArrayList<>();
-        if (status.length == 1) {
             passengers.forEach(passenger -> {
                 List<Book> tmp = findBy("id", true,
-                        Restrictions.eq("status", status[0]),
-                        Restrictions.eq("passID", passenger));
+                        Restrictions.eq("status", status),
+                        Restrictions.eq("passenger", passenger));
                 books.addAll(tmp);
             });
-        } else {
-            passengers.forEach(passenger -> {
-                List<Book> tmp = findBy("id", true,
-                        Restrictions.eq("passID", passenger));
-                books.addAll(tmp);
-            });
-        }
-
         return books.size() == 0 ? null : books;
     }
 

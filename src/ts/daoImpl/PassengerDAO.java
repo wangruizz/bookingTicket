@@ -3,6 +3,7 @@ package ts.daoImpl;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
+import ts.model.Agency;
 import ts.model.Passenger;
 
 import java.util.ArrayList;
@@ -13,8 +14,16 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     PassengerDAO() {
         super(Passenger.class);
     }
+    private  AgencyDAO agencyDAO;
 
-//    //增加旅客
+    public AgencyDAO getAgencyDAO() {
+        return agencyDAO;
+    }
+
+    public void setAgencyDAO(AgencyDAO agencyDAO) {
+        this.agencyDAO = agencyDAO;
+    }
+    //    //增加旅客
 //    public Passenger add(int agencyID, Passenger passenger) {
 //
 //        return new Passenger();
@@ -34,7 +43,8 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
 
     //通过旅行社ID查询
     public List<Passenger> queryByID(int agencyID) {
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("id", agencyID));
+        List<Agency> agency = agencyDAO.findBy("id",agencyID,"id",true);
+        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agency", agency.get(0)));
         return passengers;
     }
 

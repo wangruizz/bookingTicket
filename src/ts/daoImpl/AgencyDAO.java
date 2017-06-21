@@ -19,22 +19,20 @@ public class AgencyDAO extends BaseDao<Agency,Integer>{
         return (agencies == null || agencies.size() == 0) ? true : false;
     }
 
-//    //注册（似乎没有存在的必要,直接在service层中调用save即可）
-//    public Agency register(Agency agency) {
-//        save(agency);
-//        return new Agency();
-//    }
-
     //登陆
     public Agency login(String phone, String pwd) {
         List<Agency> agencies = findBy("phone", true, Restrictions.eq("phone", phone));
         return (agencies != null && agencies.size() > 0) ? agencies.get(0) : null;
     }
 
-    //修改内容
+    /**
+     * 修改内容
+     * @param agency
+     * @return
+     */
     public Agency modify(Agency agency) {
         update(agency);
-        return new Agency();
+        return agency;
     }
     public Boolean complete(Agency agency){
         if(agency.getName()==null||agency.getPhone()==null){

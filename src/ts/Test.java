@@ -1,16 +1,18 @@
 package ts;
 
+import org.hibernate.criterion.Restrictions;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import ts.daoImpl.AirCompanyDAO;
-import ts.daoImpl.AirportDAO;
-import ts.daoImpl.FlightDAO;
-import ts.daoImpl.HistoryDao;
+import ts.daoImpl.*;
+import ts.model.Agency;
 import ts.model.Book;
+import ts.model.History;
+import ts.model.Passenger;
 import ts.util.DateProcess;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 
 /**
@@ -20,81 +22,28 @@ import javax.annotation.Resource;
 @ContextConfiguration("classpath:applicationContext.xml")
 public class Test {
     @Resource
-    AirportDAO airportDAO;
+    PassengerDAO passengerDAO;
 
     @Resource
-    HistoryDao historyDAO;
+    BookDAO bookDAO;
 
     @Resource
     FlightDAO flightDAO;
 
     @Resource
     AirCompanyDAO airCompanyDAO;
+    @Resource
+    AgencyDAO agencyDAO;
 
     @org.junit.Test
     public void main() {
-//        /**
-//         * 机场
-//         */
-//        Airport airport = airportDAO.get("AAT");
-//        System.out.println(airport.toString());
-//        /**
-//         * 航班
-//         */
-//        Flight flight  = flightDAO.get("2");
-//        System.out.println(flight.toString());
-//        /**
-//         * 公司
-//         */
-//        Company company = airCompanyDAO.get("name");
-//        System.out.println(company.toString());
-//
-//
-
-
-
-
-
-
-
-        // Test t = new Test();
-//        List<Airport> list = airportDAO.getAll();
-//        System.out.println(list);
-
-//        System.out.println("************是否存在***************");
-//        System.out.println(airCompanyDAO.checkHasExist("name"));
-//        System.out.println(airCompanyDAO.checkHasExist("d"));
-//
-//        System.out.println("*************register success****************");
-//
-//        System.out.println("************airCompanyDAO*************");
-//        System.out.println("************airCompanyDAO getall*************");
-//        System.out.println(flightDAO.getAll().toString());
-//        System.out.println("************airCompanyDAO cancel*************");
-//        System.out.println(flightDAO.cancel("1"));
-//        System.out.println("************airCompanyDAO resume*************");
-//        System.out.println(flightDAO.resumeFlight("1"));
-//        System.out.println("************airCompanyDAO check*************");
-//        System.out.println(flightDAO.CheckHasExist("1"));
-//        System.out.println(flightDAO.CheckHasExist("2"));
-
-//        flight.setId("12");
-//        System.out.println(flightDAO.add("name",flight));
-//        System.out.println(flightDAO.query("王思懿"));
-//        flightDAO.resumeCompany("王思懿");
-//        historyDAO.add("2", DateProcess.NowSqlDate());
-//        historyDAO.delay("2",DateProcess.NowSqlDate(),java.sql.Time.valueOf("02:44:53"));
-//        System.out.println(historyDAO.queryHistory("2"));
-//        System.out.println(historyDAO.queryHistory("2",DateProcess.NowSqlDate()));
-//        System.out.println(historyDAO.queryID("2",DateProcess.NowSqlDate()));
-        /*!!!!!!!!!测试到这里出现问题*/
-        System.out.println("商务做剩余"+historyDAO.queryRemain("2",DateProcess.NowSqlDate(), Book.SEAT_TYPE.BUSINESS_SEAT));
-        System.out.println("经济做剩余"+historyDAO.queryRemain("2"+"2",DateProcess.NowSqlDate(), Book.SEAT_TYPE.ECONOMY_SEAT));
-        System.out.println("************airCompanyDAO*************");
-        System.out.println("************airCompanyDAO*************");
-        System.out.println("************airCompanyDAO*************");
-        System.out.println("************airCompanyDAO*************");
-        System.out.println("************airCompanyDAO*************");
-
+       // List<Passenger> list2 = passengerDAO.queryByID(13);
+    //    Passenger passenger = list2.get(0);
+        List<Book> list = bookDAO.query(13,1);
+        System.out.println(list==null?0:list);
+        List<Agency> agency = agencyDAO.findBy("id",13,"id",true);
+        Agency agency1 = agency.get(0);
+        agency1.setName("王芮");
+        agencyDAO.modify(agency1);
     }
 }

@@ -293,15 +293,15 @@ public class AgencyService implements IAgencyService {
         }
     }
 
-    @Override
-    public Response queryBookByFID(int historyID) {
-        List<Book> list = bookDAO.query(historyID);
-        if(list==null){
-            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(list).header("EntityClass","Book").build();
-        }
-    }
+//    @Override
+//    public Response queryBookByFID(int historyID) {
+//        List<Book> list = bookDAO.query(historyID);
+//        if(list==null){
+//            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
+//        }else{
+//            return Response.ok(list).header("EntityClass","Book").build();
+//        }
+//    }
 
 
 }

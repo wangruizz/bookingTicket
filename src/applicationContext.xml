@@ -89,6 +89,7 @@
     </bean>
     <bean id="passengerDAO" class="ts.daoImpl.PassengerDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="agencyDAO" ref="agencyDAO"/>
     </bean>
     <bean id="airCompanyDAO" class="ts.daoImpl.AirCompanyDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
