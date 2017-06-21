@@ -1,5 +1,6 @@
 package ts.serviceImpl;
 
+import org.hibernate.criterion.Restrictions;
 import ts.daoImpl.AgencyDAO;
 import ts.daoImpl.BookDAO;
 import ts.daoImpl.HistoryDao;
@@ -195,8 +196,21 @@ public class AgencyService implements IAgencyService {
             if(!passengerDAO.match(agency.getPhone())){
                 throw new PhoneWrongException();//电话号码格式不对
             }else {
-                agencyDAO.save(agency);
-                return Response.ok(agency).header("EntityClass", "Agency").build();
+                Agency agency1 = agencyDAO.findBy("id", false, Restrictions.eq("phone", agency.getPhone())).get(0);
+                if (agency.getPwd() != null) {
+                    agency1.setPwd(agency.getPwd());
+                }
+                if (agency.getAddress() != null) {
+                    agency1.setAddress(agency.getAddress());
+                }
+                if (agency.getContacts() != null) {
+                    agency1.setContacts(agency.getContacts());
+                }
+                if (agency.getName() != null) {
+                    agency1.setName(agency.getName());
+                }
+                agencyDAO.save(agency1);
+                return Response.ok(agency1).header("EntityClass", "Agency").build();
             }
         }
     }
