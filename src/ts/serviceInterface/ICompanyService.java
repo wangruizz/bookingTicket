@@ -80,4 +80,9 @@ public interface ICompanyService {
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/checkUserName/{name}")
     Response checkUserName(@PathParam("name") String name);
+    //修改密码
+    @GET
+    @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
+    @Path("/modifyPwd/{username}/{pwd1}/{pwd2}")
+    Response modifyPwd(@PathParam("username")String username,@PathParam("pwd1")String pwd1,@PathParam("pwd2")String pwd2);
 }

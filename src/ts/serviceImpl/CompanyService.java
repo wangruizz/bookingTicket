@@ -1,6 +1,7 @@
 package ts.serviceImpl;
 
 import ts.daoImpl.*;
+import ts.model.Agency;
 import ts.model.Company;
 import ts.model.Flight;
 import ts.model.Message;
@@ -211,6 +212,19 @@ public class CompanyService implements ICompanyService {
             return Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass","Message").build();
         }else{
             return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
+        }
+    }
+
+    @Override
+    public Response modifyPwd(String username, String pwd1, String pwd2) {
+        List<Company> list = airCompanyDAO.findBy("username",username,"id",true);
+        Company company = list.get(0);
+        if(company.getPwd().equals(pwd1)){
+            company.setPwd(pwd2);
+            airCompanyDAO.save(company);
+            return Response.ok(company).header("EntityClass","Company").build();
+        }else{
+            return Response.ok(new Message(Message.CODE.PWD_IS_WRONG)).header("EntityClass","Message").build();
         }
     }
 
