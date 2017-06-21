@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
@@ -78,7 +79,7 @@ public class Agency implements Serializable {
         this.address = address;
     }
 
-    @XmlElement
+    @XmlAttribute
     @Basic
     @Column(name = "contacts", nullable = true, length = 254)
     public String getContacts() {
@@ -89,7 +90,7 @@ public class Agency implements Serializable {
         this.contacts = contacts;
     }
 
-    @XmlElement
+    @XmlAttribute
     @Basic
     @Column(name = "phone", nullable = false, length = 254)
     public String getPhone() {
