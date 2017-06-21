@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
@@ -19,6 +20,7 @@ public class Company implements Serializable{
 
     private String token;
 
+    @XmlElement
     @Transient
     public String getToken() {
         return token;
@@ -29,9 +31,10 @@ public class Company implements Serializable{
     }
 
     private static final long serialVersionUID = -3267943602377867497L;
+
+    @XmlElement
     @Basic
     @Column(name = "name", nullable = false, length = 254)
-
     public String getName() {
         return name;
     }
@@ -40,6 +43,7 @@ public class Company implements Serializable{
         this.name = name;
     }
 
+    @XmlElement
     @Id
     @Column(name = "username", nullable = false, length = 254)
     public String getUsername() {
@@ -50,6 +54,7 @@ public class Company implements Serializable{
         this.username = username;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "pwd", nullable = false, length = 254)
     public String getPwd() {
@@ -60,6 +65,7 @@ public class Company implements Serializable{
         this.pwd = pwd;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "phone", nullable = true, length = 254)
     public String getPhone() {

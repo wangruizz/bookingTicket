@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.text.ParseException;
 
 @Provider
 public class InvokeFaultExceptionMapper implements ExceptionMapper {
@@ -24,11 +25,13 @@ public class InvokeFaultExceptionMapper implements ExceptionMapper {
         ex.printStackTrace();
         System.err.println("\n\n-----------Error Message End---------------\n\n");
 
-        if (ex instanceof BadRequestException) {
+        if (ex instanceof ParseException){
+            rb.entity(new Message(Message.CODE.DATE_FORMAT_ERROR));
+        }else if (ex instanceof BadRequestException) {
             rb.entity(new Message(Message.CODE.BAD_REQUEST));
-        }else if (ex instanceof ClientErrorException){
-                rb.entity(new Message(Message.CODE.URL_NOT_FOUND));
+        } else if (ex instanceof ClientErrorException){
+            rb.entity(new Message(Message.CODE.URL_NOT_FOUND));
         }
         return rb.build();
     }
-}  
+}

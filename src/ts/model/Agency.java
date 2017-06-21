@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
@@ -20,6 +21,7 @@ public class Agency implements Serializable {
     private String phone;
     private String token; //token 信息
 
+    @XmlElement
     @Transient
     public String getToken() {
         return token;
@@ -29,6 +31,8 @@ public class Agency implements Serializable {
         this.token = token;
     }
     private static final long serialVersionUID = -3267943602377867497L;
+
+    @XmlElement
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_agency")
@@ -41,6 +45,7 @@ public class Agency implements Serializable {
         this.id = id;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "pwd", nullable = false, length = 254)
     public String getPwd() {
@@ -51,6 +56,7 @@ public class Agency implements Serializable {
         this.pwd = pwd;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "name", nullable = false, length = 254)
     public String getName() {
@@ -61,6 +67,7 @@ public class Agency implements Serializable {
         this.name = name;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "address", nullable = true, length = 254)
     public String getAddress() {
@@ -71,6 +78,7 @@ public class Agency implements Serializable {
         this.address = address;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "contacts", nullable = true, length = 254)
     public String getContacts() {
@@ -81,6 +89,7 @@ public class Agency implements Serializable {
         this.contacts = contacts;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "phone", nullable = false, length = 254)
     public String getPhone() {

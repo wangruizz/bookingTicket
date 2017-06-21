@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
@@ -15,6 +16,8 @@ public class Airport implements Serializable{
     private String id;
     private String name;
     private static final long serialVersionUID = -3267943602377867497L;
+
+    @XmlElement
     @Id
     @Column(name = "id", nullable = false, length = 4)
     public String getId() {
@@ -25,6 +28,7 @@ public class Airport implements Serializable{
         this.id = id;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "name", nullable = false, length = 254)
     public String getName() {

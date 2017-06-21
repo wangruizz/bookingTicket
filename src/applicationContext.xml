@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/util
      http://www.springframework.org/schema/util/spring-util-4.0.xsd
-     http://www.springframework.org/schema/context
-     http://www.springframework.org/schema/context/spring-context-4.0.xsd
      http://www.springframework.org/schema/tx
      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
@@ -22,18 +20,15 @@
         </property>
         <property name="hibernateProperties">
             <props>
-                <prop key="hibernate.dialect">
-                    org.hibernate.dialect.MySQLDialect
-                </prop>
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
                 <prop key="hibernate.show_sql">true</prop>
                 <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.connection.url">jdbc:mysql://localhost:3306/ticketorder</prop>
                 <prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
-                <!--prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop -->
             </props>
         </property>
 
-        <property name="packagesToScan">	<!--不知道为了什么,这里必须要有 -->
+        <property name="packagesToScan">
             <list>
                 <value>ts.model</value>
                 <value>ts.daoBase</value>
@@ -80,6 +75,7 @@
         <property name="sessionFactory" ref="sessionFactory"/>
         <property name="bookDAO" ref="bookDAO"/>
         <property name="flightDAO" ref="flightDAO"/>
+        <property name="airportDAO" ref="airportDAO"/>
     </bean>
     <bean id="bookDAO" class="ts.daoImpl.BookDAO">
         <property name="sessionFactory" ref="sessionFactory"/>
@@ -101,7 +97,7 @@
 
     </bean>
     <!-- REST服务的注解例子 -->
-    <jaxrs:server id="Service1" address="/REST">
+    <jaxrs:server id="Service" address="/REST">
         <jaxrs:serviceBeans>
             <bean class="ts.serviceImpl.CompanyService">
                 <property name="airportDAO" ref="airportDAO"/>
@@ -132,9 +128,6 @@
         </jaxrs:languageMappings>
     </jaxrs:server>
 
-    <!-- JsonProvider的属性说明: 1. dropRootElement 默认为false，则Json格式会将类名作为第一个节点，如{Customer:{"id":123,"name":"John"}}，如果配置为true，则Json格式为{"id":123,"name":"John"}，而Gson等Json包会解析格式为后者。
-        2. dropCollectionWrapperElement属性默认为false，则当遇到Collection时，Json会在集合中将容器中类名作为一个节点，比如{"Customer":{{"id":123,"name":"John"}}}，而设置为false，则JSon格式为{{"id":123,"name":"John"}}
-        3. serializeAsArray属性默认为false，则当遇到Collecion时，格式为{{"id":123,"name":"John"}}，如果设置为true，则格式为[{"id":123,"name":"john"}]，而Gson等解析为后者。 -->
     <util:list id="jsonKeys">
         <value>app</value>
         <value>comment</value>
@@ -144,9 +137,17 @@
         <value>application/json</value>
         <value>application/jettison</value>
     </util:list>
+
+    <!-- JsonProvider的属性说明:
+    1. dropRootElement 默认为false，则Json格式会将类名作为第一个节点，如{Customer:{"id":123,"name":"John"}}，
+    如果配置为true，则Json格式为{"id":123,"name":"John"}，而Gson等Json包会解析格式为后者。
+    2. dropCollectionWrapperElement属性默认为false，则当遇到Collection时，
+    Json会在集合中将容器中类名作为一个节点，比如{"Customer":{{"id":123,"name":"John"}}}，
+    而设置为false，则JSon格式为{{"id":123,"name":"John"}}
+    3. serializeAsArray属性默认为false，则当遇到Collecion时，格式为{{"id":123,"name":"John"}}，
+    如果设置为true，则格式为[{"id":123,"name":"john"}]，而Gson等解析为后者。 -->
+
     <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
-        <!-- <property name="dropRootElement" value="true" /> <property name="dropCollectionWrapperElement"
-            value="true" /> <property name="serializeAsArray" value="true" /> -->
         <property name="serializeAsArray" value="true" />
         <property name="arrayKeys" ref="jsonKeys" />
         <property name="produceMediaTypes" ref="jsonTypes" />

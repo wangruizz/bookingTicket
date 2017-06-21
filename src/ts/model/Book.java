@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -21,6 +22,8 @@ public class Book implements Serializable{
     private Passenger passenger;
     private History history;
     private static final long serialVersionUID = -3267943602377867497L;
+
+    @XmlElement
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_book")
@@ -33,6 +36,7 @@ public class Book implements Serializable{
         this.id = id;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "seatNum", nullable = false)
     public Integer getSeatNum() {
@@ -43,6 +47,7 @@ public class Book implements Serializable{
         this.seatNum = seatNum;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "seatType", nullable = false)
     public Integer getSeatType() {
@@ -53,6 +58,7 @@ public class Book implements Serializable{
         this.seatType = seatType;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "orderTime", nullable = false)
     public Timestamp getOrderTime() {
@@ -63,6 +69,7 @@ public class Book implements Serializable{
         this.orderTime = orderTime;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "status", nullable = false)
     public Integer getStatus() {
@@ -72,6 +79,8 @@ public class Book implements Serializable{
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+    @XmlElement
     @OneToOne
     @JoinColumn(name = "passID",referencedColumnName = "id")
     public Passenger getPassenger() {
@@ -81,6 +90,8 @@ public class Book implements Serializable{
     public void setPassenger(Passenger passenger) {
         this.passenger = passenger;
     }
+
+    @XmlElement
     @OneToOne
     @JoinColumn(name = "historyID",referencedColumnName = "id")
     public History getHistory() {

@@ -2,6 +2,7 @@ package ts.daoImpl;
 
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
+import ts.model.Airport;
 import ts.model.Book;
 import ts.model.Flight;
 import ts.model.History;
@@ -18,6 +19,15 @@ public class HistoryDao extends BaseDao<History,Integer> {
 
     private BookDAO bookDAO;
     private FlightDAO flightDAO;
+    private AirportDAO airportDAO;
+
+    public AirportDAO getAirportDAO() {
+        return airportDAO;
+    }
+
+    public void setAirportDAO(AirportDAO airportDAO) {
+        this.airportDAO = airportDAO;
+    }
 
     public FlightDAO getFlightDAO() {
         return flightDAO;
@@ -184,19 +194,22 @@ public class HistoryDao extends BaseDao<History,Integer> {
     /**
      * 查询剩余机票数量
      */
-    public List<History> TicketQuery(String startAirport, String endAirport, Date date){
-        List<Flight> list = flightDAO.findBy("id",true,Restrictions.eq("startAirport",startAirport),Restrictions.eq("endAirport",endAirport));
-        List<History> list1 = new ArrayList<>();
-        for (Flight i:list
-             ) {
-            List<History> list2 = findBy("id",true,Restrictions.eq("departureDate",date),Restrictions.eq("flightID",i.getId()));
-            if(list2.size()==0){
-                continue;
-            }else{
+    public ArrayList<History> TicketQuery(String startAirport, String endAirport, Date date){
+        Airport start = airportDAO.get(startAirport);
+        Airport end = airportDAO.get(endAirport);
+        List<Flight> list = flightDAO.findBy("id",true,Restrictions.eq("startAirport",start),Restrictions.eq("arriveAirport", end));
+        ArrayList<History> list1 = new ArrayList<>();
+        Time now = new Time(System.currentTimeMillis());
+        for (Flight i:list) {
+//            if (i.getStartTime().getTime() < now.getTime()) {
+//                continue;
+//            }
+            List<History> list2 = findBy("id",true,Restrictions.eq("departureDate",date),Restrictions.eq("flight",i));
+            if(list2.size()>0){
                 list1.add(list2.get(0));
             }
         }
-        return list1.size()>0?list1:null;
+        return list1;
     }
 
 }

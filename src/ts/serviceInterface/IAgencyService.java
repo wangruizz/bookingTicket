@@ -2,6 +2,7 @@ package ts.serviceInterface;
 
 import ts.model.Agency;
 import ts.model.Book;
+import ts.model.History;
 import ts.model.Passenger;
 import ts.serviceException.PassengerNotExistException;
 import ts.serviceException.PhoneWrongException;
@@ -10,6 +11,7 @@ import ts.serviceException.RegisterException;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -104,5 +106,5 @@ public interface IAgencyService {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryTicket/{start}/{end}/{date}")
-    Response queryBook(@PathParam("start")String startAirport,@PathParam("end")String endAirport,@PathParam("date")Date date);
+    List<History> queryBook(@PathParam("start")String startAirport, @PathParam("end")String endAirport, @PathParam("date")String date) throws ParseException;
 }

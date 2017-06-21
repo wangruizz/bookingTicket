@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
@@ -19,6 +20,8 @@ public class Passenger implements Serializable{
     private String phone;
     private Agency agency;
     private static final long serialVersionUID = -3267943602377867497L;
+
+    @XmlElement
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_passenger")
@@ -31,6 +34,7 @@ public class Passenger implements Serializable{
         this.id = id;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "sex", nullable = false)
     public int getSex() {
@@ -41,6 +45,7 @@ public class Passenger implements Serializable{
         this.sex = sex;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "name", nullable = false, length = 254)
     public String getName() {
@@ -51,6 +56,7 @@ public class Passenger implements Serializable{
         this.name = name;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "idcard", nullable = false, length = 254)
     public String getIdcard() {
@@ -61,6 +67,7 @@ public class Passenger implements Serializable{
         this.idcard = idcard;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "phone", nullable = false, length = 254)
     public String getPhone() {
@@ -70,6 +77,8 @@ public class Passenger implements Serializable{
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    @XmlElement
     @OneToOne
     @JoinColumn(name = "agencyID",referencedColumnName = "id")
     public Agency getAgency() {
