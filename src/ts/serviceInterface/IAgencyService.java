@@ -37,18 +37,18 @@ public interface IAgencyService {
     //修改乘客信息
     @POST
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/modifyPassenger")
-    Response modifyPassenger(Passenger passenger);
+    @Path("/modifyPassenger/{agencyId}")
+    Response modifyPassenger(@PathParam("agencyId") int agencyId, Passenger passenger);
     //增加乘客信息
     @POST
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/addPassenger")
-    Response addPassenger(Passenger passenger);
+    @Path("/addPassenger/{agencyId}")
+    Response addPassenger(@PathParam("agencyId") int agencyId, Passenger passenger);
     //删除乘客信息
     @GET
     @Produces({MediaType.APPLICATION_XML,MediaType.APPLICATION_JSON})
-    @Path("/deletePassenger/{id}")
-    Response deletePassenger(@PathParam("id") int id);
+    @Path("/deletePassenger/{agencyId}/{id}")
+    Response deletePassenger(@PathParam("agencyId") int agencyId, @PathParam("id") int id);
     //旅行社登录
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})

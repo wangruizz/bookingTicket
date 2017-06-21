@@ -107,6 +107,7 @@ public class Message {
         public static final int AGENCY_LOGIN_FAILED = 6000;
         public static final int AGENCY_REGISTER_FAILED = 6001;//注册失败
         public static final int AGENCY_MODIFY_FAILED = 6002;//注册失败
+        public static final int AGENCY_NOT_EXISTED = 6002;//注册失败
 
         //和旅客相关 7000-7999
         public static final int  PASSENGER_INCOMPLICT = 7000;
@@ -149,5 +150,6 @@ public class Message {
         map.put(CODE.TICKET_QUERY_FAILED, "机票查询失败");
         map.put(CODE.DATE_FORMAT_ERROR, "日期格式错误");
         map.put(CODE.TICKET_HAS_PAYED, "机票已付款");
+        map.put(CODE.AGENCY_NOT_EXISTED, "旅行社不存在");
     }
 }
