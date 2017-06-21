@@ -2,10 +2,13 @@ package ts.model;
 
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
+import ts.adapter.TimeAdapter;
+import ts.adapter.TimestampAdapter;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
@@ -43,6 +46,7 @@ public class History implements Serializable{
         this.id = id;
     }
 
+    @XmlJavaTypeAdapter(TimestampAdapter.class)
     @XmlElement
     @Version
     public Timestamp getVersion() {
@@ -64,6 +68,7 @@ public class History implements Serializable{
         this.departureDate = departureDate;
     }
 
+    @XmlJavaTypeAdapter(TimeAdapter.class)
     @XmlElement
     @Basic
     @Column(name = "delayTime", nullable = false)
