@@ -104,7 +104,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
     /**
      * 航空公司给自己增加航班
      * 服务层传过来的flight里已经有了companyUName,服务层需要先判断id是否存在
-     *
+     * 已经测试
      * @param companyUName
      * @param flight
      * @return
@@ -118,7 +118,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 航空公司查询自己的全部航班
-     *
+     * 已经测试
      * @param companyUName
      * @return
      */
@@ -129,7 +129,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 取消或恢复一个航空公司的全部航班（未经测试）
-     *
+     * 已经测试
      * @param companyUName
      * @return
      */
@@ -153,7 +153,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 取消一个航空公司的全部航班
-     *
+     * 已经测试
      * @param companyUName
      * @return
      */
@@ -172,7 +172,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
 
     /**
      * 恢复一个航空公司的全部航班
-     *
+     * 已经测试
      * @param companyUName
      * @return
      */
@@ -190,6 +190,12 @@ public class FlightDAO extends BaseDao<Flight, String> {
         }
     }
 
+    /**
+     * 判断航班是否存在
+     * 已经测试
+     * @param flightID
+     * @return
+     */
     public boolean checkHasExist(String flightID) {
         return get(flightID) != null;
     }

@@ -34,8 +34,6 @@ public class Flight implements Serializable{
     @XmlElement
     @Id
     @Column(name = "id", nullable = false, length = 25)
-    @GeneratedValue(generator="MODEL_flight")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_flight", strategy="native")
     public String getId() {
         return id;
     }
