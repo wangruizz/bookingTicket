@@ -322,24 +322,9 @@ public class AgencyService implements IAgencyService {
      * 剩余机票查询
      */
     @Override
-    public Response queryBook(String startAirport, String endAirport, Date date) {
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date time = new Date();
-        try {
-            time = sdf.parse(sdf.format(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        List<History> list = historyDao.TicketQuery(startAirport,endAirport,time);
-       if(list==null){
-           return Response.ok(new Message(Message.CODE.TICKET_QUERY_FAILED)).header("EntityClass","Message").build();
-       }else{
-           return  Response.ok(list).header("EntityClass","History").build();
-       }
+    public List<History> queryBook(String startAirport, String endAirport, String date) throws ParseException {
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        Date time = sdf.parse(date);
+        return historyDao.TicketQuery(startAirport,endAirport,time);
     }
-
-
-
-
-
 }

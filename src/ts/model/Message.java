@@ -78,6 +78,7 @@ public class Message {
     }
 
     public static final class CODE{
+        public static final int DATE_FORMAT_ERROR = -4;
         public static final int BAD_REQUEST = -3;
         public static final int URL_NOT_FOUND = -2;
         public static final int UNKNOWN_ERROR = -1;
@@ -144,5 +145,6 @@ public class Message {
         map.put(CODE.BAD_REQUEST, "请求错误");
         map.put(CODE.PHONE_IS_WRONG, "手机号格式不对");
         map.put(CODE.TICKET_QUERY_FAILED, "机票查询失败");
+        map.put(CODE.DATE_FORMAT_ERROR, "日期格式错误");
     }
 }

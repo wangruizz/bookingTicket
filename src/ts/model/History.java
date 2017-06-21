@@ -4,6 +4,7 @@ import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.sql.Date;
@@ -28,6 +29,8 @@ public class History implements Serializable{
     private Integer economyNum;//剩余商务舱座位个数
     private Flight flight;
     private static final long serialVersionUID = -3267943602377867497L;
+
+    @XmlElement
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(generator="MODEL_history")
@@ -40,6 +43,7 @@ public class History implements Serializable{
         this.id = id;
     }
 
+    @XmlElement
     @Version
     public Timestamp getVersion() {
         return version;
@@ -49,6 +53,7 @@ public class History implements Serializable{
         this.version = version;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "departureDate", nullable = false)
     public Date getDepartureDate() {
@@ -59,6 +64,7 @@ public class History implements Serializable{
         this.departureDate = departureDate;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "delayTime", nullable = false)
     public Time getDelayTime() {
@@ -69,6 +75,7 @@ public class History implements Serializable{
         this.delayTime = delayTime;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "status", nullable = false)
     public Integer getStatus() {
@@ -79,6 +86,7 @@ public class History implements Serializable{
         this.status = status;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "businessNum", nullable = false)
     public Integer getBusinessNum() {
@@ -89,6 +97,7 @@ public class History implements Serializable{
         this.businessNum = businessNum;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "economyNum", nullable = false)
     public Integer getEconomyNum() {
@@ -98,6 +107,8 @@ public class History implements Serializable{
     public void setEconomyNum(Integer economyNum) {
         this.economyNum = economyNum;
     }
+
+    @XmlElement
     @OneToOne
     @JoinColumn(name = "flightID",referencedColumnName = "id")
     public Flight getFlight() {

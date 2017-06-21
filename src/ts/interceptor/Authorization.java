@@ -27,7 +27,7 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
         HttpServletRequest request = (HttpServletRequest) message.get("HTTP.REQUEST");
         HttpServletResponse response = (HttpServletResponse) message.get("HTTP.RESPONSE");
         String uri = (String) message.get(Message.REQUEST_URI);
-        if (!uri.matches("^/CXF/REST/((Agency)|(Company))/doLogin/\\S*$") && !uri.matches("^/CXF/REST/((Agency/AgencyRegister)|(Company/register))$")) { //不是登录和注册
+        if (goNext(uri)) { //不是登录和注册
             String token = request.getHeader("token");
             try {
                 if (token == null || token.length()== 0) { //没有token
@@ -54,5 +54,17 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
                 e.printStackTrace();
             }
         }
+    }
+
+    private boolean goNext(String uri) {
+        String[] reg = {"^/CXF/REST/((Agency/AgencyRegister)|(Company/register))$",
+                "^/CXF/REST/((Agency)|(Company))/doLogin/\\S*$",
+                "^/CXF/REST/Agency/queryTicket/\\S*$"};
+        for (String aReg : reg) {
+            if (uri.matches(aReg)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

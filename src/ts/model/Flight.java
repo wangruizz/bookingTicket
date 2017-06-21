@@ -1,6 +1,7 @@
 package ts.model;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.sql.Time;
@@ -27,8 +28,7 @@ public class Flight implements Serializable{
 
     private static final long serialVersionUID = -3267943602377867497L;
 
-
-
+    @XmlElement
     @Id
     @Column(name = "id", nullable = false, length = 25)
     @GeneratedValue(generator="MODEL_flight")
@@ -41,6 +41,7 @@ public class Flight implements Serializable{
         this.id = id;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "startTime", nullable = false)
     public Time getStartTime() {
@@ -51,6 +52,7 @@ public class Flight implements Serializable{
         this.startTime = startTime;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "arriveTime", nullable = false)
     public Time getArriveTime() {
@@ -61,6 +63,7 @@ public class Flight implements Serializable{
         this.arriveTime = arriveTime;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "businessPrice", nullable = false, precision = 0)
     public Double getBusinessPrice() {
@@ -71,6 +74,7 @@ public class Flight implements Serializable{
         this.businessPrice = businessPrice;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "economyPrice", nullable = false, precision = 0)
     public Double getEconomyPrice() {
@@ -81,6 +85,7 @@ public class Flight implements Serializable{
         this.economyPrice = economyPrice;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "businessNum", nullable = false)
     public Integer getBusinessNum() {
@@ -91,6 +96,7 @@ public class Flight implements Serializable{
         this.businessNum = businessNum;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "economyNum", nullable = false)
     public Integer getEconomyNum() {
@@ -101,6 +107,7 @@ public class Flight implements Serializable{
         this.economyNum = economyNum;
     }
 
+    @XmlElement
     @Basic
     @Column(name = "status", nullable = false)
     public Integer getStatus() {
@@ -111,6 +118,7 @@ public class Flight implements Serializable{
         this.status = status;
     }
 
+    @XmlElement
     @ManyToOne
     @JoinColumn(name = "companyUName",referencedColumnName = "username")
     public Company getCompany() {
@@ -120,6 +128,8 @@ public class Flight implements Serializable{
     public void setCompany(Company company) {
         this.company = company;
     }
+
+    @XmlElement
     @OneToOne
     @JoinColumn(name = "startAirport",referencedColumnName = "id")
     public Airport getStartAirport() {
@@ -129,6 +139,8 @@ public class Flight implements Serializable{
     public void setStartAirport(Airport startAirport) {
         this.startAirport = startAirport;
     }
+
+    @XmlElement
     @OneToOne
     @JoinColumn(name = "arriveAirport",referencedColumnName = "id")
     public Airport getArriveAirport() {
