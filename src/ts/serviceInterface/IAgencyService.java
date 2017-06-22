@@ -90,24 +90,24 @@ public interface IAgencyService {
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByPhone/{phone}")
-    Response queryBookByPhone(@PathParam("phone") String phone);
+    List<Book> queryBookByPhone(@PathParam("phone") String phone);
 
     //通过旅行社ID，订单状态查询
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByAID/{id}/{status}")
-    Response queryBookByAID(@PathParam("id") int agencyID, @PathParam("status") int status);
+    List<Book> queryBookByAID(@PathParam("id") int agencyID, @PathParam("status") int status);
 
     //通过航班ID和起止日期查询
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByFID/{id}/{start}/{end}")
-    Response queryBookByFID(@PathParam("id") String flightID, @PathParam("start") int start, @PathParam("end") int end);
+    List<Book> queryBookByFID(@PathParam("id") String flightID, @PathParam("start") int start, @PathParam("end") int end);
    // 通过历史表ID查询
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/queryBookByHID/{id}")
-    Response queryBookByHID(@PathParam("id") int historyID);
+    List<Book> queryBookByHID(@PathParam("id") int historyID);
     //验证电话号码是否存在
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})

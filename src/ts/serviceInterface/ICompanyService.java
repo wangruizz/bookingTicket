@@ -84,4 +84,15 @@ public interface ICompanyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/modifyPwd/{username}/{pwd1}/{pwd2}")
     Response modifyPwd(@PathParam("username")String username,@PathParam("pwd1")String pwd1,@PathParam("pwd2")String pwd2);
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path("/cancelFlightSomeday/{flightID}/{departureDate}")
+    Response cancelFlightSomeday(@PathParam("flightID") String flightID, @PathParam("departureDate") Date departureDate);
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path("/ResumeFlightSomeday/{flightID}/{departureDate}")
+    Response ResumeFlightSomeday(@PathParam("flightID") String flightID, @PathParam("departureDate") Date departureDate);
+
 }

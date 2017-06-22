@@ -77,8 +77,7 @@ public class AgencyService implements IAgencyService {
         if (agency == null) {
             return new ArrayList<>();
         }
-        List<Passenger> ans = passengerDAO.queryByID(agencyID);
-        return ans;
+        return passengerDAO.queryByID(agencyID);
     }
 
     /**
@@ -131,7 +130,7 @@ public class AgencyService implements IAgencyService {
         if(!passengerDAO.complete(passenger)){
             return Response.ok(new Message(Message.CODE.PASSENGER_INCOMPLICT)).header("EntityClass","Message").build();
         }else{
-            passengerDAO.save(passenger);
+            passengerDAO.update(passenger);
             return Response.ok(passenger).header("EntityClass","Passenger").build();
         }
     }
@@ -311,46 +310,41 @@ public class AgencyService implements IAgencyService {
     }
 
     @Override
-    public Response queryBookByPhone(String phone) {
+    public List<Book> queryBookByPhone(String phone) {
         List<Book> list = bookDAO.query(phone);
         if(list == null){
-            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(list).header("EntityClass","Book").build();
+            return new ArrayList<>();
         }
-
+        return list;
     }
 
     @Override
-    public Response queryBookByAID(int agencyID, int status) {
+    public List<Book> queryBookByAID(int agencyID, int status) {
         List<Book> list = bookDAO.query(agencyID,status);
         if(list == null){
-            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(list).header("EntityClass","Book").build();
+            return new ArrayList<>();
         }
+        return list;
     }
 
     @Override
-    public Response queryBookByFID(String flightID,  int start, int end) {
+    public List<Book> queryBookByFID(String flightID,  int start, int end) {
         Date date1 = new Date(start);
         Date date2 = new Date(end);
         List<Book> list = bookDAO.query(flightID,date1, date2);
         if(list == null){
-            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(list).header("EntityClass","Book").build();
+            return new ArrayList<>();
         }
+        return list;
     }
 
     @Override
-    public Response queryBookByHID(int historyID) {
+    public List<Book> queryBookByHID(int historyID) {
         List<Book> list = bookDAO.queryByHistoryID(historyID);
-        if(list==null){
-            return Response.ok(new Message(Message.CODE.BOOK_QUERY_FAILED)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(list).header("EntityClass","Book").build();
+        if(list == null){
+            return new ArrayList<>();
         }
+        return list;
     }
 
     /**

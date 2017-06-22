@@ -1,10 +1,7 @@
 package ts.serviceImpl;
 
 import ts.daoImpl.*;
-import ts.model.Agency;
-import ts.model.Company;
-import ts.model.Flight;
-import ts.model.Message;
+import ts.model.*;
 import ts.serviceInterface.ICompanyService;
 import ts.util.JwtUtils;
 
@@ -97,7 +94,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public Response delay(String flightID, Date departureDate, Time delayTime) {
         if (delayTime == null) {//如果没设置延迟时间，则设置为0表示未知
-            delayTime = java.sql.Time.valueOf("00:00:00");
+            delayTime = Time.valueOf("00:00:00");
         }
         historyDao.delay(flightID, departureDate, delayTime);
         return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
@@ -197,8 +194,7 @@ public class CompanyService implements ICompanyService {
      */
     @Override
     public List<Flight> queryFlight(String companyUName) {
-        List<Flight> flights = flightDAO.query(companyUName);
-        return flights;
+        return flightDAO.query(companyUName);
     }
 
     @Override
@@ -229,8 +225,7 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Response modifyPwd(String username, String pwd1, String pwd2) {
-        List<Company> list = airCompanyDAO.findBy("username",username,"id",true);
-        Company company = list.get(0);
+        Company company = airCompanyDAO.get(username);
         if(company.getPwd().equals(pwd1)){
             company.setPwd(pwd2);
             airCompanyDAO.update(company);
@@ -240,5 +235,41 @@ public class CompanyService implements ICompanyService {
         }
     }
 
+
+    @Override
+    public Response cancelFlightSomeday(String flightID, Date departureDate) {
+        Flight flight = flightDAO.get(flightID);
+        if (flight == null) {//没有这个航班
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        } else {
+            if (flight.getStatus() == Flight.STATUS.FLIGHT_CANCEL) {//已经被取消
+                return Response.ok(new Message(Message.CODE.FLIGHT_HAS_CANCELLED)).header("EntityClass", "Message").build();
+            }
+        }
+        History history = historyDao.queryHistory(flightID, departureDate);
+        if (history == null) {//还没这条记录，那就插一条
+            history = historyDao.add(flightID, (java.sql.Date) departureDate);
+        }
+        historyDao.cancelFlight(history);
+        return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
+    }
+
+    @Override
+    public Response ResumeFlightSomeday(String flightID, Date departureDate) {
+        Flight flight = flightDAO.get(flightID);
+        if (flight == null) {//没有这个航班
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        } else {
+            if (flight.getStatus() == Flight.STATUS.FLIGHT_NORMAL) {//航班状态正常，不需要恢复
+                return Response.ok(new Message(Message.CODE.FLIGHT_IS_NORMAL)).header("EntityClass", "Message").build();
+            }
+        }
+        History history = historyDao.queryHistory(flightID, departureDate);
+        if (history == null) {//还没这条记录，不需要恢复(因为默认插入的就是正常状态)
+            return Response.ok(new Message(Message.CODE.FLIGHT_IS_NORMAL)).header("EntityClass", "Message").build();
+        }
+        historyDao.resumeFlight(history);
+        return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
+    }
 
 }

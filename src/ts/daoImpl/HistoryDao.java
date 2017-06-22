@@ -231,4 +231,23 @@ public class HistoryDao extends BaseDao<History,Integer> {
         return list1;
     }
 
+    /**
+     * 取消某天某个ID的航班
+     * @param history 某天某个ID对应的历史表记录
+     */
+    public void cancelFlight(History history) {
+        history.setStatus(History.STATUS.HISTORY_FLIGHT_CANCEL);
+        update(history);
+    }
+
+    /**
+     * 恢复某天某个ID的航班
+     * @param history 某天某个ID对应的历史表记录
+     */
+    public void resumeFlight(History history) {
+        history.setStatus(History.STATUS.HISTORY_FLIGHT_NOMAL);
+        update(history);
+    }
+
+
 }
