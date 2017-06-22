@@ -79,12 +79,14 @@ public class ShortMessage {
                 + "\"flightID\":\"" + flightID + "\","
                 + "\"number\":\"" + orderID + "\""
                 + "}";
-//        System.out.println(content);
-        try {
-            sendMessage(TEMPLATE_ORDER_SUCCESS, content, teleNumber);
-        } catch (ApiException e) {
-            e.printStackTrace();
-        }
+        System.out.println("\n\n-----------短信开始发送-----------------\n\n");
+        System.out.println(content);
+        System.out.println("\n\n-----------短信发送结束-----------------\n\n");
+//        try {
+//            sendMessage(TEMPLATE_ORDER_SUCCESS, content, teleNumber);
+//        } catch (ApiException e) {
+//            e.printStackTrace();
+//        }
         return true;
     }
 

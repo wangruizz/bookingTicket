@@ -59,7 +59,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
      */
     public Book printTicket(int bookID, String idcard) {
         Book book = super.get(bookID);
-        if (null == book || book.getPassenger().getIdcard() != idcard) {
+        if (null == book || book.getPassenger().getIdcard().equals(idcard)) {
             return null;
         }
         return book;
@@ -165,12 +165,12 @@ public class BookDAO extends BaseDao<Book,Integer> {
                 update(book);
         }
 //        由于免费条数有限，仅仅在必要测试时才取消注释代码
-//        ShortMessage shortMessage = ShortMessage.getInstance();
-//        String name = book.getPassenger().getName();
-//        Date date = historyDao.get(book.getId()).getDepartureDate();     //由于flightDAO还未获取，暂不实现此段代码
-//        String flightID = book.getHistory().getFlight().getId();
-//        String phone = book.getPassenger().getPhone();
-//        shortMessage.orderSuccess(name, date, flightID, bookID+"", phone);
+        ShortMessage shortMessage = ShortMessage.getInstance();
+        String name = book.getPassenger().getName();
+        Date date = historyDao.get(book.getId()).getDepartureDate();     //由于flightDAO还未获取，暂不实现此段代码
+        String flightID = book.getHistory().getFlight().getId();
+        String phone = book.getPassenger().getPhone();
+        shortMessage.orderSuccess(name, date, flightID, bookID+"", phone);
         return book;
     }
 

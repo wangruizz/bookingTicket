@@ -3,4 +3,5 @@
 lib/
 out/
 BookingTicket.iml
-Testing/
+/wsdl
+/src/Data.java
