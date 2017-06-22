@@ -7,6 +7,8 @@ import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -92,17 +94,24 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Response delay(String flightID, Date departureDate, Time delayTime) {
-        if (delayTime == null) {//如果没设置延迟时间，则设置为0表示未知
-            delayTime = Time.valueOf("00:00:00");
-        }
-        historyDao.delay(flightID, departureDate, delayTime);
+    public Response delay(String companyUName, String flightID, String departureDate, String delayTime) throws ParseException {
+        String[] v = delayTime.split(":");
+        Time time = new Time(Integer.valueOf(v[0]), Integer.valueOf(v[1]), 0);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        historyDao.delay(flightID, sdf.parse(departureDate), time);
         return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
     }
 
     @Override
-    public Response flightCancel(String flightID) {
-        if (flightDAO.get(flightID) == null) {
+    public Response flightCancel(String companyUName, String flightID) {
+        Flight flight = flightDAO.get(flightID);
+        if (flight == null) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        if (!flight.getCompany().getUsername().equals(companyUName)) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        if (flight.getStatus() != Flight.STATUS.FLIGHT_NORMAL) {
             return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
         }
         flightDAO.cancelFlight(flightID);
@@ -110,8 +119,15 @@ public class CompanyService implements ICompanyService {
     }
 
     @Override
-    public Response flightResume(String flightID) {
-        if (flightDAO.get(flightID) == null) {
+    public Response flightResume(String companyUName, String flightID) {
+        Flight flight = flightDAO.get(flightID);
+        if (flight == null) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        if (!flight.getCompany().getUsername().equals(companyUName)) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        if (flight.getStatus() != Flight.STATUS.FLIGHT_CANCEL) {
             return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
         }
         flightDAO.resumeFlight(flightID);
@@ -237,34 +253,40 @@ public class CompanyService implements ICompanyService {
 
 
     @Override
-    public Response cancelFlightSomeday(String flightID, Date departureDate) {
+    public Response cancelFlightSomeday(String companyUName, String flightID, String departureDate) throws ParseException {
         Flight flight = flightDAO.get(flightID);
         if (flight == null) {//没有这个航班
             return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
         } else {
             if (flight.getStatus() == Flight.STATUS.FLIGHT_CANCEL) {//已经被取消
                 return Response.ok(new Message(Message.CODE.FLIGHT_HAS_CANCELLED)).header("EntityClass", "Message").build();
+            } else if (!flight.getCompany().getUsername().equals(companyUName)) {
+                return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
             }
         }
-        History history = historyDao.queryHistory(flightID, departureDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        History history = historyDao.queryHistory(flightID, sdf.parse(departureDate));
         if (history == null) {//还没这条记录，那就插一条
-            history = historyDao.add(flightID, (java.sql.Date) departureDate);
+            history = historyDao.add(flightID, new java.sql.Date(sdf.parse(departureDate).getTime()));
         }
         historyDao.cancelFlight(history);
         return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
     }
 
     @Override
-    public Response ResumeFlightSomeday(String flightID, Date departureDate) {
+    public Response ResumeFlightSomeday(String companyUName, String flightID, String departureDate) throws ParseException {
         Flight flight = flightDAO.get(flightID);
         if (flight == null) {//没有这个航班
             return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
         } else {
             if (flight.getStatus() == Flight.STATUS.FLIGHT_NORMAL) {//航班状态正常，不需要恢复
                 return Response.ok(new Message(Message.CODE.FLIGHT_IS_NORMAL)).header("EntityClass", "Message").build();
+            } else if (!flight.getCompany().getUsername().equals(companyUName)) {
+                return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
             }
         }
-        History history = historyDao.queryHistory(flightID, departureDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        History history = historyDao.queryHistory(flightID, sdf.parse(departureDate));
         if (history == null) {//还没这条记录，不需要恢复(因为默认插入的就是正常状态)
             return Response.ok(new Message(Message.CODE.FLIGHT_IS_NORMAL)).header("EntityClass", "Message").build();
         }

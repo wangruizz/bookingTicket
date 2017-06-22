@@ -97,6 +97,11 @@
         <property name="airportDAO" ref="airportDAO"/>
     </bean>
 
+    <bean class="ts.util.AddHistory" id="addHistory" init-method="init">
+        <property name="historyDao" ref="historyDao"/>
+        <property name="flightDAO" ref="flightDAO"/>
+    </bean>
+
     <bean id="simpleConverter" class="org.codehaus.jettison.mapped.SimpleConverter"/>
 
     <!-- REST服务的注解例子 -->

@@ -6,6 +6,7 @@ import javax.ws.rs.core.Response;
 import ts.model.*;
 
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
@@ -31,24 +32,24 @@ public interface ICompanyService {
     //======================================航班延误取消恢复、取消整个公司的航班========================================
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/flightDelay/{flightID}/{departureDate}/{delayTime}")
-    Response delay(@PathParam("flightID")String flightID,@PathParam("departureDate") Date departureDate, @PathParam("delayTime")Time delayTime);
-
+    @Path("/flightDelay/{companyUName}/{flightID}/{departureDate}/{delayTime}")
+    Response delay(@PathParam("companyUName") String companyUName, @PathParam("flightID")String flightID,@PathParam("departureDate") String departureDate, @PathParam("delayTime")String delayTime) throws ParseException;
+//永久取消某个航班
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/flightCancel/{flightID}")
-    Response flightCancel(@PathParam("flightID") String flightID);
-
+    @Path("/flightCancel/{companyUName}/{flightID}")
+    Response flightCancel(@PathParam("companyUName") String companyUName, @PathParam("flightID") String flightID);
+//恢复某一个航班
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
-    @Path("/flightResume/{flightID}")
-    Response flightResume(@PathParam("flightID") String flightID);
-
+    @Path("/flightResume/{companyUName}/{flightID}")
+    Response flightResume(@PathParam("companyUName") String companyUName, @PathParam("flightID") String flightID);
+//取消整个个公司的航班
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/cancelCompany/{companyUName}")
     Response cancelCompany(@PathParam("companyUName") String companyUName);
-
+//恢复整个公司的航班
     @GET
     @Produces({ MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON })
     @Path("/resumeCompany/{companyUName}")
@@ -84,15 +85,15 @@ public interface ICompanyService {
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
     @Path("/modifyPwd/{username}/{pwd1}/{pwd2}")
     Response modifyPwd(@PathParam("username")String username,@PathParam("pwd1")String pwd1,@PathParam("pwd2")String pwd2);
-
+    //取消某一天的航班
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Path("/cancelFlightSomeday/{flightID}/{departureDate}")
-    Response cancelFlightSomeday(@PathParam("flightID") String flightID, @PathParam("departureDate") Date departureDate);
-
+    @Path("/cancelFlightSomeday/{companyUName}/{flightID}/{departureDate}")
+    Response cancelFlightSomeday(@PathParam("companyUName") String companyUName, @PathParam("flightID") String flightID, @PathParam("departureDate") String departureDate) throws ParseException;
+    //恢复某一天的航班
     @GET
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
-    @Path("/ResumeFlightSomeday/{flightID}/{departureDate}")
-    Response ResumeFlightSomeday(@PathParam("flightID") String flightID, @PathParam("departureDate") Date departureDate);
+    @Path("/ResumeFlightSomeday/{companyUName}/{flightID}/{departureDate}")
+    Response ResumeFlightSomeday(@PathParam("companyUName") String companyUName, @PathParam("flightID") String flightID, @PathParam("departureDate") String departureDate) throws ParseException;
 
 }

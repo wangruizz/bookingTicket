@@ -96,6 +96,7 @@ public class Message {
         public static final int FLIGHT_NOT_EXIST = 3000;
         public static final int FLIGHT_HAS_CANCELLED = 3001;
         public static final int FLIGHT_IS_NORMAL = 3002;
+        public static final int FLIGHT_SEAT_TYPE_ERROR = 3003;
 
 
         //与Company有关的信息 5000 - 5999
@@ -122,8 +123,10 @@ public class Message {
         public static final int BOOK_PRINT_FAILED = 8003;//打印机票失败
         public static final int BOOK_NOT_ALL = 8004;//订单信息不完整，预订失败
         public static final int BOOK_QUERY_FAILED = 8005;//订单查询失败
-        public static final int TICKET_QUERY_FAILED = 8005;//机票查询失败
-        public static final int TICKET_HAS_PAYED = 8006;//机票已付款
+        public static final int TICKET_QUERY_FAILED = 8006;//机票查询失败
+        public static final int TICKET_HAS_PAYED = 8007;//机票已付款
+        public static final int TICKET_HAS_EXIST = 8008;//订单已存在（重复订票）
+        public static final int TICKET_NOT_EXIST = 8009;//订单不存在
     }
 
     static {
@@ -156,5 +159,8 @@ public class Message {
         map.put(CODE.FLIGHT_NOT_EXIST, "航班不存在");
         map.put(CODE.FLIGHT_HAS_CANCELLED, "航班已取消");
         map.put(CODE.FLIGHT_IS_NORMAL, "航班正常");
+        map.put(CODE.FLIGHT_SEAT_TYPE_ERROR, "航班座位类型错误");
+        map.put(CODE.TICKET_HAS_EXIST, "请勿重复订票");
+        map.put(CODE.TICKET_NOT_EXIST, "订单不存在");
     }
 }

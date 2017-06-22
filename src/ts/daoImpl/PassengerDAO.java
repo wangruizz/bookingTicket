@@ -43,8 +43,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
      */
     public List<Passenger> queryByName(String name, int agencyID) {
         Agency agency = agencyDAO.get(agencyID);
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agency", agency), Restrictions.like("name", name, MatchMode.ANYWHERE));
-        return passengers.size()>0?passengers:null;
+        return findBy("id", true, Restrictions.eq("agency", agency), Restrictions.like("name", name, MatchMode.ANYWHERE));
     }
 
     /**
@@ -56,8 +55,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
      */
     public List<Passenger> queryByPhone(String phone, int agencyID) {
         Agency agency = agencyDAO.get(agencyID);
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("agency", agency),Restrictions.eq("phone", phone));
-        return passengers.size()>0?passengers:null;
+        return findBy("id", true, Restrictions.eq("agency", agency),Restrictions.eq("phone", phone));
     }
 
     /**
@@ -67,8 +65,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
      * @return
      */
     public List<Passenger> queryByPhone(String phone) {
-        List<Passenger> passengers = findBy("id", true, Restrictions.eq("phone", phone));
-        return passengers.size()>0?passengers:null;
+        return findBy("id", true, Restrictions.eq("phone", phone));
     }
 
     /**

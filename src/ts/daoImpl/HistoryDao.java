@@ -216,6 +216,9 @@ public class HistoryDao extends BaseDao<History,Integer> {
     public ArrayList<History> TicketQuery(String startAirport, String endAirport, Date date){
         Airport start = airportDAO.get(startAirport);
         Airport end = airportDAO.get(endAirport);
+        if (start == null || end == null) {
+            return new ArrayList<>();
+        }
         List<Flight> list = flightDAO.findBy("id",true,Restrictions.eq("startAirport",start),Restrictions.eq("arriveAirport", end));
         ArrayList<History> list1 = new ArrayList<>();
         Time now = new Time(System.currentTimeMillis());

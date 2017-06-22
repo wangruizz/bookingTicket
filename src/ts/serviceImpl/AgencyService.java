@@ -14,6 +14,7 @@ import ts.serviceInterface.IAgencyService;
 import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,19 +95,13 @@ public class AgencyService implements IAgencyService {
         switch (function) {
             case "name" :
                 passengers = passengerDAO.queryByName(parameter, agencyID);
-                if(passengers==null){
-                    throw new PassengerNotExistException();
-                }
                 break;
             case "phone" :
                 passengers = passengerDAO.queryByPhone(parameter, agencyID);
-                if(passengers==null){
-                    throw new PassengerNotExistException();
-                }
                 break;
             case "idcard" :
                 Passenger passenger = passengerDAO.queryByIDCard(parameter, agencyID);
-                if(passengers==null){
+                if(passenger==null){
                     throw new PassengerNotExistException();
                 }
                 passengers.add(passenger);
@@ -248,40 +243,72 @@ public class AgencyService implements IAgencyService {
     }
     /**
      * 预订车票
-     * @param book
-     * @return
      */
     @Override
-    public Response BookingTicket(Book book) {
-        if(!bookDAO.complete(book)){
-            return Response.ok(new Message(Message.CODE.BOOK_NOT_ALL)).header("EntityClass","Message").build();
-        }else{
-            synchronized (bookDAO){
-                History history = book.getHistory();
-                if(book.getSeatType()==Book.SEAT_TYPE.BUSINESS_SEAT&&history.getBusinessNum()>0){
-                    history.setBusinessNum(history.getBusinessNum()-1);
+    public Response BookingTicket(int agencyId, int historyId, int passengerId, int type) {
+        Agency agency = agencyDAO.get(agencyId);
+        if (agency == null) {
+            return Response.ok(new Message(Message.CODE.AGENCY_NOT_EXISTED)).header("EntityClass","Message").build();
+        }
+        History history = historyDao.get(historyId);
+        if (history == null) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        Passenger passenger = passengerDAO.get(passengerId);
+        if (passenger == null) {
+            return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass","Message").build();
+        }
+        if (type != 0 && type != 1) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_SEAT_TYPE_ERROR)).header("EntityClass","Message").build();
+        }
+        if (bookDAO.findBy("id", true, Restrictions.eq("history", history), Restrictions.eq("passenger", passenger)).size() > 0) {
+            return Response.ok(new Message(Message.CODE.TICKET_HAS_EXIST)).header("EntityClass","Message").build();
+        }
+        Book book = new Book();
+        book.setHistory(history);
+        book.setPassenger(passenger);
+        book.setOrderTime(new Timestamp(new Date().getTime()));
+        book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);
+        book.setSeatType(type);
+        if (type == Book.SEAT_TYPE.BUSINESS_SEAT) {
+            book.setSeatNum(history.getBusinessNum());
+        } else {
+            book.setSeatNum(history.getEconomyNum());
+        }
+        synchronized (bookDAO){
+            history = book.getHistory();
+            if(book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT && history.getBusinessNum() > 0){
+                history.setBusinessNum(history.getBusinessNum() - 1);
+                book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
+                historyDao.update(history);
+                bookDAO.save(book);
+                book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
+                return Response.ok(book).header("EntityClass","Book").build();
+            }else{
+                if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
+                    history.setBusinessNum(history.getEconomyNum()-1);
                     book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
-                    historyDao.save(history);
+                    historyDao.update(history);
                     bookDAO.save(book);
-                    return Response.ok(history).header("EntityClass","History").build();
+                    book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
+                    return Response.ok(book).header("EntityClass","Book").build();
                 }else{
-                    if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
-                        history.setBusinessNum(history.getEconomyNum()-1);
-                        book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
-                        historyDao.save(history);
-                        bookDAO.save(book);
-                        return Response.ok(history).header("EntityClass","History").build();
-                    }else{
-                        return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
-                    }
+                    return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
                 }
             }
         }
     }
     //取消订单
     @Override
-    public Response cancelBook(int id) {
-        Book book = bookDAO.cancel(id);
+    public Response cancelBook(int agencyId, int id) {
+        Book book = bookDAO.get(id);
+        if (book == null) {
+            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
+        }
+        if (book.getPassenger().getAgency().getId() != id){
+            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
+        }
+        book = bookDAO.cancel(id);
         if(book==null){
             return Response.ok(new Message(Message.CODE.BOOK_CANCEL_FAILED)).header("EntityClass","Message").build();//取消订单失败
         }else{
@@ -290,8 +317,15 @@ public class AgencyService implements IAgencyService {
     }
     //付款
     @Override
-    public Response payTicket(int id) throws TicketPayException {
-        Book book = bookDAO.pay(id);
+    public Response payTicket(int agencyId, int id) throws TicketPayException {
+        Book book = bookDAO.get(id);
+        if (book == null) {
+            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
+        }
+        if (book.getPassenger().getAgency().getId() != id){
+            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
+        }
+        book = bookDAO.pay(id);
         if(book==null){
             return Response.ok(new Message(Message.CODE.BOOK_PAY_FAILED)).header("EntityClass","Message").build();
         }else{

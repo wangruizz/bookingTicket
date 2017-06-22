@@ -65,20 +65,20 @@ public interface IAgencyService {
     @Path("/modifyAgency")
     Response modifyAgency(Agency agency) throws PhoneWrongException;
     //预订车票
-    @POST
+    @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/bookingTicket")
-    Response BookingTicket(Book book);
+    @Path("/bookingTicket/{agencyId}/{historyId}/{passengerId}/{type}")
+    Response BookingTicket(@PathParam("agencyId") int agencyId, @PathParam("historyId") int historyId, @PathParam("passengerId") int passengerId, @PathParam("type") int type);
     //取消预约
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/cancelBook/{id}")
-    Response cancelBook(@PathParam("id") int id);
+    @Path("/cancelBook/{agencyId}/{id}")
+    Response cancelBook(@PathParam("agencyId") int agencyId, @PathParam("id") int id);
     //付款
     @GET
     @Produces({MediaType.APPLICATION_JSON,MediaType.APPLICATION_XML})
-    @Path("/payTicket/{id}")
-    Response payTicket(@PathParam("id") int id) throws TicketPayException;
+    @Path("/payTicket/{agencyId}/{id}")
+    Response payTicket(@PathParam("agencyId") int agencyId, @PathParam("id") int id) throws TicketPayException;
 
     //打印机票
     @GET

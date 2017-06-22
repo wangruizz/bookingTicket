@@ -1,11 +1,9 @@
 package ts.util;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-/**
- * Created by 12556 on 2017/6/17.
- */
 public class DateProcess {
 
     public static  Date NowSqlDate() {
@@ -23,5 +21,15 @@ public class DateProcess {
     public static Date utilToSql(Date utilDate){
         java.sql.Date sqlDate=new java.sql.Date(utilDate.getTime());
         return sqlDate;
+    }
+
+    public static java.util.Date getNext(java.util.Date now, int delta) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        delta *= 24 * 60 * 60 * 1000; //一天的毫秒数
+        try {
+            now = sdf.parse(sdf.format(now)); //去除时分秒
+            return new java.util.Date(now.getTime() + delta);
+        } catch (ParseException e) { }
+        return null;
     }
 }
