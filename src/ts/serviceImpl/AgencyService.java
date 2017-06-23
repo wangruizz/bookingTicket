@@ -275,24 +275,22 @@ public class AgencyService implements IAgencyService {
         } else {
             book.setSeatNum(history.getEconomyNum());
         }
-        synchronized (bookDAO){
-            history = book.getHistory();
-            if(book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT && history.getBusinessNum() > 0){
-                history.setBusinessNum(history.getBusinessNum() - 1);
+        history = book.getHistory();
+        if(book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT && history.getBusinessNum() > 0){
+            history.setBusinessNum(history.getBusinessNum() - 1);
+            historyDao.update(history);
+            bookDAO.save(book);
+            book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
+            return Response.ok(book).header("EntityClass","Book").build();
+        }else{
+            if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
+                history.setBusinessNum(history.getEconomyNum()-1);
                 historyDao.update(history);
                 bookDAO.save(book);
                 book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
                 return Response.ok(book).header("EntityClass","Book").build();
             }else{
-                if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
-                    history.setBusinessNum(history.getEconomyNum()-1);
-                    historyDao.update(history);
-                    bookDAO.save(book);
-                    book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
-                    return Response.ok(book).header("EntityClass","Book").build();
-                }else{
-                    return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
-                }
+                return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass","Message").build();
             }
         }
     }
@@ -330,7 +328,7 @@ public class AgencyService implements IAgencyService {
             return Response.ok(book).header("EntityClass","Book").build();
         }
     }
-   //打印机票
+    //打印机票
     @Override
     public Response printTicket(int id,String IDCard) {
         Book book = bookDAO.printTicket(id,IDCard);
@@ -387,7 +385,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public Response checkPhone(String phone) {
         if(!agencyDAO.checkPhone(phone)){
-           return Response.ok(new Message(Message.CODE.AGENCY_REGISTER_FAILED)).header("EntityClass","Message").build();//因为手机号已经注册过，所以显示注册失败
+            return Response.ok(new Message(Message.CODE.AGENCY_REGISTER_FAILED)).header("EntityClass","Message").build();//因为手机号已经注册过，所以显示注册失败
         }else{
             return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
         }

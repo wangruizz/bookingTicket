@@ -42,7 +42,7 @@ public class AddHistory {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             List<Flight> flights = flightDAO.findBy("id", true, Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
             Time delay = new Time(0, 0, 0); //默认航班延迟0
-            flights.forEach(flight -> {
+            /*flights.forEach(flight -> {
                 java.util.Date now = null;
                 try {
                     now = sdf.parse(sdf.format(new java.util.Date()));
@@ -68,7 +68,7 @@ public class AddHistory {
                         continue;//后面的已经存在，前面的就一定存在
                     }
                 }
-            });
+            });*/
             System.out.println("history表初始化结束");
             while (true) {
                 java.util.Date now = new java.util.Date();

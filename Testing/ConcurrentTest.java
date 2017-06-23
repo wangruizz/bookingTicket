@@ -13,8 +13,8 @@ import java.util.Date;
 public class ConcurrentTest {
     static int p = 13;
     public static void main(String[] args) {
-        String s = "2017-06-23 14:31:00"; //发起请求的时间
-        int cnt = 2; //并发线程数
+        String s = "2017-06-23 15:38:30"; //发起请求的时间
+        int cnt = 20; //并发线程数
         for (int i = 0; i < cnt; i++) {
             new Thread(() -> {
                 int id = p++;
