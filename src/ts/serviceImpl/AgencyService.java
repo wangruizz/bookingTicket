@@ -279,7 +279,6 @@ public class AgencyService implements IAgencyService {
             history = book.getHistory();
             if(book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT && history.getBusinessNum() > 0){
                 history.setBusinessNum(history.getBusinessNum() - 1);
-                book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
                 historyDao.update(history);
                 bookDAO.save(book);
                 book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
@@ -287,7 +286,6 @@ public class AgencyService implements IAgencyService {
             }else{
                 if(book.getSeatType()==Book.SEAT_TYPE.ECONOMY_SEAT&&history.getEconomyNum()>0){
                     history.setBusinessNum(history.getEconomyNum()-1);
-                    book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);//等待付款
                     historyDao.update(history);
                     bookDAO.save(book);
                     book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
@@ -305,7 +303,7 @@ public class AgencyService implements IAgencyService {
         if (book == null) {
             return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
         }
-        if (book.getPassenger().getAgency().getId() != id){
+        if (book.getPassenger().getAgency().getId() != agencyId){
             return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
         }
         book = bookDAO.cancel(id);
@@ -322,7 +320,7 @@ public class AgencyService implements IAgencyService {
         if (book == null) {
             return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
         }
-        if (book.getPassenger().getAgency().getId() != id){
+        if (book.getPassenger().getAgency().getId() != agencyId){
             return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass","Message").build();//取消订单失败
         }
         book = bookDAO.pay(id);

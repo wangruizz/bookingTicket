@@ -27,12 +27,8 @@ public class InvokeFaultExceptionMapper implements ExceptionMapper {
 
         if (ex instanceof ParseException){
             rb.entity(new Message(Message.CODE.DATE_FORMAT_ERROR));
-        } else if (ex instanceof PassengerNotExistException){
-            rb.entity(new Message(Message.CODE.PASSENGER_NOT_EXIST));
-        } else if (ex instanceof RegisterException) {
-            rb.entity(new Message(Message.CODE.AGENCY_REGISTER_FAILED));
-        } else if (ex instanceof PhoneWrongException) {
-            rb.entity(new Message(Message.CODE.PHONE_IS_WRONG));
+        } else if (ex instanceof ServiceException){
+            rb.entity(((ServiceException)ex).message1);
         } else if (ex instanceof BadRequestException) {
             rb.entity(new Message(Message.CODE.BAD_REQUEST));
         } else if (ex instanceof ClientErrorException){

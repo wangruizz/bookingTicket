@@ -2,6 +2,7 @@ package ts.model;
 
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
+import ts.adapter.DateAdapter;
 import ts.adapter.TimeAdapter;
 import ts.adapter.TimestampAdapter;
 
@@ -71,6 +72,7 @@ public class History implements Serializable{
         this.version = version;
     }
 
+    @XmlJavaTypeAdapter(DateAdapter.class)
     @XmlElement
     @Basic
     @Column(name = "departureDate", nullable = false)
