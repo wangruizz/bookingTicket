@@ -63,7 +63,7 @@ public class History implements Serializable{
 
     @XmlJavaTypeAdapter(TimestampAdapter.class)
     @XmlElement
-    @Version
+//    @Version
     public Timestamp getVersion() {
         return version;
     }

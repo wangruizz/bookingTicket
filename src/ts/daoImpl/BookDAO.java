@@ -1,14 +1,24 @@
 package ts.daoImpl;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
+import org.hibernate.procedure.ProcedureCall;
 import org.springframework.dao.DataAccessException;
 import ts.daoBase.BaseDao;
 import ts.model.Book;
 import ts.model.History;
+import ts.model.Message;
 import ts.model.Passenger;
 import ts.serviceException.TicketPayException;
 import ts.util.ShortMessage;
 
+import javax.persistence.ParameterMode;
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,6 +57,33 @@ public class BookDAO extends BaseDao<Book,Integer> {
 
     BookDAO() {
         super(Book.class);
+    }
+
+    public Message bookTicket(int agencyId, int historyId, int passengerId, int type) {
+        Session session = this.getSessionFactory().openSession();
+        ProcedureCall procedureCall = session.createStoredProcedureCall("book");
+        procedureCall.registerParameter("aid", Integer.class, ParameterMode.IN).bindValue(agencyId);
+        procedureCall.registerParameter("pid", Integer.class, ParameterMode.IN).bindValue(passengerId);
+        procedureCall.registerParameter("hid", Integer.class, ParameterMode.IN).bindValue(historyId);
+        procedureCall.registerParameter("type", Integer.class, ParameterMode.IN).bindValue(type);
+        procedureCall.registerParameter("res", Integer.class, ParameterMode.OUT);
+        int res;
+        synchronized (this) {
+            res = (int) procedureCall.getOutputs().getOutputParameterValue("res");
+        }
+        session.close();
+        Message msg;
+        switch (res) {
+            case 0:  msg = new Message(Message.CODE.SUCCESS); break;
+            case -1:  msg = new Message(Message.CODE.AGENCY_NOT_EXISTED); break;
+            case -2:  msg = new Message(Message.CODE.PASSENGER_NOT_EXIST); break;
+            case -3:  msg = new Message(Message.CODE.FLIGHT_NOT_EXIST); break;
+            case -4:  msg = new Message(Message.CODE.FLIGHT_SEAT_TYPE_ERROR); break;
+            case -5:  msg = new Message(Message.CODE.TICKET_HAS_EXIST); break;
+            case -6:  msg = new Message(Message.CODE.FLIGHT_NOT_EMPTY); break;
+            default: msg = new Message(Message.CODE.UNKNOWN_ERROR); break;
+        }
+        return  msg;
     }
 
 
@@ -142,8 +179,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
      */
     public List<Book> queryByHistoryID(int historyID) {
         History history = historyDao.get(historyID);
-        List<Book> books = findBy("history", history, "id", true);
-        return books;
+        return findBy("history", history, "id", true);
     }
 
     /**
@@ -183,6 +219,13 @@ public class BookDAO extends BaseDao<Book,Integer> {
         Book book = get(bookID);
         book.setStatus(Book.BOOK_STATUS.BOOK_CANCEL);
         update(book);
+        History history = book.getHistory();
+        if (book.getSeatType() == Book.SEAT_TYPE.BUSINESS_SEAT) {
+            history.setBusinessNum(history.getBusinessNum() + 1);
+        } else {
+            history.setEconomyNum(history.getEconomyNum() + 1);
+        }
+        historyDao.update(history);
         return book;
     }
 

@@ -97,6 +97,7 @@ public class Message {
         public static final int FLIGHT_HAS_CANCELLED = 3001;
         public static final int FLIGHT_IS_NORMAL = 3002;
         public static final int FLIGHT_SEAT_TYPE_ERROR = 3003;
+        public static final int FLIGHT_NOT_EMPTY = 3004;
 
 
         //与Company有关的信息 5000 - 5999
@@ -132,8 +133,8 @@ public class Message {
     static {
         map.put(CODE.PASSENGER_INCOMPLICT,"乘客信息不完整，无法正常添加");
         map.put(CODE.AGENCY_LOGIN_FAILED,"登录信息有误，无法登录，请重试");
-        map.put(CODE.PASSENGER_NOT_EXIST,"乘客不存在,操作失败");//passenger not exist
-        map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");//passenger not exist
+        map.put(CODE.PASSENGER_NOT_EXIST,"乘客不存在,操作失败");
+        map.put(CODE.AGENCY_REGISTER_FAILED,"该手机号已经注册，请换号重新注册");
         map.put(CODE.AGENCY_MODIFY_FAILED,"修改失败，请注意姓名和电话是否填全");
         map.put(CODE.BOOK_FAILED,"预订失败");
         map.put(CODE.BOOK_CANCEL_FAILED,"取消订单失败");
@@ -162,5 +163,6 @@ public class Message {
         map.put(CODE.FLIGHT_SEAT_TYPE_ERROR, "航班座位类型错误");
         map.put(CODE.TICKET_HAS_EXIST, "请勿重复订票");
         map.put(CODE.TICKET_NOT_EXIST, "订单不存在");
+        map.put(CODE.FLIGHT_NOT_EMPTY, "航班已满");
     }
 }

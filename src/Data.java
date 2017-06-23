@@ -29,14 +29,14 @@ public class Data {
 
     // 按照声 母表示，这个表是在GB2312中的出现的第一个汉字，也就是说“啊”是代表首字母a的第一个汉字。
     // i, u, v都不做声母, 自定规则跟随前面的字母
-    private char[] chartable = { '啊', '芭', '擦', '搭', '蛾', '发', '噶', '哈', '哈', '击', '喀', '垃', '妈', '拿', '哦', '啪', '期', '然', '撒', '塌', '塌', '塌', '挖', '昔', '压', '匝', };
+    private char[] chartable = {'啊', '芭', '擦', '搭', '蛾', '发', '噶', '哈', '哈', '击', '喀', '垃', '妈', '拿', '哦', '啪', '期', '然', '撒', '塌', '塌', '塌', '挖', '昔', '压', '匝',};
 
     // 二十六个字母区间对应二十七个端点
     // GB2312码汉字区间十进制表示
     private int[] table = new int[27];
 
     // 对应首字母区间表
-    private char[] initialtable = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 't', 't', 'w', 'x', 'y', 'z', };
+    private char[] initialtable = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'h', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 't', 't', 'w', 'x', 'y', 'z',};
 
     // ------------------------public方法区------------------------
     // 根据一个包含汉字的字符串返回一个汉字拼音首字母的字符串 最重要的一个方法，思路如下：一个个字符读入、判断、输出
@@ -57,8 +57,9 @@ public class Data {
     }
 
     // ------------------------private方法区------------------------
+
     /**
-     * 输入字符,得到他的声母,英文字母返回对应的大写字母,其他非简体汉字返回 '0' 　　* 　　
+     * 输入字符,得到他的声母,英文字母返回对应的大写字母,其他非简体汉字返回 '0' 　　*
      */
     private char Char2Initial(char ch) {
         // 对英文字母的处理：小写字母转换为大写，大写的直接返回
@@ -89,7 +90,7 @@ public class Data {
     }
 
     /**
-     * 取出汉字的编码 cn 汉字 　　
+     * 取出汉字的编码 cn 汉字
      */
     private int gbValue(char ch) {// 将一个汉字（GB2312）转换为十进制表示。
         String str = new String();
@@ -104,6 +105,7 @@ public class Data {
             return 0;
         }
     }
+
     @Resource
     private FlightDAO flightDAO;
 
@@ -122,8 +124,8 @@ public class Data {
 
         String url = "http://ws.webxml.com.cn/webservices/DomesticAirline.asmx/getDomesticAirlinesTime";
         List<Airport> airports = airportDAO.getAll();
-        for (Airport airport: airports) {
-            for (Airport airport1: airports) {
+        for (Airport airport : airports) {
+            for (Airport airport1 : airports) {
                 if (!airport.getName().equals(airport1.getName())) {
                     System.out.println("form " + airport.getName() + "   to  " + airport1.getName());
                     Connection connection = Jsoup.connect(url);
@@ -140,7 +142,7 @@ public class Data {
                     Element body = document.body();
                     Elements elements = body.getElementsByTag("airlinestime");
                     elements.forEach(element -> {
-                        try{
+                        try {
                             String companyName = element.getElementsByTag("Company").text();
                             if (!companyName.equals("没有航班")) {
                                 List<Company> list = airCompanyDAO.findBy("username", true, Restrictions.eq("name", companyName));
