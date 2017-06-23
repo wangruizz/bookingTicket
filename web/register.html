@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>注册</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
+    <style type="text/css">
+        body{
+            height: 100%;
+            overflow: hidden;
+        }
+        @media screen  and (min-width: 768px){
+            #topNav{
+                padding: 0 80px;
+                height: 100px;
+            }
+            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand{
+                height:100%;
+            }
+        }
+        #register{
+            position: absolute;
+            top: 50px;
+            right:10%;
+            padding: 10px 50px 0 30px;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+    </style>
+
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+</head>
+<body>
+<div ng-app="firstApp"></div>
+<div>
+    <nav class="navbar navbar-default" style="margin: 0;" id="topNav" ng-app="topNavApp" ng-controller="topNav">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                        data-target="#navbar-collapse" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="main.html">
+                    <img src="images/logo.png" style="height: 100%; width: auto">
+                </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-if="!login"><a href="./login.html">登录</a></li>
+                    <li ng-if="!login"><a href="./register.html">注册</a></li>
+                    <li ng-if="login"><a href="./{{my}}.html">个人中心</a></li>
+                    <li ng-if="login"><a href="javascript:void(0)" ng-click="logout()">退出</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div style="position: relative;">
+        <div style="width: 100%">
+            <img src="images/01.jpg" style="width: 100%; height: auto;">
+        </div>
+        <div id="register" ng-app='registerApp' ng-controller="register">
+            <div class="row">
+                <form class="form-horizontal col-xs-12" name="form">
+                    <h3 class="text-center" style="margin-bottom: 30px">旅行社注册</h3>
+                    <p ng-bind="msg" ng-class="{'success': 'text-success', 'danger': 'text-danger', 'info': 'text-info'}[msgStatus]"></p>
+                    <div class="form-group" ng-class="{'success': 'has-success has-feedback', 'error': ' has-error has-feedback'}[nameStatus]">
+                        <label for="name" class="col-xs-4 control-label">旅行社名称</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" id="name" required ng-model="agency.name" ng-blur="checkName()">
+                            <span class="glyphicon" aria-hidden="true" ng-class="{'success': 'glyphicon-ok form-control-feedback', 'error': 'glyphicon-remove form-control-feedback'}[nameStatus]"></span>
+                        </div>
+                    </div>
+                    <div class="form-group" ng-class="{'success': 'has-success has-feedback', 'error': ' has-error has-feedback'}[phoneStatus]">
+                        <label for="phone" class="col-xs-4 control-label">手机号</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" id="phone" required ng-model="agency.phone" ng-blur="checkPhone()">
+                            <span class="glyphicon" aria-hidden="true" ng-class="{'success': 'glyphicon-ok form-control-feedback', 'error': 'glyphicon-remove form-control-feedback'}[phoneStatus]"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="col-xs-4 control-label">密码</label>
+                        <div class="col-xs-8">
+                            <input type="password" class="form-control" id="password" required ng-model="agency.password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="repeat" class="col-xs-4 control-label">重复密码</label>
+                        <div class="col-xs-8">
+                            <input type="password" class="form-control" id="repeat" required ng-model="agency.repeat">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="col-xs-4 control-label">通信地址</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" id="address" required ng-model="agency.address">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="contacts" class="col-xs-4 control-label">联系方式</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control" id="contacts" required ng-model="agency.contacts">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-xs-offset-3 col-xs-9">
+                            <button type="button" class="btn btn-success" ng-click="submit(true)" ng-disabled="form.$invalid || agency.password != agency.repeat">注册</button>
+                            <a href="registerAirport.html" class="pull-right" style="font-size: 16px; margin-top: 40px">航空公司注册→</a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.11.3.min.js" type="text/javascript"></script>
+<script src="js/bootstrap.js" type="text/javascript"></script>
+<script src="js/angular.js" type="text/javascript"></script>
+<script src="js/angular-cookies.js" type="text/javascript"></script>
+<script src="js/angular-route.js" type="text/javascript"></script>
+<script src="js/util.js" type="text/javascript"></script>
+<script src="js/myScript/register.js" type="text/javascript"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<h3 class="text-center">航班信息</h3>
+<div class="col-xs-12">
+    <a class="btn btn-info pull-right" href="#/add">添加航班</a>
+</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <td>航班号</td>
+        <td>出发机场</td>
+        <td>出发时间</td>
+        <td>到达机场</td>
+        <td>到达时间</td>
+        <td>操作</td>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="f in flights">
+        <td ng-bind="f.id"></td>
+        <td ng-bind="f.startAirport.name"></td>
+        <td ng-bind="f.startTime"></td>
+        <td ng-bind="f.arriveAirport.name"></td>
+        <td ng-bind="f.arriveTime"></td>
+        <td>
+            <a class="btn btn-primary" href="#/modify/{{f.id}}">修改</a>
+            <a class="btn btn-success" href="#/detail/{{f.id}}">详情</a>
+        </td>
+    </tr>
+    </tbody>
+</table>

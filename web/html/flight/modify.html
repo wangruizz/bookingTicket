@@ -1,0 +1,73 @@
+<h3 class="text-center" ng-bind="title"></h3>
+<p class="text-center" ng-class="{true: 'text-success', false: 'text-danger'}[flag]" ng-bind="msg"></p>
+<div class="col-xs-12" style="margin: 10px">
+    <a class="btn btn-info pull-left" href="#/">返回</a>
+</div>
+<form class="form-horizontal col-sm-9 col-sm-offset-1 col-xs-12" name="form">
+    <div class="form-group">
+        <label for="id" class="col-sm-2 control-label">航班号</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="id" ng-model="flight.id">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="startAirport" class="col-sm-2 control-label">出发机场</label>
+        <div class="col-sm-10" id="fromCity">
+            <input type="text" class="form-control" id="startAirport" name="startAirport" ng-model="flight.startAirportName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="startTime" class="col-sm-2 control-label">出发时间</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="startTime" ng-model="flight.startTime">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="arriveAirport" class="col-sm-2 control-label">到达机场</label>
+        <div class="col-sm-10" id="toCity">
+            <input type="text" class="form-control" id="arriveAirport" name="arriveAirport" ng-model="flight.arriveAirportName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="arriveTime" class="col-sm-2 control-label">到达时间</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="arriveTime" ng-model="flight.arriveTime">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="businessPrice" class="col-sm-2 control-label">商务舱价格</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="businessPrice" ng-model="flight.businessPrice">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="businessNum" class="col-sm-2 control-label">商务舱座位数</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="businessNum" ng-model="flight.businessNum">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="economyPrice" class="col-sm-2 control-label">经济舱价格</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="economyPrice" ng-model="flight.economyPrice">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="economyNum" class="col-sm-2 control-label">经济舱座位数</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="economyNum" ng-model="flight.economyNum">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success" ng-click="submit()" ng-disabled="form.$invalid" ng-bind="button"></button>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $('#startAirport').querycity({'data':cities, 'tabs':labels, 'pos': $("#fromCity")});
+    $('#arriveAirport').querycity({'data':cities, 'tabs':labels, 'pos': $("#toCity")});
+    $('#startTime').clockTimePicker({});
+    $('#arriveTime').clockTimePicker({});
+</script>

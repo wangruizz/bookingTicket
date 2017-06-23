@@ -1,0 +1,46 @@
+<h3 class="text-center" ng-bind="flight.id"></h3>
+<table class="table table-hover text-center">
+    <tr>
+        <td>出发机场：<span ng-bind="flight.startAirport.name"></span>(<span ng-bind="flight.startAirport.id"></span>)</td>
+    </tr>
+    <tr>
+        <td>出发时间：<span ng-bind="flight.startTime"></span></td>
+    </tr>
+    <tr>
+        <td>到达机场：<span ng-bind="flight.arriveAirport.name"></span>(<span ng-bind="flight.arriveAirport.id"></span>)</td>
+    </tr>
+    <tr>
+        <td>到达时间：<span ng-bind="flight.arriveTime"></span></td>
+    </tr>
+    <tr>
+        <td>历时：<span ng-bind="flight.during"></span></td>
+    </tr>
+    <tr>
+        <td>
+            商务舱：￥<span ng-bind="flight.businessPrice"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            座位数：<span ng-bind="flight.businessNum"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            经济舱：￥<span ng-bind="flight.economyPrice"></span>&nbsp;&nbsp;&nbsp;&nbsp;
+            座位数：<span ng-bind="flight.economyNum"></span>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <input type="text" class="form-control" id="deltaTime" placeholder="晚点时间" ng-disabled="postponeInput">
+            <button class="btn btn-info" ng-click="postpone()" ng-disabled="postponeButton">航班晚点</button>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <a class="btn btn-primary" href="#/modify/{{flight.id}}">修改</a>
+            <button class="btn btn-danger" ng-click="delete()">删除</button>
+            <button class="btn btn-info" ng-click="cancel()" ng-disabled="cancelButton">取消航班</button>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $('#deltaTime').clockTimePicker({});
+</script>

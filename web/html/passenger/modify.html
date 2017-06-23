@@ -1,0 +1,39 @@
+<h3 class="text-center" ng-bind="title"></h3>
+<div class="col-xs-12">
+    <a class="btn btn-info pull-left" href="#/">返回</a>
+    <p class="text-center" ng-class="{true: 'text-success', false: 'text-danger'}[flag]" ng-bind="msg"></p>
+</div>
+<form class="form-horizontal col-xs-9" name="form">
+    <div class="form-group">
+        <label for="name" class="col-sm-2 control-label">姓名</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="name" ng-model="passenger.name">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="sex" class="col-sm-2 control-label">性别</label>
+        <div class="col-sm-10">
+            <select class="form-control" ng-model="passenger.sex" id="sex">
+                <option value="1" ng-selected="passenger.sex == 1">男</option>
+                <option value="0" ng-selected="passenger.sex == 0">女</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="idcard" class="col-sm-2 control-label">身份证号</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="idcard" ng-model="passenger.idcard" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="phone" class="col-sm-2 control-label">手机号</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="phone" ng-model="passenger.phone" required>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" class="btn btn-success" ng-click="submit()" ng-disabled="form.$invalid" ng-bind="button"></button>
+        </div>
+    </div>
+</form>
