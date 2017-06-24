@@ -1,17 +1,17 @@
 package ts.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-/**
- * Created by wr on 2017/6/14.
- */
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "company", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "company")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Company implements Serializable{
     private String name;
     private String username;

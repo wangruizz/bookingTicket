@@ -114,7 +114,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
             List<Book> tmp = findBy("passenger", passenger, "id", true);
             books.addAll(tmp);
         });
-        return books.size() == 0 ? null : books;
+        return books;
     }
 
     /**
@@ -134,7 +134,7 @@ public class BookDAO extends BaseDao<Book,Integer> {
                         Restrictions.eq("passenger", passenger));
                 books.addAll(tmp);
             });
-        return books.size() == 0 ? null : books;
+        return books;
     }
 
     /**
@@ -215,7 +215,8 @@ public class BookDAO extends BaseDao<Book,Integer> {
      * @param bookID
      * @return
      */
-    public Book cancel(int bookID) {
+    public Book cancel(int agencyId, int bookID) {
+        /*
         Book book = get(bookID);
         book.setStatus(Book.BOOK_STATUS.BOOK_CANCEL);
         update(book);
@@ -226,7 +227,23 @@ public class BookDAO extends BaseDao<Book,Integer> {
             history.setEconomyNum(history.getEconomyNum() + 1);
         }
         historyDao.update(history);
-        return book;
+        */
+
+        Book book = get(bookID);
+        Session session = this.getSessionFactory().openSession();
+        ProcedureCall procedureCall = session.createStoredProcedureCall("cancel");
+        procedureCall.registerParameter("aid", Integer.class, ParameterMode.IN).bindValue(agencyId);
+        procedureCall.registerParameter("bid", Integer.class, ParameterMode.IN).bindValue(bookID);
+        procedureCall.registerParameter("res", Integer.class, ParameterMode.OUT);
+        int res;
+        synchronized (this) {
+            res = (int) procedureCall.getOutputs().getOutputParameterValue("res");
+        }
+        session.close();
+        if (res == 0) {
+            return book;
+        }
+        return null;
     }
 
     /**

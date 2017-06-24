@@ -177,7 +177,6 @@ public class FlightDAO extends BaseDao<Flight, String> {
      * @return
      */
     public boolean resumeCompany(String companyUName) {
-        Company company = companyDAO.get(companyUName);
         List<Flight> flights = query(companyUName);
         if (flights != null && flights.size() > 0) {
             for (Flight i : flights) {

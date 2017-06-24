@@ -1,5 +1,6 @@
 package ts.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import ts.adapter.TimestampAdapter;
 
 import javax.persistence.*;
@@ -9,13 +10,11 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by wr on 2017/6/14.
- */
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "book", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "book")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Book implements Serializable{
     private Integer id;
     private Integer seatNum;

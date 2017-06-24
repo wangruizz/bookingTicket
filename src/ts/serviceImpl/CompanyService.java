@@ -77,12 +77,8 @@ public class CompanyService implements ICompanyService {
 
     @Override
     public Company register(Company company) {
-        try {
-            if (!airCompanyDAO.checkHasExist(company.getUsername())) {
-                airCompanyDAO.save(company);
-            }
-        } catch (NullPointerException e) {
-            e.printStackTrace();
+        if (!airCompanyDAO.checkHasExist(company.getUsername())) {
+            airCompanyDAO.save(company);
         }
         return company;
     }

@@ -113,7 +113,7 @@ public class Message {
         public static final int PWD_IS_WRONG = 6004;//密码输入错误
 
         //和旅客相关 7000-7999
-        public static final int  PASSENGER_INCOMPLICT = 7000;
+        public static final int PASSENGER_INCOMPLICT = 7000;
         public static final int PASSENGER_NOT_EXIST = 7001;
         public static final int PHONE_IS_WRONG = 7002;
 

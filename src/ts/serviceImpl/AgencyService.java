@@ -124,13 +124,22 @@ public class AgencyService implements IAgencyService {
         if (agency == null) {
             return Response.ok(new Message(Message.CODE.AGENCY_NOT_EXISTED)).header("EntityClass", "Message").build();
         }
-        passenger.setAgency(agency);
-        if (!passengerDAO.complete(passenger)) {
-            return Response.ok(new Message(Message.CODE.PASSENGER_INCOMPLICT)).header("EntityClass", "Message").build();
-        } else {
-            passengerDAO.update(passenger);
-            return Response.ok(passenger).header("EntityClass", "Passenger").build();
+        Passenger passenger1 = passengerDAO.get(passenger.getId());
+        if (passenger1.getAgency().getId() != agencyId) {
+            return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass", "Message").build();
         }
+        passenger1.setSex(passenger.getSex());
+        if (passenger.getName() != null) {
+            passenger1.setName(passenger.getName());
+        }
+        if (passenger.getIdcard() != null) {
+            passenger1.setIdcard(passenger.getIdcard());
+        }
+        if (passenger.getPhone() != null) {
+            passenger1.setPhone(passenger.getPhone());
+        }
+        passengerDAO.update(passenger1);
+        return Response.ok(passenger1).header("EntityClass", "Passenger").build();
     }
 
     /**
@@ -313,14 +322,14 @@ public class AgencyService implements IAgencyService {
     //取消订单
     @Override
     public Response cancelBook(int agencyId, int id) {
-        Book book = bookDAO.get(id);
-        if (book == null) {
-            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
-        }
-        if (book.getPassenger().getAgency().getId() != agencyId) {
-            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
-        }
-        book = bookDAO.cancel(id);
+//        Book book = bookDAO.get(id);
+//        if (book == null) {
+//            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
+//        }
+//        if (book.getPassenger().getAgency().getId() != agencyId) {
+//            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
+//        }
+        Book book = bookDAO.cancel(agencyId, id);
         if (book == null) {
             return Response.ok(new Message(Message.CODE.BOOK_CANCEL_FAILED)).header("EntityClass", "Message").build();//取消订单失败
         } else {
@@ -359,40 +368,24 @@ public class AgencyService implements IAgencyService {
 
     @Override
     public List<Book> queryBookByPhone(String phone) {
-        List<Book> list = bookDAO.query(phone);
-        if (list == null) {
-            return new ArrayList<>();
-        }
-        return list;
+        return bookDAO.query(phone);
     }
 
     @Override
     public List<Book> queryBookByAID(int agencyID, int status) {
-        List<Book> list = bookDAO.query(agencyID, status);
-        if (list == null) {
-            return new ArrayList<>();
-        }
-        return list;
+        return bookDAO.query(agencyID, status);
     }
 
     @Override
     public List<Book> queryBookByFID(String flightID, int start, int end) {
         Date date1 = new Date(start);
         Date date2 = new Date(end);
-        List<Book> list = bookDAO.query(flightID, date1, date2);
-        if (list == null) {
-            return new ArrayList<>();
-        }
-        return list;
+        return bookDAO.query(flightID, date1, date2);
     }
 
     @Override
     public List<Book> queryBookByHID(int historyID) {
-        List<Book> list = bookDAO.queryByHistoryID(historyID);
-        if (list == null) {
-            return new ArrayList<>();
-        }
-        return list;
+        return bookDAO.queryByHistoryID(historyID);
     }
 
     /**

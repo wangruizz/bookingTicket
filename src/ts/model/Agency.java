@@ -1,17 +1,20 @@
 package ts.model;
 
+
+import org.hibernate.annotations.*;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
-/**
- * Created by wr on 2017/6/14.
- */
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "agency", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "agency")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Agency implements Serializable {
     private Integer id;
     private String pwd;

@@ -1,5 +1,6 @@
 package ts.model;
 
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OptimisticLockType;
 import org.hibernate.annotations.OptimisticLocking;
 import ts.adapter.DateAdapter;
@@ -15,14 +16,12 @@ import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
 
-/**
- * Created by wr on 2017/6/19.
- */
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
 @OptimisticLocking(type = OptimisticLockType.VERSION)
 @XmlRootElement(name = "history")
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class History implements Serializable{
     private Integer id;
     private Timestamp version;

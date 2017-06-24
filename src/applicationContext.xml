@@ -14,10 +14,8 @@
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
 
-    <bean id="sessionFactory"
-          class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
-        <property name="configLocation" value="classpath:booking.cfg.xml">
-        </property>
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="configLocation" value="classpath:booking.cfg.xml"/>
         <property name="hibernateProperties">
             <props>
                 <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
@@ -35,6 +33,7 @@
                 <value>ts.daoImpl</value>
             </list>
         </property>
+
     </bean>
 
     <!-- 配置事务管理器 -->
