@@ -248,7 +248,7 @@ Util.init = function () {
             return false;
         }
         return true;
-    }
+    };
 
     Util.dateFormat = function (date) {
         if (date === undefined) {

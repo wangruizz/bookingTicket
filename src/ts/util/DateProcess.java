@@ -25,10 +25,10 @@ public class DateProcess {
 
     public static java.util.Date getNext(java.util.Date now, int delta) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        delta *= 24 * 60 * 60 * 1000; //一天的毫秒数
+        long d = (long)delta * 24L * 60L * 60L * 1000L; //一天的毫秒数
         try {
             now = sdf.parse(sdf.format(now)); //去除时分秒
-            return new java.util.Date(now.getTime() + delta);
+            return new java.util.Date(now.getTime() + d);
         } catch (ParseException e) { }
         return null;
     }

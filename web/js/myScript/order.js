@@ -43,7 +43,7 @@ module.controller('order', function ($scope, $http, $cookieStore) {
             method: 'GET',
             success: function (response) {
                 if (response.headers('EntityClass') === 'Book'){
-                    $scope.finish.push($scope.unfinish.splice(index, 1));
+                    $scope.finish.push($scope.unfinish.splice(index, 1)[0]);
                 } else {
                     alert(response.data.msg);
                 }
@@ -66,9 +66,9 @@ module.controller('order', function ($scope, $http, $cookieStore) {
             success: function (response) {
                 if (response.headers('EntityClass') === 'Book'){
                     if (type === 1) {
-                        $scope.cancel.push($scope.unfinish.splice(index, 1));
+                        $scope.cancel.push($scope.unfinish.splice(index, 1)[0]);
                     } else {
-                        $scope.cancel.push($scope.finish.splice(index, 1));
+                        $scope.cancel.push($scope.finish.splice(index, 1)[0]);
                     }
                 } else {
                     alert(response.data.msg);

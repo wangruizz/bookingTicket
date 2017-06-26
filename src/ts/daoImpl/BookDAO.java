@@ -86,22 +86,6 @@ public class BookDAO extends BaseDao<Book,Integer> {
         return  msg;
     }
 
-
-    /**
-     * 打印机票
-     * 已经测试
-     * @param bookID
-     * @param idcard
-     * @return
-     */
-    public Book printTicket(int bookID, String idcard) {
-        Book book = super.get(bookID);
-        if (null == book || book.getPassenger().getIdcard().equals(idcard)) {
-            return null;
-        }
-        return book;
-    }
-
     /**
      * 通过电话号码查询，已经验证
      * @param phone

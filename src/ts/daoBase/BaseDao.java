@@ -16,7 +16,7 @@ import org.springframework.util.Assert;
 /**
  * 提供hibernate dao的所有操作 * 
  */
-@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW )
+@Transactional(readOnly = false, propagation = Propagation.REQUIRES_NEW)
 public class BaseDao<T,PK extends Serializable> extends HibernateDaoSupport implements IBaseDao<T,PK> {
     protected Class<T> entityClass;			// DAO所管理的Entity类型.
 

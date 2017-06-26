@@ -109,41 +109,6 @@
         </div>
 
         <div id="query" ng-app="queryApp">
-            <form class="form-horizontal" ng-controller="query" name="form">
-                <div class="form-group">
-                    <label for="from" class="col-xs-4 control-label">出发地点</label>
-                    <div class="col-xs-8" id="fromCity">
-                        <input type="text" readonly class="form-control" id="from" name="from" ng-model="from" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="to" class="col-xs-4 control-label">到达地点</label>
-                    <div class="col-xs-8" id="toCity">
-                        <input type="text" readonly class="form-control" id="to" name="to" ng-model="to" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="date" class="col-xs-4 control-label">出发日期</label>
-                    <div class="col-xs-8" id="dateDiv">
-                        <input type="text" readonly name="date" id="date" class="form-control" ng-model="date" required/>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-xs-offset-4 col-xs-8">
-                        <button type="button" class="btn btn-success" ng-click="find()">查询</button>
-                    </div>
-                </div>
-            </form>
-
-            <!--<div id="query" ng-app="queryApp">-->
-            <!--<div class="col-xs-4">-->
-            <!--<ul class="nav nav-pills nav-stacked" role="tablist" id="nav">-->
-            <!--<li role="presentation" class="active"><a href="#queryPanel" aria-controls="queryPanel" role="tab" data-toggle="tab">机票查询</a></li>-->
-            <!--<li role="presentation"><a href="#findPanel" aria-controls="findPanel" role="tab" data-toggle="tab">机票打印</a></li>-->
-            <!--</ul>-->
-            <!--</div>-->
-            <!--<div class="col-xs-8 tab-content">-->
-            <!--<div role="tabpanel" id="queryPanel" class="tab-pane active">-->
             <!--<form class="form-horizontal" ng-controller="query" name="form">-->
             <!--<div class="form-group">-->
             <!--<label for="from" class="col-xs-4 control-label">出发地点</label>-->
@@ -169,30 +134,63 @@
             <!--</div>-->
             <!--</div>-->
             <!--</form>-->
-            <!--</div>-->
-            <!--<div  role="tabpanel" id="findPanel" class="tab-pane">-->
-            <!--<form class="form-horizontal" name="form">-->
-            <!--<div class="form-group">-->
-            <!--<div class="form-group">-->
-            <!--<label for="code" class="col-xs-4 control-label">取票码</label>-->
-            <!--<div class="col-xs-8">-->
-            <!--<input type="text" class="form-control" id="code" name="code" ng-model="code" required>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-            <!--<label for="idcard" class="col-xs-4 control-label">身份证号</label>-->
-            <!--<div class="col-xs-8">-->
-            <!--<input type="text" class="form-control" id="idcard" name="idcard" ng-model="idcard" required>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--<div class="col-xs-offset-4 col-xs-8">-->
-            <!--<button type="button" class="btn btn-success" ng-click="find()">查询</button>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</form>-->
-            <!--</div>-->
-            <!--</div>-->
-            <!--</div>-->
+
+            <div class="col-xs-4">
+                <ul class="nav nav-pills nav-stacked" role="tablist" id="nav">
+                    <li role="presentation" class="active"><a href="#queryPanel" aria-controls="queryPanel" role="tab" data-toggle="tab">机票查询</a></li>
+                    <li role="presentation"><a href="#findPanel" aria-controls="findPanel" role="tab" data-toggle="tab">机票打印</a></li>
+                </ul>
+            </div>
+            <div class="col-xs-8 tab-content">
+                <div role="tabpanel" id="queryPanel" class="tab-pane active">
+                    <form class="form-horizontal" ng-controller="query" name="form">
+                        <div class="form-group">
+                            <label for="from" class="col-xs-4 control-label">出发地点</label>
+                            <div class="col-xs-8" id="fromCity">
+                                <input type="text" readonly class="form-control" id="from" name="from" ng-model="from" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="to" class="col-xs-4 control-label">到达地点</label>
+                            <div class="col-xs-8" id="toCity">
+                                <input type="text" readonly class="form-control" id="to" name="to" ng-model="to" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="date" class="col-xs-4 control-label">出发日期</label>
+                            <div class="col-xs-8" id="dateDiv">
+                                <input type="text" readonly name="date" id="date" class="form-control" ng-model="date" required/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-xs-offset-4 col-xs-8">
+                                <button type="button" class="btn btn-success" ng-click="find()">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div  role="tabpanel" id="findPanel" class="tab-pane">
+                    <form class="form-horizontal" name="form" ng-controller="find">
+                        <div class="form-group">
+                            <div class="form-group">
+                                <label for="code" class="col-xs-4 control-label">取票码</label>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" id="code" name="code" ng-model="code" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="idcard" class="col-xs-4 control-label">身份证号</label>
+                                <div class="col-xs-8">
+                                    <input type="text" class="form-control" id="idcard" name="idcard" ng-model="idcard" required>
+                                </div>
+                            </div>
+                            <div class="col-xs-offset-4 col-xs-8">
+                                <button type="button" class="btn btn-success" ng-click="find()">查询</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 

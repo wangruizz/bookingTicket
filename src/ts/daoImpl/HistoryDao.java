@@ -3,18 +3,17 @@ package ts.daoImpl;
 import org.hibernate.criterion.Restrictions;
 import ts.daoBase.BaseDao;
 import ts.model.Airport;
-import ts.model.Book;
 import ts.model.Flight;
 import ts.model.History;
+import ts.util.DateProcess;
 
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by 12556 on 2017/6/15.
- */
 public class HistoryDao extends BaseDao<History,Integer> {
 
     private BookDAO bookDAO;
@@ -167,7 +166,7 @@ public class HistoryDao extends BaseDao<History,Integer> {
         Flight flight = flightDAO.get(flightID);//获取对应的航班
         System.out.println("历史dao中增加历史方法——获取的航班信息是："+flight.toString());
         History history  = new History();
-        history.setStatus(History.STATUS.HISTORY_FLIGHT_NOMAL);
+        history.setStatus(History.STATUS.HISTORY_FLIGHT_NORMAL);
         history.setDepartureDate(departureDate);
         history.setFlight(flight);
         history.setBusinessNum(flight.getBusinessNum());
@@ -248,9 +247,69 @@ public class HistoryDao extends BaseDao<History,Integer> {
      * @param history 某天某个ID对应的历史表记录
      */
     public void resumeFlight(History history) {
-        history.setStatus(History.STATUS.HISTORY_FLIGHT_NOMAL);
+        history.setStatus(History.STATUS.HISTORY_FLIGHT_NORMAL);
         update(history);
     }
 
+    public void init() {
+        new Thread(() -> {
+            int period = 30; //预售期
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            List<Flight> flights = flightDAO.findBy("id", true, Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
+            Time delay = new Time(0, 0, 0); //默认航班延迟0
+            flights.forEach(flight -> {
+                java.util.Date now = null;
+                try {
+                    now = sdf.parse(sdf.format(new java.util.Date()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                now = DateProcess.getNext(now, period);
+                java.sql.Date date = new java.sql.Date(now.getTime());
+                for (int i = period; i >= 0; i--) { //把预售期内的全部的航班插入到history表中
+                    History history = this.queryHistory(flight.getId(), date);
+                    if (history == null) { //history表中没有记录
+                        history = new History();
+                        history.setFlight(flight);
+                        history.setDepartureDate(date);
+                        history.setDelayTime(delay);
+                        history.setStatus(History.STATUS.HISTORY_FLIGHT_NORMAL);
+                        history.setBusinessNum(flight.getBusinessNum());
+                        history.setEconomyNum(flight.getEconomyNum());
+                        this.save(history);
+                        now = DateProcess.getNext(now, -1);
+                        date = new java.sql.Date(now.getTime());
+                    }else {
+                        break;//后面的已经存在，前面的就一定存在
+                    }
+                }
+            });
+            System.out.println("history表初始化结束");
+            while (true) {
+                java.util.Date now = new java.util.Date();
+                java.util.Date next = DateProcess.getNext(now, period);
+                try {
+                    Thread.sleep(next.getTime() - now.getTime()); //每天更新history
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                flights = flightDAO.findBy("id", true, Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
+                flights.forEach(flight -> {
+                    History history = new History();
+                    history.setFlight(flight);
+                    history.setDepartureDate(new java.sql.Date(next.getTime()));
+                    history.setDelayTime(delay);
+                    history.setStatus(History.STATUS.HISTORY_FLIGHT_NORMAL);
+                    history.setBusinessNum(flight.getBusinessNum());
+                    history.setEconomyNum(flight.getEconomyNum());
+                    try{
+                        this.save(history);
+                    }catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                });
+            }
+        }).start();
+    }
 
 }

@@ -53,7 +53,11 @@ module.controller("query", function ($scope, $http, $cookieStore) {
         }
         if (search['date'] !== undefined) {
             if (search['date'].match(/^20[0-9]{2}-[0-1][0-9]-[0-2][0-9]$/) !== null) {
-                $scope.date = search['date'];
+                if (search['date'] < Util.dateFormat()) {
+                    $scope.date = Util.dateFormat();
+                } else {
+                    $scope.date = search['date'];
+                }
             }
         }
         
@@ -202,7 +206,24 @@ module.controller("find", function ($scope, $http) {
             return false;
         }
         if (Util.checkCardId($scope.idcard)) {
-            // location
+            Util.ajax({
+                url: 'Agency/printTicket/' + $scope.code + '/' + $scope.idcard,
+                method: 'GET',
+                success: function (response) {
+                    if (response.headers('EntityClass') === 'Message') {
+                        alert(response.data.msg);
+                    }else {
+                        alert(response.data.passenger.name + " 已取票");
+                    }
+                },
+                error: function (response) {
+                    if (response.data.msg === undefined) {
+                        alert('取票失败，请重试');
+                    } else {
+                        alert(response.data.msg);
+                    }
+                }
+            }, $http);
         }
     };
 });

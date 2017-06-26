@@ -103,5 +103,4 @@ public interface ICompanyService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path("/ResumeFlightSomeday/{companyUName}/{flightID}/{departureDate}")
     Response ResumeFlightSomeday(@PathParam("companyUName") String companyUName, @PathParam("flightID") String flightID, @PathParam("departureDate") String departureDate) throws ParseException;
-
 }

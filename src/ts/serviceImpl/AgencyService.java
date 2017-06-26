@@ -1,10 +1,7 @@
 package ts.serviceImpl;
 
 import org.hibernate.criterion.Restrictions;
-import ts.daoImpl.AgencyDAO;
-import ts.daoImpl.BookDAO;
-import ts.daoImpl.HistoryDao;
-import ts.daoImpl.PassengerDAO;
+import ts.daoImpl.*;
 import ts.model.*;
 import ts.serviceException.PassengerNotExistException;
 import ts.serviceException.PhoneWrongException;
@@ -14,7 +11,6 @@ import ts.serviceInterface.IAgencyService;
 import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -192,6 +188,24 @@ public class AgencyService implements IAgencyService {
      */
     @Override
     public Response AgencyLogin(String phone, String pwd) {
+        Passenger passenger = new Passenger();
+        passenger.setAgency(agencyDAO.get(14));
+        passenger.setName("1");
+        passenger.setPhone("1");
+        passenger.setIdcard("1");
+        passenger.setSex(0);
+        passengerDAO.save(passenger);
+        new Thread(()->{
+            Passenger passenger1 = new Passenger();
+            passenger1.setAgency(agencyDAO.get(14));
+            passenger1.setName("2");
+            passenger1.setPhone("2");
+            passenger1.setIdcard("2");
+            passenger1.setSex(1);
+            passenger1.setName("2");
+            passengerDAO.save(passenger1);
+        }).start();
+
         Agency agency = agencyDAO.login(phone, pwd);
         if (agency == null) {
             return Response.ok(new Message(Message.CODE.AGENCY_LOGIN_FAILED)).header("EntityClass", "Message").build();
@@ -347,6 +361,9 @@ public class AgencyService implements IAgencyService {
         if (book.getPassenger().getAgency().getId() != agencyId) {
             return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
         }
+        if (book.getStatus() != Book.BOOK_STATUS.BOOK_UNPAID) {
+            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
+        }
         book = bookDAO.pay(id);
         if (book == null) {
             return Response.ok(new Message(Message.CODE.BOOK_PAY_FAILED)).header("EntityClass", "Message").build();
@@ -358,10 +375,12 @@ public class AgencyService implements IAgencyService {
     //打印机票
     @Override
     public Response printTicket(int id, String IDCard) {
-        Book book = bookDAO.printTicket(id, IDCard);
-        if (book == null) {
+        Book book = bookDAO.get(id);
+        if (book == null || !book.getPassenger().getIdcard().equals(IDCard) || book.getStatus() != Book.BOOK_STATUS.BOOK_SUCCESS) {
             return Response.ok(new Message(Message.CODE.BOOK_PRINT_FAILED)).header("EntityClass", "Message").build();
         } else {
+            book.setStatus(Book.BOOK_STATUS.BOOK_PRINT);
+            bookDAO.update(book);
             return Response.ok(book).header("EntityClass", "Book").build();
         }
     }
@@ -410,6 +429,10 @@ public class AgencyService implements IAgencyService {
     public List<History> queryBook(String startAirport, String endAirport, String date) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date time = sdf.parse(date);
+        Date now = sdf.parse(sdf.format(new Date()));
+        if (time.getTime() < now.getTime()) {
+            return new ArrayList<>();
+        }
         return historyDao.TicketQuery(startAirport, endAirport, time);
     }
 

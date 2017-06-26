@@ -19,7 +19,7 @@ import java.sql.Timestamp;
 @Entity
 @org.hibernate.annotations.Proxy(lazy=false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
-@OptimisticLocking(type = OptimisticLockType.VERSION)
+//@OptimisticLocking(type = OptimisticLockType.VERSION)
 @XmlRootElement(name = "history")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class History implements Serializable{
@@ -167,7 +167,7 @@ public class History implements Serializable{
         return result;
     }
     public static final class STATUS{
-        public static final int HISTORY_FLIGHT_NOMAL = 0; //正常状态
+        public static final int HISTORY_FLIGHT_NORMAL = 0; //正常状态
         public static final int HISTORY_FLIGHT_DELAY = 1; //航班延误
         public static final int HISTORY_FLIGHT_CANCEL = -1; //航班取消
     }
