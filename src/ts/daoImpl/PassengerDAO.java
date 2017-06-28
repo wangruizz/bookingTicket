@@ -14,7 +14,8 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     PassengerDAO() {
         super(Passenger.class);
     }
-    private  AgencyDAO agencyDAO;
+
+    private AgencyDAO agencyDAO;
 
     public AgencyDAO getAgencyDAO() {
         return agencyDAO;
@@ -23,9 +24,11 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     public void setAgencyDAO(AgencyDAO agencyDAO) {
         this.agencyDAO = agencyDAO;
     }
+
     /**
      * 通过旅行社ID查询
      * 已经测试
+     *
      * @param agencyID
      * @return
      */
@@ -37,6 +40,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     /**
      * 通过旅客姓名查询
      * 已经更改，并测试
+     *
      * @param name
      * @param agencyID
      * @return
@@ -49,18 +53,20 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     /**
      * 通过旅客电话号和旅行社ID查询
      * 已经更改并测试
+     *
      * @param phone
      * @param agencyID
      * @return
      */
     public List<Passenger> queryByPhone(String phone, int agencyID) {
         Agency agency = agencyDAO.get(agencyID);
-        return findBy("id", true, Restrictions.eq("agency", agency),Restrictions.eq("phone", phone));
+        return findBy("id", true, Restrictions.eq("agency", agency), Restrictions.eq("phone", phone));
     }
 
     /**
      * 通过旅客电话号查询
      * 已经更改并测试
+     *
      * @param phone
      * @return
      */
@@ -71,6 +77,7 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     /**
      * 通过旅客身份证号查询
      * 已经更改并测试
+     *
      * @param idCard
      * @param agencyID
      * @return
@@ -82,13 +89,13 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     }
 
     /**
-     *旅客信息是否完整
+     * 旅客信息是否完整
      * 已经测试
      */
-    public Boolean complete(Passenger passenger){
-        if(passenger.getAgency()==null||passenger.getIdcard()==null||passenger.getName()==null||passenger.getPhone()==null){
+    public Boolean complete(Passenger passenger) {
+        if (passenger.getAgency() == null || passenger.getIdcard() == null || passenger.getName() == null || passenger.getPhone() == null) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
@@ -96,14 +103,15 @@ public class PassengerDAO extends BaseDao<Passenger, Integer> {
     /**
      * 电话号码是否符合要求
      * 已经测试
+     *
      * @param phone
      * @return
      */
-    public Boolean match(String phone){
-        if(phone.matches("^((13[0-9])|(15[^4])|(18[0235-9])|(17[0-8])|(147))\\d{8}$") ||
-                phone.matches("^(5|6|8|9)\\d{7}$")){
+    public Boolean match(String phone) {
+        if (phone.matches("^((13[0-9])|(15[^4])|(18[0235-9])|(17[0-8])|(147))\\d{8}$") ||
+                phone.matches("^(5|6|8|9)\\d{7}$")) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

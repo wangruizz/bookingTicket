@@ -25,13 +25,13 @@ public class InvokeFaultExceptionMapper implements ExceptionMapper {
         ex.printStackTrace();
         System.err.println("\n\n-----------Error Message End---------------\n\n");
 
-        if (ex instanceof ParseException){
+        if (ex instanceof ParseException) {
             rb.entity(new Message(Message.CODE.DATE_FORMAT_ERROR));
-        } else if (ex instanceof ServiceException){
-            rb.entity(((ServiceException)ex).message1);
+        } else if (ex instanceof ServiceException) {
+            rb.entity(((ServiceException) ex).message1);
         } else if (ex instanceof BadRequestException) {
             rb.entity(new Message(Message.CODE.BAD_REQUEST));
-        } else if (ex instanceof ClientErrorException){
+        } else if (ex instanceof ClientErrorException) {
             rb.entity(new Message(Message.CODE.URL_NOT_FOUND));
         }
         return rb.build();

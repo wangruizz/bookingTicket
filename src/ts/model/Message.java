@@ -128,6 +128,7 @@ public class Message {
         public static final int TICKET_HAS_PAYED = 8007;//机票已付款
         public static final int TICKET_HAS_EXIST = 8008;//订单已存在（重复订票）
         public static final int TICKET_NOT_EXIST = 8009;//订单不存在
+        public static final int REPEAT_PRINT = 8010;//订单不存在
     }
 
     static {
@@ -164,5 +165,6 @@ public class Message {
         map.put(CODE.TICKET_HAS_EXIST, "请勿重复订票");
         map.put(CODE.TICKET_NOT_EXIST, "订单不存在");
         map.put(CODE.FLIGHT_NOT_EMPTY, "航班已满");
+        map.put(CODE.REPEAT_PRINT, "请勿重复打印机票");
     }
 }

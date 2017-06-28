@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "agency", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "agency")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
@@ -33,13 +33,14 @@ public class Agency implements Serializable {
     public void setToken(String token) {
         this.token = token;
     }
+
     private static final long serialVersionUID = -3267943602377867497L;
 
     @XmlElement
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator="MODEL_agency")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_agency", strategy="native")
+    @GeneratedValue(generator = "MODEL_agency")
+    @org.hibernate.annotations.GenericGenerator(name = "MODEL_agency", strategy = "native")
     public Integer getId() {
         return id;
     }

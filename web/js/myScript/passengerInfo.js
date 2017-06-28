@@ -2,11 +2,11 @@ var module = angular.module('passengerApp', ['ngRoute', 'ngCookies']);
 
 module.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when("/", {
-        controller:passenger,
-        templateUrl:"html/passenger/main.html"
+        controller: passenger,
+        templateUrl: "html/passenger/main.html"
     }).when("/add", {
-        controller:modify,
-        templateUrl:"html/passenger/modify.html"
+        controller: modify,
+        templateUrl: "html/passenger/modify.html"
     }).when('/:id', {
         controller: modify,
         templateUrl: "html/passenger/modify.html"
@@ -66,7 +66,7 @@ function modify($scope, $http, $routeParams, $cookieStore) {
                 url: 'Agency/searchPassenger/' + $scope.agency.id + '/' + $scope.id,
                 success: function (response) {
                     $scope.passenger = response['data'];
-                    $scope.passenger.idcard = response['data']['idcard']+'';
+                    $scope.passenger.idcard = response['data']['idcard'] + '';
                 },
                 error: function (response) {
                     $scope.msg = response.data.msg;
@@ -97,7 +97,7 @@ function modify($scope, $http, $routeParams, $cookieStore) {
             url = 'Agency/modifyPassenger/' + $scope.agency.id;
         }
         Util.ajax({
-            url:url,
+            url: url,
             method: 'POST',
             data: $scope.passenger,
             success: function (response) {

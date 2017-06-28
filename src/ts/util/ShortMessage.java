@@ -11,14 +11,11 @@ import org.codehaus.jettison.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by ab on 2017/6/14.
- */
 public class ShortMessage {
 
     //官网的URL, http请求就用这个链接
     private final String url = "http://gw.api.taobao.com/router/rest?format=json";
-//    private String url = "http://gw.api.tbsandbox.com/router/rest";
+    //    private String url = "http://gw.api.tbsandbox.com/router/rest";
     //成为开发者，创建应用后系统自动生成
     private final String appkey = "24292629";
     private final String secret = "b0c8abe213bf3d6538c324285842ba12";
@@ -81,11 +78,11 @@ public class ShortMessage {
         System.out.println("\n\n-----------短信开始发送-----------------\n\n");
         System.out.println(content);
         System.out.println("\n\n-----------短信发送结束-----------------\n\n");
-//        try {
-//            sendMessage(TEMPLATE_ORDER_SUCCESS, content, teleNumber);
-//        } catch (ApiException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            sendMessage(TEMPLATE_ORDER_SUCCESS, content, teleNumber);
+        } catch (ApiException e) {
+            e.printStackTrace();
+        }
         return true;
     }
 

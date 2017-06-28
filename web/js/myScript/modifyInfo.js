@@ -6,7 +6,7 @@ angular.module('modifyApp', ['ngCookies']).controller('modify', function ($scope
         if (Util.checkAgency($scope.agency)) {
             Util.ajax({
                 url: 'Agency/modifyAgency',
-                method:'POST',
+                method: 'POST',
                 data: $scope.agency,
                 success: function (response) {
                     $scope.agency['name'] = response['data']['name'];

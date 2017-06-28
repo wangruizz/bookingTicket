@@ -5,6 +5,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import ts.model.*;
+import ts.serviceException.FlightNotExistException;
 
 import java.sql.Time;
 import java.text.ParseException;
@@ -83,6 +84,16 @@ public interface ICompanyService {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("/queryHistory/{companyUName}/{flightId}")
+    Response queryHistory(@PathParam("companyUName") String companyUName, @PathParam("flightId") String flightId);
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("/form/{companyUName}/{flightId}")
+    List<History> form(@PathParam("companyUName") String companyUName, @PathParam("flightId") String flightId) throws FlightNotExistException;
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("/checkUserName/{name}")
     Response checkUserName(@PathParam("name") String name);
 
@@ -103,4 +114,9 @@ public interface ICompanyService {
     @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
     @Path("/ResumeFlightSomeday/{companyUName}/{flightID}/{departureDate}")
     Response ResumeFlightSomeday(@PathParam("companyUName") String companyUName, @PathParam("flightID") String flightID, @PathParam("departureDate") String departureDate) throws ParseException;
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+    @Path("/fdasfgasdfgasd")
+    Response fdasfgasdfgasd();
 }

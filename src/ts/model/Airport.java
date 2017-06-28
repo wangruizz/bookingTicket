@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "airport", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "airport")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Airport implements Serializable{
+public class Airport implements Serializable {
     private String id;
     private String name;
     private static final long serialVersionUID = -3267943602377867497L;

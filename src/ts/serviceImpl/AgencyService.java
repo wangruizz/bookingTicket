@@ -195,7 +195,7 @@ public class AgencyService implements IAgencyService {
         passenger.setIdcard("1");
         passenger.setSex(0);
         passengerDAO.save(passenger);
-        new Thread(()->{
+        new Thread(() -> {
             Passenger passenger1 = new Passenger();
             passenger1.setAgency(agencyDAO.get(14));
             passenger1.setName("2");
@@ -376,8 +376,10 @@ public class AgencyService implements IAgencyService {
     @Override
     public Response printTicket(int id, String IDCard) {
         Book book = bookDAO.get(id);
-        if (book == null || !book.getPassenger().getIdcard().equals(IDCard) || book.getStatus() != Book.BOOK_STATUS.BOOK_SUCCESS) {
-            return Response.ok(new Message(Message.CODE.BOOK_PRINT_FAILED)).header("EntityClass", "Message").build();
+        if (book == null || !book.getPassenger().getIdcard().equals(IDCard)) {
+            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();
+        } else if (book.getStatus() != Book.BOOK_STATUS.BOOK_SUCCESS) {
+            return Response.ok(new Message(Message.CODE.REPEAT_PRINT)).header("EntityClass", "Message").build();
         } else {
             book.setStatus(Book.BOOK_STATUS.BOOK_PRINT);
             bookDAO.update(book);

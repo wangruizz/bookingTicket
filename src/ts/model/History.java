@@ -1,8 +1,6 @@
 package ts.model;
 
 import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.annotations.OptimisticLocking;
 import ts.adapter.DateAdapter;
 import ts.adapter.TimeAdapter;
 import ts.adapter.TimestampAdapter;
@@ -17,12 +15,11 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "history", schema = "ticketorder", catalog = "")
-//@OptimisticLocking(type = OptimisticLockType.VERSION)
 @XmlRootElement(name = "history")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class History implements Serializable{
+public class History implements Serializable {
     private Integer id;
     private Timestamp version;
     private Date departureDate;
@@ -50,8 +47,8 @@ public class History implements Serializable{
     @XmlElement
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator="MODEL_history")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_history", strategy="native")
+    @GeneratedValue(generator = "MODEL_history")
+    @org.hibernate.annotations.GenericGenerator(name = "MODEL_history", strategy = "native")
     public Integer getId() {
         return id;
     }
@@ -130,7 +127,7 @@ public class History implements Serializable{
 
     @XmlElement
     @OneToOne
-    @JoinColumn(name = "flightID",referencedColumnName = "id")
+    @JoinColumn(name = "flightID", referencedColumnName = "id")
     public Flight getFlight() {
         return flight;
     }
@@ -138,6 +135,7 @@ public class History implements Serializable{
     public void setFlight(Flight flight) {
         this.flight = flight;
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -166,7 +164,8 @@ public class History implements Serializable{
         result = 31 * result + (economyNum != null ? economyNum.hashCode() : 0);
         return result;
     }
-    public static final class STATUS{
+
+    public static final class STATUS {
         public static final int HISTORY_FLIGHT_NORMAL = 0; //正常状态
         public static final int HISTORY_FLIGHT_DELAY = 1; //航班延误
         public static final int HISTORY_FLIGHT_CANCEL = -1; //航班取消

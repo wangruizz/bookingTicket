@@ -12,9 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by 12556 on 2017/6/15.
- */
 public class FlightDAO extends BaseDao<Flight, String> {
 
     AirCompanyDAO companyDAO;

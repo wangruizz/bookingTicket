@@ -11,10 +11,10 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
     }
 
     init();
-    
+
     $scope.submit = function (flag) {
         if (flag) { //agency
-            if ( $scope.phoneStatus !== 'success') {
+            if ($scope.phoneStatus !== 'success') {
                 alert('请换一个手机号');
                 return false;
             }
@@ -38,7 +38,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
             }
         } else {//company
             $scope.company.pwd = $scope.company.password;
-            if (Util.checkCompany($scope.company)){
+            if (Util.checkCompany($scope.company)) {
                 Util.ajax({
                     url: 'Company/register',
                     data: $scope.company,
@@ -64,7 +64,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
             success: function (response) {
                 if (response.data.code == "1") {
                     $scope.usernameStatus = 'success';
-                }else {
+                } else {
                     $scope.usernameStatus = 'error';
                 }
             },
@@ -76,11 +76,11 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
 
     $scope.checkPhone = function () {
         Util.ajax({
-            url: 'Agency/checkPhone/'+$scope.agency.phone,
+            url: 'Agency/checkPhone/' + $scope.agency.phone,
             success: function (response) {
                 if (response.data.code == "1") {
                     $scope.phoneStatus = 'success';
-                }else {
+                } else {
                     $scope.phoneStatus = 'error';
                 }
             },
@@ -93,7 +93,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
     $scope.checkName = function () {
         $scope.nameStatus = 'success';
     };
-    
+
 });
 angular.bootstrap("#topNav", ['topNavApp']);
 angular.bootstrap("#register", ['registerApp']);

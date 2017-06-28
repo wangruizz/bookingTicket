@@ -11,11 +11,11 @@ import java.io.Serializable;
 import java.sql.Time;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "flight", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "flight")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Flight implements Serializable{
+public class Flight implements Serializable {
     private String id;
     private Time startTime;
     private Time arriveTime;
@@ -122,7 +122,7 @@ public class Flight implements Serializable{
 
     @XmlElement
     @ManyToOne
-    @JoinColumn(name = "companyUName",referencedColumnName = "username")
+    @JoinColumn(name = "companyUName", referencedColumnName = "username")
     public Company getCompany() {
         return company;
     }
@@ -133,7 +133,7 @@ public class Flight implements Serializable{
 
     @XmlElement
     @OneToOne
-    @JoinColumn(name = "startAirport",referencedColumnName = "id")
+    @JoinColumn(name = "startAirport", referencedColumnName = "id")
     public Airport getStartAirport() {
         return startAirport;
     }
@@ -144,7 +144,7 @@ public class Flight implements Serializable{
 
     @XmlElement
     @OneToOne
-    @JoinColumn(name = "arriveAirport",referencedColumnName = "id")
+    @JoinColumn(name = "arriveAirport", referencedColumnName = "id")
     public Airport getArriveAirport() {
         return arriveAirport;
     }
@@ -204,7 +204,7 @@ public class Flight implements Serializable{
                 '}';
     }
 
-    public static final class STATUS{
+    public static final class STATUS {
         public static final int FLIGHT_NORMAL = 0; //正常状态
         public static final int FLIGHT_CANCEL = -1; //航班取消
     }

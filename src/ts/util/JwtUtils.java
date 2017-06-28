@@ -21,12 +21,11 @@ import java.util.Date;
  * nbf: 定义在此时间之前，JWT不会接受处理。
  * iat: JWT发布时间，能用于决定JWT年龄
  * jti: JWT唯一标识. 能用于防止 JWT重复使用，一次只用一个token
- *
  */
 public class JwtUtils {
     private static final String base64Security = "base64Security";
     private static final String issuer = "ZZU";
-    private static final long TTLMillis = 1000*60*60*24; //生存期 24 hours
+    private static final long TTLMillis = 1000 * 60 * 60 * 24; //生存期 24 hours
 
     public static Claims parseJWT(String jsonWebToken) {
         return Jwts.parser().setSigningKey(DatatypeConverter.parseBase64Binary(base64Security))
@@ -52,7 +51,7 @@ public class JwtUtils {
                 .signWith(signatureAlgorithm, signingKey);//第三段密钥
         //添加Token过期时间
         //过期时间
-        long expMillis = newMillis+TTLMillis;
+        long expMillis = newMillis + TTLMillis;
         //现在是什么时间
         Date exp = new Date(expMillis);
         //系统时间之前的token都是不可以被承认的
@@ -63,7 +62,7 @@ public class JwtUtils {
 
 
     public static void main(String[] args) {
-        String s= createJWT("name", "userid", "Hello World");
+        String s = createJWT("name", "userid", "Hello World");
         System.out.println(s);
         System.out.println(parseJWT(s));
     }

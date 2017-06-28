@@ -8,6 +8,7 @@ angular.module('loginApp', ['ngCookies']).controller("login", function ($scope, 
         $scope.agency = {};
         $scope.company = {};
     }
+
     init();
 
     $scope.login = function (flag) {
@@ -26,9 +27,10 @@ angular.module('loginApp', ['ngCookies']).controller("login", function ($scope, 
             alert('请填写密码');
             return false;
         }
+        var pwd = $.md5($scope.password);
         if (flag) { //agency
             Util.ajax({
-                url: '/Agency/doLogin/' + $scope.phone + '/' + $scope.password,
+                url: '/Agency/doLogin/' + $scope.phone + '/' + pwd,
                 success: function (response) {
                     if (response['headers']('EntityClass') === 'Message') {
                         $scope.msgStatus = 'danger';
@@ -52,7 +54,7 @@ angular.module('loginApp', ['ngCookies']).controller("login", function ($scope, 
             }, $http);
         } else { //company
             Util.ajax({
-                url: 'Company/doLogin/' + $scope.username + '/' + $scope.password,
+                url: 'Company/doLogin/' + $scope.username + '/' + pwd,
                 success: function (response) {
                     if (response['headers']('EntityClass') === 'Message') {
                         $scope.msgStatus = 'danger';

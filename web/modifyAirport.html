@@ -9,17 +9,18 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
-        @media screen  and (min-width: 768px){
-            #topNav{
+        @media screen  and (min-width: 768px) {
+            #topNav {
                 padding: 0 80px;
                 height: 100px;
             }
-            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand{
-                height:100%;
+
+            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand {
+                height: 100%;
             }
         }
 
-        .left{
+        .left {
             margin: 10px 10px 10px 30px;
         }
     </style>
@@ -64,12 +65,14 @@
         </div>
         <div class=" col-sm-9 col-xs-12">
             <h3 class="text-center">修改密码</h3>
-            <form class="form-horizontal col-sm-5 col-sm-offset-2 col-xs-12" name="form" ng-app="modifyPassApp" ng-controller="modifyPass" id="modifyPass">
+            <form class="form-horizontal col-sm-5 col-sm-offset-2 col-xs-12" name="form" ng-app="modifyPassApp"
+                  ng-controller="modifyPass" id="modifyPass">
                 <div class="form-group">
                     <div class="form-group">
                         <label for="oldPassword" class="col-sm-3 control-label">原密码</label>
                         <div class="col-sm-8">
-                            <input type="password" class="form-control" id="oldPassword" required ng-model="oldPassword">
+                            <input type="password" class="form-control" id="oldPassword" required
+                                   ng-model="oldPassword">
                         </div>
                     </div>
                     <div class="form-group">
@@ -86,7 +89,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-3 col-sm-10">
-                            <button type="button" class="btn btn-success" ng-click="submit(false)" ng-disabled="form.$invalid || password!=repeat">修改</button>
+                            <button type="button" class="btn btn-success" ng-click="submit(false)"
+                                    ng-disabled="form.$invalid || password!=repeat">修改
+                            </button>
                         </div>
                     </div>
                 </div>

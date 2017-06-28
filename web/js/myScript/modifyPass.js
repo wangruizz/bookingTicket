@@ -25,10 +25,12 @@ angular.module('modifyPassApp', ['ngCookies']).controller('modifyPass', function
             alert('两次密码输入不一致');
             return false;
         }
+        var old = $.md5($scope.oldPassword);
+        var now = $.md5($scope.password);
         if (flag) { //agency
             $scope.agency.pwd = $scope.password;
             Util.ajax({
-                url: 'Agency/modifyPwd/' + $scope.agency.phone + '/' + $scope.oldPassword + '/' + $scope.password,
+                url: 'Agency/modifyPwd/' + $scope.agency.phone + '/' + old + '/' + now,
                 success: function (response) {
                     if (response.headers('EntityClass') === 'Agency') {
                         $cookieStore.remove('agency');
@@ -44,7 +46,7 @@ angular.module('modifyPassApp', ['ngCookies']).controller('modifyPass', function
             }, $http)
         } else { //company
             Util.ajax({
-                url: 'Company/modifyPwd/' + $scope.company.username + '/' + $scope.oldPassword + '/' + $scope.password,
+                url: 'Company/modifyPwd/' + $scope.company.username + '/' + old + '/' + now,
                 success: function (response) {
                     if (response.headers('EntityClass') === 'Company') {
                         $cookieStore.remove('agency');

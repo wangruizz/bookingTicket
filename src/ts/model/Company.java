@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "company", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "company")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Company implements Serializable{
+public class Company implements Serializable {
     private String name;
     private String username;
     private String pwd;

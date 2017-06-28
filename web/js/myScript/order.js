@@ -4,7 +4,7 @@ module.controller('order', function ($scope, $http, $cookieStore) {
         $scope.agency = $cookieStore.get('agency');
         if ($scope.agency === undefined) {
             location.href = 'login.html';
-            return ;
+            return;
         }
         $scope.unfinish = [];
         $scope.finish = [];
@@ -36,13 +36,13 @@ module.controller('order', function ($scope, $http, $cookieStore) {
     }
 
     init();
-    
+
     $scope.pay = function (id, index) {
         Util.ajax({
             url: 'Agency/payTicket/' + $scope.agency.id + '/' + id,
             method: 'GET',
             success: function (response) {
-                if (response.headers('EntityClass') === 'Book'){
+                if (response.headers('EntityClass') === 'Book') {
                     $scope.finish.push($scope.unfinish.splice(index, 1)[0]);
                 } else {
                     alert(response.data.msg);
@@ -64,7 +64,7 @@ module.controller('order', function ($scope, $http, $cookieStore) {
             url: 'Agency/cancelBook/' + $scope.agency.id + '/' + id,
             method: 'GET',
             success: function (response) {
-                if (response.headers('EntityClass') === 'Book'){
+                if (response.headers('EntityClass') === 'Book') {
                     if (type === 1) {
                         $scope.cancel.push($scope.unfinish.splice(index, 1)[0]);
                     } else {

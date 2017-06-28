@@ -3,15 +3,15 @@ package ts.serviceImpl;
 import org.hibernate.criterion.Restrictions;
 import ts.daoImpl.*;
 import ts.model.*;
+import ts.serviceException.FlightNotExistException;
 import ts.serviceInterface.ICompanyService;
-import ts.util.DateProcess;
 import ts.util.JwtUtils;
 
 import javax.ws.rs.core.Response;
+import java.sql.Date;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 
@@ -134,6 +134,7 @@ public class CompanyService implements ICompanyService {
 
     /**
      * 取消公司的航班
+     *
      * @param companyUName
      * @return
      */
@@ -148,6 +149,7 @@ public class CompanyService implements ICompanyService {
 
     /**
      * 恢复整个公司的航班
+     *
      * @param companyUName
      * @return
      */
@@ -215,37 +217,74 @@ public class CompanyService implements ICompanyService {
     public Response queryFlight(String companyUName, String flightId) {
         Flight flight = flightDAO.get(flightId);
         if (flight == null) {
-            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
         }
         if (!flight.getCompany().getUsername().equals(companyUName)) {
-            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass","Message").build();
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
         }
-        return Response.ok(flight).header("EntityClass","Flight").build();
+        return Response.ok(flight).header("EntityClass", "Flight").build();
+    }
+
+    @Override
+    public Response queryHistory(String companyUName, String flightId) {
+        Flight flight = flightDAO.get(flightId);
+        if (flight == null) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        if (!flight.getCompany().getUsername().equals(companyUName)) {
+            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
+        }
+        Response res = null;
+        History history = null;
+        try {
+            history = historyDao.findBy("id", true, Restrictions.eq("flight", flight), Restrictions.eq("departureDate", new Date(new java.util.Date().getTime()))).get(0);
+        } catch (Exception e) {
+            res = Response.ok(flight).header("EntityClass", "Flight").build();
+        }
+        if (history != null) {
+            res = Response.ok(history).header("EntityClass", "History").build();
+        }
+        return res;
+    }
+
+    @Override
+    public List<History> form(String companyUName, String flightId) throws FlightNotExistException {
+        Flight flight = flightDAO.get(flightId);
+        if (flight == null) {
+            throw new FlightNotExistException();
+        }
+        if (!flight.getCompany().getUsername().equals(companyUName)) {
+            throw new FlightNotExistException();
+        }
+        List<History> ans;
+        ans = historyDao.findBy("departureDate", false, Restrictions.eq("flight", flight));
+        return ans;
     }
 
     /**
      * 检测用户名在注册的时候是否存在
+     *
      * @param name
      * @return
      */
     @Override
     public Response checkUserName(String name) {
-        if(airCompanyDAO.checkHasExist(name)){
-            return Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass","Message").build();
-        }else{
-            return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass","Message").build();
+        if (airCompanyDAO.checkHasExist(name)) {
+            return Response.ok(new Message(Message.CODE.COMPANY_HAS_EXIST)).header("EntityClass", "Message").build();
+        } else {
+            return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
         }
     }
 
     @Override
     public Response modifyPwd(String username, String pwd1, String pwd2) {
         Company company = airCompanyDAO.get(username);
-        if(company.getPwd().equals(pwd1)){
+        if (company.getPwd().equals(pwd1)) {
             company.setPwd(pwd2);
             airCompanyDAO.update(company);
-            return Response.ok(company).header("EntityClass","Company").build();
-        }else{
-            return Response.ok(new Message(Message.CODE.PWD_IS_WRONG)).header("EntityClass","Message").build();
+            return Response.ok(company).header("EntityClass", "Company").build();
+        } else {
+            return Response.ok(new Message(Message.CODE.PWD_IS_WRONG)).header("EntityClass", "Message").build();
         }
     }
 
@@ -290,6 +329,12 @@ public class CompanyService implements ICompanyService {
         }
         historyDao.resumeFlight(history);
         return Response.ok(new Message(Message.CODE.SUCCESS)).header("EntityClass", "Message").build();
+    }
+
+    @Override
+    public Response fdasfgasdfgasd() {
+        historyDao.init();
+        return null;
     }
 
 }

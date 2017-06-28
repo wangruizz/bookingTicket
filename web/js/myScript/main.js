@@ -6,15 +6,16 @@ labels ['K-N'] = [56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71
 labels ['O-V'] = [80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98];
 labels ['W-Z'] = [99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122];
 
-$(document).ready(function(){
-    $('#from').querycity({'data':cities, 'tabs':labels, 'pos': $("#fromCity")});
-    $('#to').querycity({'data':cities, 'tabs':labels, 'pos': $("#toCity")});
-    $("#date").daterangepicker({ singleDatePicker: true, startDate:new Date() });
+$(document).ready(function () {
+    $('#from').querycity({'data': cities, 'tabs': labels, 'pos': $("#fromCity")});
+    $('#to').querycity({'data': cities, 'tabs': labels, 'pos': $("#toCity")});
+    $("#date").daterangepicker({singleDatePicker: true, startDate: new Date()});
 });
 
 var module = angular.module("queryApp", ['ngCookies']);
 module.controller("query", function ($scope, $http, $cookieStore) {
     var d;
+
     function init() {
         $scope.agency = $cookieStore.get('agency');
         $scope.from = '';
@@ -60,10 +61,10 @@ module.controller("query", function ($scope, $http, $cookieStore) {
                 }
             }
         }
-        
-        if (search['from'] !== undefined && search['to'] !== undefined && search['date'] !== undefined){
+
+        if (search['from'] !== undefined && search['to'] !== undefined && search['date'] !== undefined) {
             Util.ajax({
-                url:'Agency/queryTicket/' + search['from'] + '/' + search['to'] + '/' + search['date'],
+                url: 'Agency/queryTicket/' + search['from'] + '/' + search['to'] + '/' + search['date'],
                 success: function (request) {
                     $scope.flight = request['data'];
                     var d1 = new Date();
@@ -79,10 +80,10 @@ module.controller("query", function ($scope, $http, $cookieStore) {
                         d1.setMinutes(parseInt(v.flight.startTime.split(':')[1]));
                         d2.setMinutes(parseInt(v.flight.arriveTime.split(':')[1]));
                         if (d1 > d2) {
-                            d2.setDate(d.getDate()+1);
+                            d2.setDate(d.getDate() + 1);
                         }
                         var t = Math.floor((d2 - d1) / 60000); //转成分钟
-                        f[i]['during'] = (Math.floor(t/60) < 10 ? '0'+Math.floor(t/60): Math.floor(t/60)) +':'+(t%60);
+                        f[i]['during'] = (Math.floor(t / 60) < 10 ? '0' + Math.floor(t / 60) : Math.floor(t / 60)) + ':' + (t % 60);
                         f[i]['economyNum'] = parseInt(f[i]['economyNum']);
                         f[i]['businessNum'] = parseInt(f[i]['businessNum']);
                     });
@@ -133,11 +134,11 @@ module.controller("query", function ($scope, $http, $cookieStore) {
             alert('日期格式不正确');
             return false;
         }
-        if (d > new Date($scope.date)){
+        if (d > new Date($scope.date)) {
             alert('日期不正确');
             return false;
         }
-        window.location.href = './query.html?from='+$scope.fromCode+'&to='+$scope.toCode+'&date='+$scope.date;
+        window.location.href = './query.html?from=' + $scope.fromCode + '&to=' + $scope.toCode + '&date=' + $scope.date;
         return false;
     };
 
@@ -162,7 +163,7 @@ module.controller("query", function ($scope, $http, $cookieStore) {
                 })
             },
             error: function () {
-                
+
             }
         }, $http);
     };
@@ -174,7 +175,7 @@ module.controller("query", function ($scope, $http, $cookieStore) {
             success: function (response) {
                 if (response.headers('EntityClass') === 'Message') {
                     alert(response.data.msg);
-                }else {
+                } else {
                     $scope.passengers[index]['code'] = response.data.id;
                 }
             },
@@ -212,7 +213,7 @@ module.controller("find", function ($scope, $http) {
                 success: function (response) {
                     if (response.headers('EntityClass') === 'Message') {
                         alert(response.data.msg);
-                    }else {
+                    } else {
                         alert(response.data.passenger.name + " 已取票");
                     }
                 },

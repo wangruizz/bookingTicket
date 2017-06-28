@@ -11,11 +11,11 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "book", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "book")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Book implements Serializable{
+public class Book implements Serializable {
     private Integer id;
     private Integer seatNum;
     private Integer seatType;//0:经济舱；1:商务舱
@@ -28,8 +28,8 @@ public class Book implements Serializable{
     @XmlElement
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator="MODEL_book")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_book", strategy="native")
+    @GeneratedValue(generator = "MODEL_book")
+    @org.hibernate.annotations.GenericGenerator(name = "MODEL_book", strategy = "native")
     public Integer getId() {
         return id;
     }
@@ -85,7 +85,7 @@ public class Book implements Serializable{
 
     @XmlElement
     @OneToOne
-    @JoinColumn(name = "passID",referencedColumnName = "id")
+    @JoinColumn(name = "passID", referencedColumnName = "id")
     public Passenger getPassenger() {
         return passenger;
     }
@@ -96,7 +96,7 @@ public class Book implements Serializable{
 
     @XmlElement
     @OneToOne
-    @JoinColumn(name = "historyID",referencedColumnName = "id")
+    @JoinColumn(name = "historyID", referencedColumnName = "id")
     public History getHistory() {
         return history;
     }
@@ -141,15 +141,15 @@ public class Book implements Serializable{
                 ", status=" + status +
                 '}';
     }
-  
-    public static final class BOOK_STATUS{
+
+    public static final class BOOK_STATUS {
         public static final int BOOK_UNPAID = 0; //等待付款
         public static final int BOOK_SUCCESS = 1; //预订成功
         public static final int BOOK_PRINT = 2; //预订成功
         public static final int BOOK_CANCEL = -1; //订单取消
     }
 
-    public static final class SEAT_TYPE{
+    public static final class SEAT_TYPE {
         public static final int ECONOMY_SEAT = 0; //经济舱
         public static final int BUSINESS_SEAT = 1; //商务舱
     }

@@ -8,56 +8,65 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href='css/cityquery.css' rel="stylesheet" type="text/css" />
-    <link href='css/BeatPicker.css' rel="stylesheet" type="text/css" />
-    <link href='css/daterangepicker-bs3.css' rel="stylesheet" type="text/css" />
+    <link href='css/cityquery.css' rel="stylesheet" type="text/css"/>
+    <link href='css/BeatPicker.css' rel="stylesheet" type="text/css"/>
+    <link href='css/daterangepicker-bs3.css' rel="stylesheet" type="text/css"/>
     <style type="text/css">
-        @media screen  and (min-width: 768px){
-            #topNav{
+        @media screen  and (min-width: 768px) {
+            #topNav {
                 padding: 0 80px;
                 height: 100px;
             }
-            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand{
-                height:100%;
+
+            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand {
+                height: 100%;
             }
-            #query form{
+
+            #query form {
                 display: inline-block;
             }
-            .flight{
+
+            .flight {
                 margin: 1% 15%;
             }
         }
-        #query{
-            margin-top: 30px;
-        }
-        #query>ul{
+
+        #query {
             margin-top: 30px;
         }
 
-        .flight{
+        #query > ul {
+            margin-top: 30px;
+        }
+
+        .flight {
             height: 80px;
-            border-top:3px red solid;
+            border-top: 3px red solid;
             padding: 10px;
             background-color: #ddd;
         }
-        .flight .time{
+
+        .flight .time {
             font-size: 24px;
             width: 100%;
             display: block;
         }
-        .flight .remain{
+
+        .flight .remain {
             font-size: 18px;
             line-height: 50px;
             width: 100%;
             display: block;
         }
-        .flight .flightID{
+
+        .flight .flightID {
             font-size: 20px;
             line-height: 50px;
             width: 100%;
             display: block;
         }
-        .flight .money{
+
+        .flight .money {
             font-size: 20px;
             line-height: 50px;
             color: red;
@@ -150,7 +159,8 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" id="myModalLabel">选择乘客</h4>
                     </div>
                     <div class="modal-body">
@@ -159,7 +169,9 @@
                                 <label for="name">姓名</label>
                                 <input type="text" class="form-control" id="name" placeholder="请输入姓名" required>
                             </div>
-                            <button type="button" class="btn btn-default" ng-click="findPassenger()" ng-disabled="form.$invalid">查找</button>
+                            <button type="button" class="btn btn-default" ng-click="findPassenger()"
+                                    ng-disabled="form.$invalid">查找
+                            </button>
                         </form>
                         <table class="table table-striped">
                             <thead>
@@ -178,7 +190,7 @@
                                 <td ng-bind="p.idcard"></td>
                                 <td ng-bind="p.phone"></td>
                                 <td>
-                                    <form class="form-inline"  ng-if="p.code === undefined">
+                                    <form class="form-inline" ng-if="p.code === undefined">
                                         <div class="form-group">
                                             <div class="input-group">
                                                 <select class="form-control" ng-model="p.type">

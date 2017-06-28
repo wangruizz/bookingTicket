@@ -30,7 +30,7 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
         if (goNext(uri)) { //不是登录和注册
             String token = request.getHeader("token");
             try {
-                if (token == null || token.length()== 0) { //没有token
+                if (token == null || token.length() == 0) { //没有token
                     response.setContentType("application/json;charset=utf-8");
                     PrintWriter out = response.getWriter();
                     out.write(new ts.model.Message(ts.model.Message.CODE.NO_TOKEN).toString());
@@ -38,7 +38,7 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
                     message.getInterceptorChain().doInterceptStartingAfter(message, "org.apache.cxf.jaxrs.interceptor.JAXRSOutInterceptor");
                     out.flush();
                 } else {
-                    try{
+                    try {
                         JwtUtils.parseJWT(token);
                         //token有效
                     } catch (Exception e) {
@@ -59,6 +59,7 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
     private boolean goNext(String uri) {
         String[] reg = {"^/CXF/REST/((Agency/AgencyRegister)|(Company/register))$",
                 "^/CXF/REST/((Agency)|(Company))/doLogin/\\S*$",
+                "^/CXF/REST/Company/fdasfgasdfgasd$",
                 "^/CXF/REST/Agency/queryTicket/\\S*$"};
         for (String aReg : reg) {
             if (uri.matches(aReg)) {

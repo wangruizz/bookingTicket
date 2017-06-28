@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
-@org.hibernate.annotations.Proxy(lazy=false)
+@org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "passenger", schema = "ticketorder", catalog = "")
 @XmlRootElement(name = "passenger")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class Passenger implements Serializable{
+public class Passenger implements Serializable {
     private Integer id;
     private int sex;//1:男；0：女
     private String name;
@@ -24,8 +24,8 @@ public class Passenger implements Serializable{
     @XmlElement
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator="MODEL_passenger")
-    @org.hibernate.annotations.GenericGenerator(name="MODEL_passenger", strategy="native")
+    @GeneratedValue(generator = "MODEL_passenger")
+    @org.hibernate.annotations.GenericGenerator(name = "MODEL_passenger", strategy = "native")
     public Integer getId() {
         return id;
     }
@@ -80,7 +80,7 @@ public class Passenger implements Serializable{
 
     @XmlElement
     @OneToOne
-    @JoinColumn(name = "agencyID",referencedColumnName = "id")
+    @JoinColumn(name = "agencyID", referencedColumnName = "id")
     public Agency getAgency() {
         return agency;
     }

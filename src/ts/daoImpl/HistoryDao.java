@@ -180,17 +180,6 @@ public class HistoryDao extends BaseDao<History,Integer> {
     }
 
     /**
-     *修改历史信息
-     * 已经测试
-     * @return
-     */
-    public History modify(History history){
-        update(history);
-        return history;
-    }
-
-
-    /**
      * 航班延误
      * 已经测试
      * @param flightID
@@ -220,11 +209,7 @@ public class HistoryDao extends BaseDao<History,Integer> {
         }
         List<Flight> list = flightDAO.findBy("id",true,Restrictions.eq("startAirport",start),Restrictions.eq("arriveAirport", end));
         ArrayList<History> list1 = new ArrayList<>();
-        Time now = new Time(System.currentTimeMillis());
         for (Flight i:list) {
-//            if (i.getStartTime().getTime() < now.getTime()) {
-//                continue;
-//            }
             List<History> list2 = findBy("id",true,Restrictions.eq("departureDate",date),Restrictions.eq("flight",i));
             if(list2.size()>0){
                 list1.add(list2.get(0));
@@ -252,12 +237,12 @@ public class HistoryDao extends BaseDao<History,Integer> {
     }
 
     public void init() {
-        new Thread(() -> {
+//        new Thread(() -> {
             int period = 30; //预售期
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             List<Flight> flights = flightDAO.findBy("id", true, Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
             Time delay = new Time(0, 0, 0); //默认航班延迟0
-            flights.forEach(flight -> {
+            for (Flight flight:flights) {
                 java.util.Date now = null;
                 try {
                     now = sdf.parse(sdf.format(new java.util.Date()));
@@ -283,33 +268,36 @@ public class HistoryDao extends BaseDao<History,Integer> {
                         break;//后面的已经存在，前面的就一定存在
                     }
                 }
-            });
-            System.out.println("history表初始化结束");
-            while (true) {
-                java.util.Date now = new java.util.Date();
-                java.util.Date next = DateProcess.getNext(now, period);
-                try {
-                    Thread.sleep(next.getTime() - now.getTime()); //每天更新history
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                flights = flightDAO.findBy("id", true, Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
-                flights.forEach(flight -> {
-                    History history = new History();
-                    history.setFlight(flight);
-                    history.setDepartureDate(new java.sql.Date(next.getTime()));
-                    history.setDelayTime(delay);
-                    history.setStatus(History.STATUS.HISTORY_FLIGHT_NORMAL);
-                    history.setBusinessNum(flight.getBusinessNum());
-                    history.setEconomyNum(flight.getEconomyNum());
-                    try{
-                        this.save(history);
-                    }catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                });
             }
-        }).start();
+            System.out.println("history表初始化结束");
+//            while (true) {
+//                java.util.Date now = new java.util.Date();
+//                java.util.Date next = DateProcess.getNext(now, period);
+//                try {
+//                    Thread.sleep(next.getTime() - now.getTime()); //每天更新history
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//                flights = flightDAO.findBy("id", true, Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
+//                for(Flight flight: flights) {
+//                    History history = new History();
+//                    history.setFlight(flight);
+//                    history.setDepartureDate(new java.sql.Date(next.getTime()));
+//                    history.setDelayTime(delay);
+//                    history.setStatus(History.STATUS.HISTORY_FLIGHT_NORMAL);
+//                    history.setBusinessNum(flight.getBusinessNum());
+//                    history.setEconomyNum(flight.getEconomyNum());
+//                    try{
+//                        this.save(history);
+//                    }catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                flights.forEach(flight -> {
+//
+//                });
+//            }
+//        }).start();
     }
 
 }

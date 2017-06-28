@@ -8,24 +8,27 @@
 
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href='css/cityquery.css' rel="stylesheet" type="text/css" />
-    <link href='css/BeatPicker.css' rel="stylesheet" type="text/css" />
-    <link href='css/daterangepicker-bs3.css' rel="stylesheet" type="text/css" />
+    <link href='css/cityquery.css' rel="stylesheet" type="text/css"/>
+    <link href='css/BeatPicker.css' rel="stylesheet" type="text/css"/>
+    <link href='css/daterangepicker-bs3.css' rel="stylesheet" type="text/css"/>
     <style type="text/css">
-        body{
+        body {
             height: 100%;
             overflow: hidden;
         }
-        @media screen  and (min-width: 768px){
-            #topNav{
+
+        @media screen  and (min-width: 768px) {
+            #topNav {
                 padding: 0 80px;
                 height: 100px;
             }
-            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand{
-                height:100%;
+
+            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand {
+                height: 100%;
             }
         }
-        #query{
+
+        #query {
             position: absolute;
             top: 50px;
             left: 7%;
@@ -137,8 +140,10 @@
 
             <div class="col-xs-4">
                 <ul class="nav nav-pills nav-stacked" role="tablist" id="nav">
-                    <li role="presentation" class="active"><a href="#queryPanel" aria-controls="queryPanel" role="tab" data-toggle="tab">机票查询</a></li>
-                    <li role="presentation"><a href="#findPanel" aria-controls="findPanel" role="tab" data-toggle="tab">机票打印</a></li>
+                    <li role="presentation" class="active"><a href="#queryPanel" aria-controls="queryPanel" role="tab"
+                                                              data-toggle="tab">机票查询</a></li>
+                    <li role="presentation"><a href="#findPanel" aria-controls="findPanel" role="tab" data-toggle="tab">机票打印</a>
+                    </li>
                 </ul>
             </div>
             <div class="col-xs-8 tab-content">
@@ -147,19 +152,22 @@
                         <div class="form-group">
                             <label for="from" class="col-xs-4 control-label">出发地点</label>
                             <div class="col-xs-8" id="fromCity">
-                                <input type="text" readonly class="form-control" id="from" name="from" ng-model="from" required>
+                                <input type="text" readonly class="form-control" id="from" name="from" ng-model="from"
+                                       required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="to" class="col-xs-4 control-label">到达地点</label>
                             <div class="col-xs-8" id="toCity">
-                                <input type="text" readonly class="form-control" id="to" name="to" ng-model="to" required>
+                                <input type="text" readonly class="form-control" id="to" name="to" ng-model="to"
+                                       required>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="date" class="col-xs-4 control-label">出发日期</label>
                             <div class="col-xs-8" id="dateDiv">
-                                <input type="text" readonly name="date" id="date" class="form-control" ng-model="date" required/>
+                                <input type="text" readonly name="date" id="date" class="form-control" ng-model="date"
+                                       required/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -169,19 +177,21 @@
                         </div>
                     </form>
                 </div>
-                <div  role="tabpanel" id="findPanel" class="tab-pane">
+                <div role="tabpanel" id="findPanel" class="tab-pane">
                     <form class="form-horizontal" name="form" ng-controller="find">
                         <div class="form-group">
                             <div class="form-group">
                                 <label for="code" class="col-xs-4 control-label">取票码</label>
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="code" name="code" ng-model="code" required>
+                                    <input type="text" class="form-control" id="code" name="code" ng-model="code"
+                                           required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="idcard" class="col-xs-4 control-label">身份证号</label>
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" id="idcard" name="idcard" ng-model="idcard" required>
+                                    <input type="text" class="form-control" id="idcard" name="idcard" ng-model="idcard"
+                                           required>
                                 </div>
                             </div>
                             <div class="col-xs-offset-4 col-xs-8">

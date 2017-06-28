@@ -9,8 +9,8 @@ labels ['W-Z'] = [99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111
 var module = angular.module('flightInfoApp', ['ngRoute', 'ngCookies']);
 module.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.when("/", {
-        controller:flight,
-        templateUrl:"html/flight/main.html"
+        controller: flight,
+        templateUrl: "html/flight/main.html"
     }).when('/modify/:id', {
         controller: modify,
         templateUrl: "html/flight/modify.html"
@@ -20,6 +20,9 @@ module.config(['$routeProvider', function ($routeProvider) {
     }).when('/detail/:id', {
         controller: detail,
         templateUrl: "html/flight/detail.html"
+    }).when('/form/:id', {
+        controller: form,
+        templateUrl: "html/flight/form.html"
     }).otherwise({
         redirectTo: '/'
     });
@@ -30,7 +33,7 @@ function modify($scope, $http, $cookieStore, $routeParams) {
         $scope.company = $cookieStore.get('company');
         if ($scope.company === undefined) {
             location.href = 'loginAirport.html';
-            return ;
+            return;
         }
         $scope.msg = '';
         $scope.flag = '';
@@ -60,6 +63,7 @@ function modify($scope, $http, $cookieStore, $routeParams) {
             }, $http);
         }
     }
+
     init();
 
     $scope.submit = function () {
@@ -141,17 +145,31 @@ function detail($scope, $http, $cookieStore, $routeParams) {
         $scope.company = $cookieStore.get('company');
         if ($scope.company === undefined) {
             location.href = 'loginAirport.html';
-            return ;
+            return;
         }
         $scope.id = $routeParams.id;
         $scope.postponeId = '';
-        $scope.postponeInput = false;
         $scope.postponeButton = false;
         $scope.cancelButton = false;
         Util.ajax({
-            url: 'Company/queryFlight/' + $scope.company.username + '/' + $scope.id,
+            url: 'Company/queryHistory/' + $scope.company.username + '/' + $scope.id,
             success: function (response) {
-                $scope.flight = response['data'];
+                if (response.headers('EntityClass') === 'History') {
+                    $scope.flight = response['data']['flight'];
+                    $scope.flight.status = parseInt(response['data']['status']);
+                } else if (response.headers('EntityClass') === 'Flight') {
+                    $scope.flight = response['data'];
+                    $scope.flight.status = 0;
+                } else if (response.headers('EntityClass') === 'Message') {
+                    alert(response.data.msg);
+                    return;
+                }
+                if ($scope.flight.status === 1) {
+                    $scope.postponeButton = true;
+                } else if ($scope.flight.status === -1) {
+                    $scope.postponeButton = true;
+                    $scope.cancelButton = true;
+                }
                 $scope.flight['startAirportName'] = $scope.flight['startAirport']['name'];
                 $scope.flight['arriveAirportName'] = $scope.flight['arriveAirport']['name'];
 
@@ -172,10 +190,11 @@ function detail($scope, $http, $cookieStore, $routeParams) {
                 d1.setMinutes(parseInt($scope.flight.startTime.split(':')[1]));
                 d2.setMinutes(parseInt($scope.flight.arriveTime.split(':')[1]));
                 if (d1 > d2) {
-                    d2.setDate(d.getDate()+1);
+                    d2.setDate(d.getDate() + 1);
                 }
                 var t = Math.floor((d2 - d1) / 60000); //转成分钟
-                $scope.flight['during'] = (Math.floor(t/60) < 10 ? '0'+Math.floor(t/60): Math.floor(t/60)) +':'+(t%60);
+                $scope.flight['during'] = (Math.floor(t / 60) < 10 ? '0' + Math.floor(t / 60) : Math.floor(t / 60)) + ':' + (t % 60);
+
             },
             error: function () {
                 $scope.msg = '未知错误，请刷新重试';
@@ -251,6 +270,35 @@ function detail($scope, $http, $cookieStore, $routeParams) {
     };
 }
 
+function form($scope, $http, $cookieStore, $routeParams, $location) {
+    function init() {
+        $scope.company = $cookieStore.get('company');
+        if ($scope.company === undefined) {
+            location.href = 'loginAirport.html';
+            return;
+        }
+        $scope.id = $routeParams.id;
+        $scope.title = $routeParams.id;
+        $scope.history = [];
+        Util.ajax({
+            url: 'Company/form/' + $scope.company.username + '/' + $scope.id,
+            success: function (response) {
+                $scope.history = response['data'];
+            },
+            error: function (response) {
+                alert(response.data.msg);
+                $location.path('/');
+            }
+        }, $http);
+
+    }
+
+    init();
+
+    $scope.print = function () {
+        $("table").jqprint({operaSupport: false});
+    }
+}
 
 angular.bootstrap("#topNav", ['topNavApp']);
 angular.bootstrap("#flightInfo", ['flightInfoApp']);

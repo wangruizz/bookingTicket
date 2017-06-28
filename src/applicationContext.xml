@@ -3,16 +3,19 @@
        xmlns:util="http://www.springframework.org/schema/util" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:jaxrs="http://cxf.apache.org/jaxrs" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans.xsd
 	http://www.springframework.org/schema/util
      http://www.springframework.org/schema/util/spring-util-4.0.xsd
      http://www.springframework.org/schema/tx
      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
-	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+	http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd http://www.springframework.org/schema/aop
+	http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <import resource="classpath:META-INF/cxf/cxf.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
 
     <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
         <property name="configLocation" value="classpath:booking.cfg.xml"/>
@@ -30,12 +33,12 @@
     <!-- 配置事务管理器 -->
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate4.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory" />
+        <property name="sessionFactory" ref="sessionFactory"/>
     </bean>
 
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
         <tx:attributes>
-            <tx:method name="*" propagation="REQUIRED" />
+            <tx:method name="*" propagation="REQUIRED" read-only="false"/>
             <!--
             Propagation ：　　key属性确定代理应该给哪个方法增加事务行为。这样的属性最重要的部份是传播行为。有以下选项可供使用：
             PROPAGATION_REQUIRED-支持当前事务，如果当前没有事务，就新建一个事务。这是最常见的选择。
@@ -49,8 +52,9 @@
     </tx:advice>
 
     <aop:config>
-        <aop:pointcut id="interceptorPointCuts"  expression="execution(* ts.serviceImpl.*.*(..)) execution(* ts.daoImpl.*.*(..))" />
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts" />
+        <aop:pointcut id="interceptorPointCuts"
+                      expression="execution(* ts.serviceImpl.*.*(..)) execution(* ts.daoImpl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="interceptorPointCuts"/>
     </aop:config>
 
     <bean id="airportDAO" class="ts.daoImpl.AirportDAO">
@@ -106,17 +110,21 @@
         </jaxrs:serviceBeans>
 
         <jaxrs:extensionMappings>
-            <entry key="json" value="application/json" />
-            <entry key="xml" value="application/xml" />
+            <entry key="json" value="application/json"/>
+            <entry key="xml" value="application/xml"/>
         </jaxrs:extensionMappings>
 
         <jaxrs:providers>
-            <ref bean="jsonProvider" />
-            <bean class="ts.serviceException.InvokeFaultExceptionMapper" />
+            <ref bean="jsonProvider"/>
+            <bean class="ts.serviceException.InvokeFaultExceptionMapper"/>
         </jaxrs:providers>
         <jaxrs:languageMappings>
-            <entry key="en" value="en-gb" />
+            <entry key="en" value="en-gb"/>
         </jaxrs:languageMappings>
+
+        <jaxrs:inInterceptors>
+            <bean class="ts.interceptor.Authorization"/>
+        </jaxrs:inInterceptors>
     </jaxrs:server>
 
     <util:list id="jsonKeys">
@@ -139,16 +147,16 @@
     如果设置为true，则格式为[{"id":123,"name":"john"}]，而Gson等解析为后者。 -->
 
     <bean id="jsonProvider" class="org.apache.cxf.jaxrs.provider.json.JSONProvider">
-        <property name="serializeAsArray" value="true" />
-        <property name="arrayKeys" ref="jsonKeys" />
-        <property name="produceMediaTypes" ref="jsonTypes" />
-        <property name="consumeMediaTypes" ref="jsonTypes" />
-        <property name="ignoreNamespaces" value="true" />
-        <property name="dropRootElement" value="true" />
-        <property name="dropCollectionWrapperElement" value="true" />
-        <property name="ignoreMixedContent" value="true" />
-        <property name="supportUnwrapped" value="true" />
-        <property name="attributesToElements" value="true" />
+        <property name="serializeAsArray" value="true"/>
+        <property name="arrayKeys" ref="jsonKeys"/>
+        <property name="produceMediaTypes" ref="jsonTypes"/>
+        <property name="consumeMediaTypes" ref="jsonTypes"/>
+        <property name="ignoreNamespaces" value="true"/>
+        <property name="dropRootElement" value="true"/>
+        <property name="dropCollectionWrapperElement" value="true"/>
+        <property name="ignoreMixedContent" value="true"/>
+        <property name="supportUnwrapped" value="true"/>
+        <property name="attributesToElements" value="true"/>
         <property name="typeConverter" ref="simpleConverter"/>
     </bean>
 

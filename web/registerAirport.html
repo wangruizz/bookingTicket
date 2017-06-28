@@ -9,23 +9,26 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
     <style type="text/css">
-        body{
+        body {
             height: 100%;
             overflow: hidden;
         }
-        @media screen  and (min-width: 768px){
-            #topNav{
+
+        @media screen  and (min-width: 768px) {
+            #topNav {
                 padding: 0 80px;
                 height: 100px;
             }
-            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand{
-                height:100%;
+
+            #topNav .container-fluid, #topNav .navbar-header, #topNav .navbar-brand {
+                height: 100%;
             }
         }
-        #register{
+
+        #register {
             position: absolute;
             top: 50px;
-            right:10%;
+            right: 10%;
             padding: 10px 50px 30px 30px;
             background-color: rgba(255, 255, 255, 0.5);
             border-radius: 5px;
@@ -71,24 +74,29 @@
             <div class="row">
                 <form class="form-horizontal col-xs-12">
                     <h3 class="text-center" style="margin-bottom: 30px">航空公司注册</h3>
-                    <p ng-bind="msg" ng-class="{'success': 'text-success', 'danger': 'text-danger', 'info': 'text-info'}[msgStatus]"></p>
+                    <p ng-bind="msg"
+                       ng-class="{'success': 'text-success', 'danger': 'text-danger', 'info': 'text-info'}[msgStatus]"></p>
                     <div class="form-group">
                         <label for="name" class="col-xs-4 control-label">公司名称</label>
                         <div class="col-xs-8">
                             <input type="text" class="form-control" id="name" required ng-model="company.name">
                         </div>
                     </div>
-                    <div class="form-group" ng-class="{'success': 'has-success has-feedback', 'error': ' has-error has-feedback'}[usernameStatus]">
+                    <div class="form-group"
+                         ng-class="{'success': 'has-success has-feedback', 'error': ' has-error has-feedback'}[usernameStatus]">
                         <label for="username" class="col-xs-4 control-label">登录名</label>
                         <div class="col-xs-8">
-                            <input type="text" class="form-control" id="username" required ng-model="company.username" ng-blur="checkUsername()">
-                            <span class="glyphicon" aria-hidden="true" ng-class="{'success': 'glyphicon-ok form-control-feedback', 'error': 'glyphicon-remove form-control-feedback'}[usernameStatus]"></span>
+                            <input type="text" class="form-control" id="username" required ng-model="company.username"
+                                   ng-blur="checkUsername()">
+                            <span class="glyphicon" aria-hidden="true"
+                                  ng-class="{'success': 'glyphicon-ok form-control-feedback', 'error': 'glyphicon-remove form-control-feedback'}[usernameStatus]"></span>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="password" class="col-xs-4 control-label">密码</label>
                         <div class="col-xs-8">
-                            <input type="password" class="form-control" id="password" required ng-model="company.password">
+                            <input type="password" class="form-control" id="password" required
+                                   ng-model="company.password">
                         </div>
                     </div>
                     <div class="form-group">
@@ -105,7 +113,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-xs-offset-3 col-xs-9">
-                            <button type="button" class="btn btn-success" ng-click="submit(false)" ng-disabled="form.$invalid">注册</button>
+                            <button type="button" class="btn btn-success" ng-click="submit(false)"
+                                    ng-disabled="form.$invalid">注册
+                            </button>
                         </div>
                     </div>
                 </form>
