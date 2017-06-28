@@ -15,6 +15,9 @@ module.controller('order', function ($scope, $http, $cookieStore) {
             method: 'GET',
             success: function (response) {
                 $scope.unfinish = response.data;
+                $scope.unfinish.forEach(function (f) {
+                    f.overtime = new Date() > new Date(f.history.departureDate + ' ' + f.history.flight.startTime);
+                })
             }
         }, $http);
 
@@ -23,6 +26,9 @@ module.controller('order', function ($scope, $http, $cookieStore) {
             method: 'GET',
             success: function (response) {
                 $scope.finish = response.data;
+                $scope.finish.forEach(function (f) {
+                    f.overtime = new Date() > new Date(f.history.departureDate + ' ' + f.history.flight.startTime);
+                })
             }
         }, $http);
 
@@ -31,6 +37,9 @@ module.controller('order', function ($scope, $http, $cookieStore) {
             method: 'GET',
             success: function (response) {
                 $scope.cancel = response.data;
+                $scope.cancel.forEach(function (f) {
+                    f.overtime = new Date() > new Date(f.history.departureDate + ' ' + f.history.flight.startTime);
+                })
             }
         }, $http);
     }
@@ -47,7 +56,6 @@ module.controller('order', function ($scope, $http, $cookieStore) {
                 } else {
                     alert(response.data.msg);
                 }
-                $scope.cancel = response.data;
             },
             error: function (response) {
                 if (response.data.msg === undefined) {

@@ -18,7 +18,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
                 alert('请换一个手机号');
                 return false;
             }
-            $scope.agency.pwd = $scope.agency.password;
+            $scope.agency.pwd = $.md5($scope.agency.password);
             if (Util.checkAgency($scope.agency)) {
                 Util.ajax({
                     url: 'Agency/AgencyRegister',
@@ -37,7 +37,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
                 }, $http);
             }
         } else {//company
-            $scope.company.pwd = $scope.company.password;
+            $scope.company.pwd = $.md5($scope.company.password);
             if (Util.checkCompany($scope.company)) {
                 Util.ajax({
                     url: 'Company/register',

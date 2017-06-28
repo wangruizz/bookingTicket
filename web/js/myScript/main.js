@@ -53,7 +53,7 @@ module.controller("query", function ($scope, $http, $cookieStore) {
             }
         }
         if (search['date'] !== undefined) {
-            if (search['date'].match(/^20[0-9]{2}-[0-1][0-9]-[0-2][0-9]$/) !== null) {
+            if (search['date'].match(/^201[0-9]-[0-1][0-9]-[0-3][0-9]$/) !== null) {
                 if (search['date'] < Util.dateFormat()) {
                     $scope.date = Util.dateFormat();
                 } else {

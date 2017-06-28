@@ -136,7 +136,8 @@
                             <td ng-bind="b.history.flight.startAirport.name"></td>
                             <td ng-bind="b.orderTime"></td>
                             <td>
-                                <button class="btn btn-default" ng-click="cancelBook(b.id, 2, $index)">取消订单</button>
+                                <button class="btn btn-default" ng-if="!b.overtime" ng-click="cancelBook(b.id, 2, $index)">取消订单</button>
+                                <button class="btn btn-default disabled" ng-if="b.overtime">取消订单</button>
                             </td>
                         </tr>
                         </tbody>
