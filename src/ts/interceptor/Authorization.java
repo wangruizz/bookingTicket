@@ -57,8 +57,12 @@ public class Authorization extends AbstractPhaseInterceptor<XMLMessage> {
     }
 
     private boolean goNext(String uri) {
-        String[] reg = {"^/CXF/REST/((Agency/AgencyRegister)|(Company/register))$",
+        String[] reg = {"^/CXF/REST/Agency/AgencyRegister$",
+                "^/CXF/REST/Company/register$",
+                "^/CXF/REST/Agency/printTicket/\\S*$",
                 "^/CXF/REST/((Agency)|(Company))/doLogin/\\S*$",
+                "^/CXF/REST/Company/checkUserName/\\S*$",
+                "^/CXF/REST/Agency/checkPhone/\\d{11}$",
                 "^/CXF/REST/Company/fdasfgasdfgasd$",
                 "^/CXF/REST/Agency/queryTicket/\\S*$"};
         for (String aReg : reg) {

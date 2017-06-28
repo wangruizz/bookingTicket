@@ -188,24 +188,6 @@ public class AgencyService implements IAgencyService {
      */
     @Override
     public Response AgencyLogin(String phone, String pwd) {
-        Passenger passenger = new Passenger();
-        passenger.setAgency(agencyDAO.get(14));
-        passenger.setName("1");
-        passenger.setPhone("1");
-        passenger.setIdcard("1");
-        passenger.setSex(0);
-        passengerDAO.save(passenger);
-        new Thread(() -> {
-            Passenger passenger1 = new Passenger();
-            passenger1.setAgency(agencyDAO.get(14));
-            passenger1.setName("2");
-            passenger1.setPhone("2");
-            passenger1.setIdcard("2");
-            passenger1.setSex(1);
-            passenger1.setName("2");
-            passengerDAO.save(passenger1);
-        }).start();
-
         Agency agency = agencyDAO.login(phone, pwd);
         if (agency == null) {
             return Response.ok(new Message(Message.CODE.AGENCY_LOGIN_FAILED)).header("EntityClass", "Message").build();
@@ -280,69 +262,16 @@ public class AgencyService implements IAgencyService {
      */
     @Override
     public Response BookingTicket(int agencyId, int historyId, int passengerId, int type) {
-        /*Agency agency = agencyDAO.get(agencyId);
-        if (agency == null) {
-            return Response.ok(new Message(Message.CODE.AGENCY_NOT_EXISTED)).header("EntityClass", "Message").build();
+        Message message = bookDAO.bookTicket(agencyId, historyId, passengerId, type);
+        if (message.getCode() == Message.CODE.SUCCESS) {
+            return Response.ok(bookDAO.findBy("id", false, Restrictions.eq("passenger", passengerDAO.get(passengerId))).get(0)).header("EntityClass", "Book").build();
         }
-        History history = historyDao.get(historyId);
-        if (history == null) {
-            return Response.ok(new Message(Message.CODE.FLIGHT_NOT_EXIST)).header("EntityClass", "Message").build();
-        }
-        Passenger passenger = passengerDAO.get(passengerId);
-        if (passenger == null) {
-            return Response.ok(new Message(Message.CODE.PASSENGER_NOT_EXIST)).header("EntityClass", "Message").build();
-        }
-        if (type != 0 && type != 1) {
-            return Response.ok(new Message(Message.CODE.FLIGHT_SEAT_TYPE_ERROR)).header("EntityClass", "Message").build();
-        }
-        if (bookDAO.findBy("id", true, Restrictions.eq("history", history), Restrictions.eq("passenger", passenger)).size() > 0) {
-            return Response.ok(new Message(Message.CODE.TICKET_HAS_EXIST)).header("EntityClass", "Message").build();
-        }
-        Book book = new Book();
-        book.setPassenger(passenger);
-        book.setOrderTime(new Timestamp(new Date().getTime()));
-        book.setStatus(Book.BOOK_STATUS.BOOK_UNPAID);
-        book.setSeatType(type);
-        synchronized (bookDAO) {
-            history = historyDao.get(historyId);
-            book.setHistory(history);
-            if (type == Book.SEAT_TYPE.BUSINESS_SEAT) {
-                if (history.getBusinessNum() > 0) {
-                    book.setSeatNum(history.getBusinessNum());
-                    history.setBusinessNum(history.getBusinessNum() - 1);
-                    historyDao.update(history);
-                    bookDAO.save(book);
-                    book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
-                    return Response.ok(book).header("EntityClass", "Book").build();
-                } else {
-                    return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass", "Message").build();
-                }
-            } else {
-                if (history.getEconomyNum() > 0) {
-                    book.setSeatNum(history.getEconomyNum());
-                    history.setEconomyNum(history.getEconomyNum() - 1);
-                    historyDao.update(history);
-                    bookDAO.save(book);
-                    book = bookDAO.findBy("id", false, Restrictions.eq("passenger", passenger)).get(0);
-                    return Response.ok(book).header("EntityClass", "Book").build();
-                } else {
-                    return Response.ok(new Message(Message.CODE.BOOK_FAILED)).header("EntityClass", "Message").build();
-                }
-            }
-        }*/
-        return Response.ok(bookDAO.bookTicket(agencyId, historyId, passengerId, type)).header("EntityClass", "Message").build();
+        return Response.ok(message).header("EntityClass", "Message").build();
     }
 
     //取消订单
     @Override
     public Response cancelBook(int agencyId, int id) {
-//        Book book = bookDAO.get(id);
-//        if (book == null) {
-//            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
-//        }
-//        if (book.getPassenger().getAgency().getId() != agencyId) {
-//            return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();//取消订单失败
-//        }
         Book book = bookDAO.cancel(agencyId, id);
         if (book == null) {
             return Response.ok(new Message(Message.CODE.BOOK_CANCEL_FAILED)).header("EntityClass", "Message").build();//取消订单失败
@@ -376,7 +305,7 @@ public class AgencyService implements IAgencyService {
     @Override
     public Response printTicket(int id, String IDCard) {
         Book book = bookDAO.get(id);
-        if (book == null || !book.getPassenger().getIdcard().equals(IDCard)) {
+        if (book == null || !book.getPassenger().getIdcard().equalsIgnoreCase(IDCard)) {
             return Response.ok(new Message(Message.CODE.TICKET_NOT_EXIST)).header("EntityClass", "Message").build();
         } else if (book.getStatus() != Book.BOOK_STATUS.BOOK_SUCCESS) {
             return Response.ok(new Message(Message.CODE.REPEAT_PRINT)).header("EntityClass", "Message").build();
@@ -442,7 +371,7 @@ public class AgencyService implements IAgencyService {
     public Response modifyPwd(String phone, String pwd1, String pwd2) {
         List<Agency> list = agencyDAO.findBy("phone", phone, "id", true);
         Agency agency = list.get(0);
-        if (agency.getPwd().equals(pwd1)) {
+        if (agency.getPwd().equalsIgnoreCase(pwd1)) { //密码是以md5方式存放的
             agency.setPwd(pwd2);
             agencyDAO.update(agency);
             return Response.ok(agency).header("EntityClass", "Agency").build();

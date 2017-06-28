@@ -21,7 +21,7 @@ public class AgencyDAO extends BaseDao<Agency,Integer>{
      * @return
      */
     public Agency login(String phone, String pwd) {
-        List<Agency> agencies = findBy("phone", true, Restrictions.eq("phone", phone));
+        List<Agency> agencies = findBy("phone", true, Restrictions.eq("phone", phone), Restrictions.eq("pwd", pwd));
         return (agencies != null && agencies.size() > 0) ? agencies.get(0) : null;
     }
 

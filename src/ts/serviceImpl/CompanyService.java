@@ -279,7 +279,7 @@ public class CompanyService implements ICompanyService {
     @Override
     public Response modifyPwd(String username, String pwd1, String pwd2) {
         Company company = airCompanyDAO.get(username);
-        if (company.getPwd().equals(pwd1)) {
+        if (company.getPwd().equalsIgnoreCase(pwd1)) {
             company.setPwd(pwd2);
             airCompanyDAO.update(company);
             return Response.ok(company).header("EntityClass", "Company").build();
