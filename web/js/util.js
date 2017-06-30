@@ -175,7 +175,7 @@ Util.init = function () {
             alert('请填写手机号');
             return false;
         }
-        if (agency['pwd'] !== undefined && agency['repeat'] !== undefined && agency['pwd'] !== agency['repeat']) {
+        if (agency['pwd'] !== undefined && agency['repeatMD5'] !== undefined && agency['pwd'] !== agency['repeatMD5']) {
             alert('两次密码输入不一致');
             return false;
         }
@@ -199,7 +199,7 @@ Util.init = function () {
             alert('联系方式格式错误');
             return false;
         }
-        if (company['pwd'] !== undefined && company['repeat'] !== undefined && company['pwd'] !== company['repeat']) {
+        if (company['pwd'] !== undefined && company['repeatMD5'] !== undefined && company['pwd'] !== company['repeatMD5']) {
             alert('两次密码输入不一致');
             return false;
         }

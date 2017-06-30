@@ -140,7 +140,7 @@ function flight($scope, $http, $cookieStore) {
     init();
 }
 
-function detail($scope, $http, $cookieStore, $routeParams) {
+function detail($scope, $http, $cookieStore, $routeParams, $location) {
     function init() {
         $scope.company = $cookieStore.get('company');
         if ($scope.company === undefined) {
@@ -208,8 +208,9 @@ function detail($scope, $http, $cookieStore, $routeParams) {
         Util.ajax({
             url: 'Company/flightCancel/' + $scope.company.username + '/' + $scope.flight.id,
             success: function (response) {
+                console.log(response.data.code == 1);
                 if (response.data.code == 1) {
-                    $scope.flights.splice(id, 1);
+                    $location.path('/');
                 } else {
                     alert(response.data.msg);
                 }
@@ -231,10 +232,11 @@ function detail($scope, $http, $cookieStore, $routeParams) {
             return false;
         }
         Util.ajax({
-            url: 'Company/flightDelay/' + $scope.company.username + '/' + $scope.flight.id + '/' + Util.dateFormat() + '/',
+            url: 'Company/flightDelay/' + $scope.company.username + '/' + $scope.flight.id + '/' + Util.dateFormat() + '/' + $('#deltaTime').val(),
             success: function (response) {
                 if (response.data.code == 1) {
-
+                    alert('通知成功');
+                    window.location.reload();
                 } else {
                     alert(response.data.msg);
                 }
@@ -254,7 +256,8 @@ function detail($scope, $http, $cookieStore, $routeParams) {
             url: 'Company/cancelFlightSomeday/' + $scope.company.username + '/' + $scope.flight.id + '/' + Util.dateFormat(),
             success: function (response) {
                 if (response.data.code == 1) {
-                    $scope.flights.splice(id, 1);
+                    alert('通知成功');
+                    window.location.reload();
                 } else {
                     alert(response.data.msg);
                 }

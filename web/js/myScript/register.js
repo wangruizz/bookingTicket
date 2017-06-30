@@ -19,6 +19,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
                 return false;
             }
             $scope.agency.pwd = $.md5($scope.agency.password);
+            $scope.agency.repeatMD5 = $.md5($scope.agency.repeat);
             if (Util.checkAgency($scope.agency)) {
                 Util.ajax({
                     url: 'Agency/AgencyRegister',
@@ -38,6 +39,7 @@ angular.module('registerApp', ['ngCookies']).controller('register', function ($s
             }
         } else {//company
             $scope.company.pwd = $.md5($scope.company.password);
+            $scope.company.repeatMD5 = $.md5($scope.company.repeat);
             if (Util.checkCompany($scope.company)) {
                 Util.ajax({
                     url: 'Company/register',

@@ -121,7 +121,7 @@ public class FlightDAO extends BaseDao<Flight, String> {
      */
     public List<Flight> query(String companyUName) {
         Company company = companyDAO.get(companyUName);
-        return findBy("company", company, "id", true);
+        return findBy("id", true, Restrictions.eq("company", company), Restrictions.eq("status", Flight.STATUS.FLIGHT_NORMAL));
     }
 
     /**
